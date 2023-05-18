@@ -2,7 +2,8 @@
 #define __F_PROTOTYPES__
 
 	#include "lib.hpp"
-
+	#include "../var/var.hpp"
+	
 	void Error(char const *text);
 
 	SDL_Window *getWindow();
