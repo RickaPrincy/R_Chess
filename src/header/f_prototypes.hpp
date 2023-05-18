@@ -3,6 +3,11 @@
 
 	#include "lib.hpp"
 	#include "../var/var.hpp"
+	#include "Type.hh"
+	#include "Piece.hh"
+	#include "Case.hh"
+	#include "background.hpp"
+	#include "drawAndLoad.hpp"
 	
 	void Error(char const *text);
 
