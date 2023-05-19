@@ -10,6 +10,9 @@ int main(int argc,char *argv[]){
 	//loading
 	load();
 
+	//initisalisation
+	init();
+	
 	while(program_launched){
 		
 		//render everything

@@ -8,7 +8,7 @@ SDL_Surface *icon = NULL;
 
 /*-----------------------------------------------*/
 void Error(char const *text){
-	SDL_Log("Erreur de : %s et la cause est : %s",text,SDL_GetError());
+	SDL_Log("Error of : %s caused by  : %s",text,SDL_GetError());
 }
 
 /*-----------------------------------------*/
@@ -40,14 +40,14 @@ void LimitFPS(unsigned int limit){
 
 void firstInit(char const *title,int window_w,int window_h){
 	if(SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS) != 0){
-		Error("Initialisation de la sdl");
+		Error("Initialisation : sdl");
 		exit(EXIT_FAILURE);
 	}
 	/*-----------------------------------------*/
 
 	window = SDL_CreateWindow(title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,window_w,window_h,SDL_WINDOW_SHOWN);
 	if(window == NULL){
-		Error("Creation de la fenetre");
+		Error("Creation : fenetre");
 		exit(EXIT_FAILURE);
 	}
 
@@ -55,7 +55,7 @@ void firstInit(char const *title,int window_w,int window_h){
 
 	renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
 	if(renderer == NULL){
-		Error("Creation de la  rendu");
+		Error("Creation :  rendu");
 		exit(EXIT_FAILURE);
 	}
 
@@ -65,7 +65,7 @@ void firstInit(char const *title,int window_w,int window_h){
 	int imgFlags = IMG_INIT_PNG;
 	
 	if( !( IMG_Init( imgFlags ) & imgFlags ) ){
-		Error("Initialisation de sdl_image");
+		Error("Initialisation : sdl_image");
 		exit(EXIT_FAILURE);
 	}
 
@@ -73,7 +73,7 @@ void firstInit(char const *title,int window_w,int window_h){
 
 	//Initialisation de la  SDL_TTF 2 
 	if (TTF_Init() < 0){
-		Error("Initialisation de la sdl_ttf");
+		Error("Initialisation : sdl_ttf");
 		exit(EXIT_FAILURE);
 	}
 
@@ -86,17 +86,17 @@ void firstInit(char const *title,int window_w,int window_h){
 void cleanFirstInit(){
 	if(icon != NULL){
 		SDL_FreeSurface(icon);
-		cout << "Destruction de icon" << endl;
+		cout << "Icon Destroyed" << endl;
 	}
 
 	if(renderer != NULL){
 		SDL_DestroyRenderer(renderer);
-		cout << "Destruction de renderer" << endl;
+		cout << "Renderer Destroyed" << endl;
 	}
 
 	if(window != NULL){
 		SDL_DestroyWindow(window);
-		cout << "Destruction de window" << endl;
+		cout << "Window Destroyed" << endl;
 	}
 
 	TTF_Quit();
@@ -108,7 +108,7 @@ void cleanFirstInit(){
 void setIcon(char const *path){
 	icon = IMG_Load(path);
 	if(icon == NULL){
-		Error("Icon du programme");
+		Error("Icon");
 		exit(EXIT_FAILURE);
 	}
 
@@ -125,7 +125,7 @@ SDL_Texture *imageLoad(char const *path){
 	image = IMG_Load(path);
 
 	if(image == NULL){
-		Error("Creation de surface de LoadImage");
+		Error("Creation of a surface");
 		exit(EXIT_FAILURE);
 	}	
 
@@ -133,7 +133,7 @@ SDL_Texture *imageLoad(char const *path){
 	SDL_FreeSurface(image);
 
 	if(texture == NULL){
-		Error("Creation de texture de LoadImage");
+		Error("Creation of a texture");
 		exit(EXIT_FAILURE);
 	}
 	return texture;
@@ -149,13 +149,12 @@ void renderCopy(SDL_Texture *image, int x, int y){
 
 	if(SDL_QueryTexture(image, NULL, NULL, &dest.w, &dest.h) != 0){
 		
-		Error("SDL_QueryTexture de RenderCopy");
-		printf("La coordonner image erreur est %d %d\n",x,y);
+		Error("SDL_QueryTexture : RenderCopy");
 		exit(EXIT_FAILURE);
 	}
 
 	if(SDL_RenderCopy(renderer, image, NULL, &dest) != 0){
-		Error("SDL_RenderCopy de RenderCopy");
+		Error("SDL_RenderCopy ; RenderCopy");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -171,7 +170,7 @@ SDL_Texture *textLoad(char const *Texte,int Taille,SDL_Color color,char const *p
 	TTF_CloseFont(font);
 
 	if(Surface == NULL){
-		Error("Surface de TextLoad()");
+		Error("Surface : TextLoad()");
 		exit(EXIT_FAILURE);
 	}
 
@@ -179,7 +178,7 @@ SDL_Texture *textLoad(char const *Texte,int Taille,SDL_Color color,char const *p
 	SDL_FreeSurface(Surface);
 
 	if(Texture == NULL){
-		Error("Texture de TextLoad()");
+		Error("Texture : TextLoad()");
 		exit(EXIT_FAILURE);
 	}
 

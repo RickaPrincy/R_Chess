@@ -7,7 +7,8 @@
 	#include "Piece.hh"
 	#include "Case.hh"
 	#include "background.hpp"
-	#include "drawAndLoad.hpp"
+	#include "piecesFunction.hpp"
+	#include "mainStruct.hpp"
 	
 	void Error(char const *text);
 
