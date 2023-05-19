@@ -2,6 +2,7 @@
 #include "header/event.hpp"
 
 SDL_bool program_launched = SDL_TRUE;
+
 int main(int argc,char *argv[]){
 
 	firstInit("R_Chess",WINDOW_W,WINDOW_H);

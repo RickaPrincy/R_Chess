@@ -6,6 +6,7 @@
 	#include "Type.hh"
 	#include "Piece.hh"
 	#include "Case.hh"
+	#include "Input.hh"
 	#include "background.hpp"
 	#include "piecesFunction.hpp"
 	#include "mainStruct.hpp"
