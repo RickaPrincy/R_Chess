@@ -7,17 +7,15 @@ Piece *getPieceSelected(){
 }
 
 void initPieceSelected(){
-    if(pieceSelected != NULL){
-        pieceSelected->isSelected = false;
-        pieceSelected = NULL;
-    }
+    pieceSelected->isSelected = false;
+    pieceSelected = NULL;
 }
 
 void changePosition(int x, int y){
     getCase(pieceSelected->x, pieceSelected->y)->piece = NULL;
     pieceSelected->x = x;
     pieceSelected->y = y;
-    getCase(x, y)->piece = pieceSelected;
+    getCase(x,y)->piece = pieceSelected;
     initPieceSelected();
     return;
 }
