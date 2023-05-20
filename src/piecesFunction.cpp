@@ -13,23 +13,28 @@ void loadPieces(){
 void initPieces(){
 
     for(std::vector<Piece>::size_type i = 0; i < pieces.size(); i++){
-        Piece &currentPiece = pieces.at(i);
-        currentPiece.color = i < 16 ? WHITE : BLACK;
-        currentPiece.isOnBoard = true;
+        Piece *currentPiece = &pieces.at(i);
+        Case *currentCase = NULL;
+        currentPiece->color = i < 16 ? WHITE : BLACK;
+        currentPiece->isOnBoard = true;
+        currentPiece->isSelected = false;
         
         //init positions
         if(i < 16){
-            currentPiece.x = i < 8 ? i + 1 : i - 7;
-            currentPiece.y = i < 8 ? 2 : 1;
+            currentPiece->x = i < 8 ? i + 1 : i - 7;
+            currentPiece->y = i < 8 ? 2 : 1;
         }
         else{
-            currentPiece.x = i < 24 ? i - 15 : i - 23;
-            currentPiece.y = i < 24 ? 7 : 8;
+            currentPiece->x = i < 24 ? i - 15 : i - 23;
+            currentPiece->y = i < 24 ? 7 : 8;
         }
+
+        currentCase = getCase(currentPiece->x - 1, currentPiece->y - 1);
+        currentCase->piece = currentPiece;
 
         //init pawn type
         if(i < 8 || ( i >=16  && i < 24)){
-            currentPiece.type = PAWN;
+            currentPiece->type = PAWN;
         }
     }
 
@@ -41,6 +46,9 @@ void initPieces(){
 	pieces.at(12).type = pieces.at(28).type = KING;
 }
 
+Piece *getPiece(int index){
+    return &pieces.at(index);
+}
 //to draw all pieces
 void drawPieces(){
     SDL_Rect dest,src;

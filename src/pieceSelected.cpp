@@ -7,9 +7,15 @@ Piece *getPieceSelected(){
 }
 
 void initPieceSelected(){
+    pieceSelected->isSelected = false;
     pieceSelected = NULL;
 }
 
+void changePosition(int x, int y){
+    pieceSelected->x = x;
+    pieceSelected->y = y;
+    return;
+}
 
 
 
