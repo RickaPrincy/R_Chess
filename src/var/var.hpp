@@ -11,6 +11,4 @@
     #define WHITE 0
     #define BLACK 1
 
-    extern SDL_bool program_launched;
-
 #endif

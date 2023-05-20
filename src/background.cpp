@@ -1,6 +1,6 @@
 #include "header/f_prototypes.hpp"
 
-SDL_Texture *background = NULL;
+static SDL_Texture *background = NULL;
 
 void loadBackground(){
     background = imageLoad("graphics/background.jpg");

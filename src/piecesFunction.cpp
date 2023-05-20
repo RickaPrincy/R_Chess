@@ -1,7 +1,8 @@
 #include "header/f_prototypes.hpp"
 
-std::vector<Piece> pieces(32);
-SDL_Texture *pieceImage = NULL;
+static std::vector<Piece> pieces(32);
+static SDL_Texture *pieceImage = NULL;
+static Piece *piece_selected = NULL;
 
 //We charge the image
 void loadPieces(){

@@ -2,9 +2,9 @@
 
 /*-----------------------------------------------*/
 
-SDL_Renderer *renderer = NULL;
-SDL_Window *window = NULL;
-SDL_Surface *icon = NULL;
+static SDL_Renderer *renderer = NULL;
+static SDL_Window *window = NULL;
+static SDL_Surface *icon = NULL;
 
 /*-----------------------------------------------*/
 void Error(char const *text){

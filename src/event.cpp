@@ -1,14 +1,19 @@
-#include "header/event.hpp"
+#include "header/f_prototypes.hpp"
 
-Input input;
+static Input input;
+
+Input *getInput(){
+	return &input;
+}
 
 void handlerEvent(){
+	SDL_bool *program_launched = getProgramStatus();
 	SDL_Event event;
 	while (SDL_PollEvent(&event)){
 		
         switch (event.type){	
             case SDL_QUIT:
-				program_launched = SDL_FALSE;
+				*program_launched = SDL_FALSE;
 			break;
             case SDL_MOUSEMOTION:	
 				input.mouseX = event.motion.x;
@@ -33,8 +38,8 @@ void handlerEvent(){
 			break;
 			default:
 				input.isOnMove = false;
-				input.left = RELEASED;
-				input.right = RELEASED;
+				input.left = NOT_CLICKED;
+				input.right = NOT_CLICKED;
 			break;
 		}
 	}

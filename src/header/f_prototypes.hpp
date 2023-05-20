@@ -7,6 +7,7 @@
 	#include "Piece.hh"
 	#include "Case.hh"
 	#include "Input.hh"
+	#include "event.hpp"
 	#include "background.hpp"
 	#include "piecesFunction.hpp"
 	#include "mainStruct.hpp"
