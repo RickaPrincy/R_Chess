@@ -17,7 +17,6 @@ void changePosition(int x, int y){
     pieceSelected->y = y;
     getCase(x,y)->piece = pieceSelected;
     initPieceSelected();
-    getInput()->isOnMove = false;
     return;
 }
 
@@ -41,8 +40,13 @@ void drawPieceSelected(){
         dest.x = getImagePosition(pieceSelected->type);
         dest.y = pieceSelected->color == WHITE ? 0 : 50;
 
-        src.x = getInput()->mouseX - 25;
-        src.y = getInput()->mouseY - 25;
+        if(getInput()->isOnMove){
+            src.x = getInput()->mouseX - 25;
+            src.y = getInput()->mouseY - 25;
+        }else{
+            src.x = BORDER_SIZE / 2 + pieceSelected->x * CASE_SIZE + 16;
+            src.y = BORDER_SIZE / 2 + pieceSelected->y * CASE_SIZE + 16;
+        }
 
         SDL_RenderCopy(getRenderer(),getPiecesImage(),&dest,&src);
 	}
