@@ -10,6 +10,8 @@
 	#include "event.hpp"
 	#include "background.hpp"
 	#include "piecesFunction.hpp"
+	#include "pieceSelected.hpp"
+	#include "mouseEvent.hpp"
 	#include "mainStruct.hpp"
 	
 	void Error(char const *text);
