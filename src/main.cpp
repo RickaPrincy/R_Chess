@@ -23,7 +23,7 @@ int main(int argc,char *argv[]){
 		//render everything
 		draw();
 		
-		//handler event
+		//handler window event
 		handlerEvent();
 
 		//handler mouse :  click and move 

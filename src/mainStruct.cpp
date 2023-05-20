@@ -6,13 +6,15 @@ void load(){
 }
 
 void init(){
+    initCases();
     initPieces();
 }
 
 void draw(){
     drawBackground();
+    drawCasesSelected();
     drawPieces();
-
+    
     SDL_RenderPresent(getRenderer());
     
     SDL_Delay(1);
