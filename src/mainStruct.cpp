@@ -14,6 +14,7 @@ void draw(){
     drawBackground();
     drawCasesSelected();
     drawPieces();
+    drawPieceSelected();
     
     SDL_RenderPresent(getRenderer());
     

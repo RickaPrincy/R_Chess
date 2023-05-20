@@ -5,6 +5,8 @@
     void loadPieces();
     void initPieces();
     Piece *getPiece(int index);
+    SDL_Texture *getPiecesImage();
+    int getImagePosition(Type);
     void drawPieces();
     void cleanPieces();
 

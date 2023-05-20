@@ -18,25 +18,23 @@ void handlerMouseEvent(){
         return;
     }
 
-	if(input->left == CLICKED || input->left == RELEASED){
+	if(input->left == CLICKED || (input->left == RELEASED && input->isOnMove)){
 
         //to know the x and y case[x][y] clicked
         xCase = (input->mouseX - BORDER_SIZE) / CASE_SIZE;
         yCase = (input->mouseY - BORDER_SIZE) / CASE_SIZE;
 
-        if(input->left == CLICKED){
-            Case *currentCase = getCase(xCase,yCase);
+        Case *currentCase = getCase(xCase,yCase);
 
-            if(pieceSelected == NULL && !currentCase->isEmpty()){
-                makeSelected(currentCase->piece);
+        if(input->left == CLICKED && pieceSelected == NULL && !currentCase->isEmpty()){
+            makeSelected(currentCase->piece);
+        }
+        else if(pieceSelected != NULL){
+            if(currentCase->isEmpty()){
+                changePosition(xCase, yCase);
             }
-            else if(pieceSelected != NULL){
-                if(currentCase->isEmpty()){
-                    changePosition(xCase, yCase);
-                }
-                else{
-                    capture(currentCase->piece,xCase, yCase);
-                }
+            else{
+                capture(currentCase->piece,xCase, yCase);
             }
         }
 

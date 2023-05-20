@@ -8,5 +8,6 @@
     void changePosition(int, int);
     void makeSelected(Piece*);
     void capture(Piece*,int,int);
+    void drawPieceSelected();
 
 #endif

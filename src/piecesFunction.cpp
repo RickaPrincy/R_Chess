@@ -9,6 +9,10 @@ void loadPieces(){
     cout << "Pieces loaded" << endl;
 }
 
+SDL_Texture *getPiecesImage(){
+    return pieceImage;
+}
+
 //init all Pieces
 void initPieces(){
 
@@ -46,6 +50,26 @@ void initPieces(){
 	pieces.at(4).type = pieces.at(28).type = KING;
 }
 
+int getImagePosition(Type type){
+    int result;
+    switch(type){
+        case ROOK: result = 0;
+            break;
+        case KNIGHT: result = 50;
+            break;
+        case BISHOP: result = 100;
+            break;
+        case QUEEN: result = 150;
+            break;
+        case KING: result = 200;
+            break;
+        default: result = 250;
+            break; 
+    }
+
+    return result;
+}
+
 Piece *getPiece(int index){
     return &pieces.at(index);
 }
@@ -60,22 +84,9 @@ void drawPieces(){
 
         //We show the pieces if it's not captured
         if(currentPiece.isOnBoard && !currentPiece.isSelected){
-            switch(currentPiece.type){
-				case ROOK: dest.x = 0;
-				    break;
-				case KNIGHT: dest.x = 50;
-				    break;
-				case BISHOP: dest.x = 100;
-				    break;
-				case QUEEN: dest.x = 150;
-				    break;
-				case KING: dest.x = 200;
-				    break;
-				default: dest.x = 250;
-					break; 
-			}
             
             dest.y = currentPiece.color == WHITE ? 0 : 50;
+            dest.x = getImagePosition(currentPiece.type);
 
             src.x = BORDER_SIZE / 2 + currentPiece.x * CASE_SIZE + 16;
             src.y = BORDER_SIZE / 2 + currentPiece.y * CASE_SIZE + 16;
