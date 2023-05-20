@@ -6,6 +6,7 @@
     class Case{
         public:
             Piece *piece = NULL;
+            bool isEmpty();
     };
 
 #endif

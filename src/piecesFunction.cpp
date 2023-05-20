@@ -15,40 +15,41 @@ void initPieces(){
     for(std::vector<Piece>::size_type i = 0; i < pieces.size(); i++){
         Piece *currentPiece = &pieces.at(i);
         Case *currentCase = NULL;
-        currentPiece->color = i < 16 ? WHITE : BLACK;
+        currentPiece->color = i < 16 ? BLACK : WHITE;
         currentPiece->isOnBoard = true;
         currentPiece->isSelected = false;
         
         //init positions
         if(i < 16){
-            currentPiece->x = i < 8 ? i + 1 : i - 7;
-            currentPiece->y = i < 8 ? 2 : 1;
+            currentPiece->x = i < 8 ? i : i - 8;
+            currentPiece->y = i < 8 ? 0 : 1;
         }
         else{
-            currentPiece->x = i < 24 ? i - 15 : i - 23;
-            currentPiece->y = i < 24 ? 7 : 8;
+            currentPiece->x = i < 24 ? i - 16 : i - 24;
+            currentPiece->y = i < 24 ? 6 : 7;
         }
 
-        currentCase = getCase(currentPiece->x - 1, currentPiece->y - 1);
+        currentCase = getCase(currentPiece->x, currentPiece->y);
         currentCase->piece = currentPiece;
 
         //init pawn type
-        if(i < 8 || ( i >=16  && i < 24)){
+        if(i > 7 && i < 24){
             currentPiece->type = PAWN;
         }
     }
 
     //init type for pieces which not a pawn
-    pieces.at(8).type = pieces.at(15).type = pieces.at(24).type = pieces.at(31).type = ROOK;
-	pieces.at(9).type = pieces.at(14).type = pieces.at(25).type = pieces.at(30).type = KNIGHT;
-	pieces.at(10).type = pieces.at(13).type = pieces.at(26).type = pieces.at(29).type = BISHOP;
-	pieces.at(11).type = pieces.at(27).type = QUEEN;
-	pieces.at(12).type = pieces.at(28).type = KING;
+    pieces.at(0).type = pieces.at(7).type = pieces.at(24).type = pieces.at(31).type = ROOK;
+	pieces.at(1).type = pieces.at(6).type = pieces.at(25).type = pieces.at(30).type = KNIGHT;
+	pieces.at(2).type = pieces.at(5).type = pieces.at(26).type = pieces.at(29).type = BISHOP;
+	pieces.at(3).type = pieces.at(27).type = QUEEN;
+	pieces.at(4).type = pieces.at(28).type = KING;
 }
 
 Piece *getPiece(int index){
     return &pieces.at(index);
 }
+
 //to draw all pieces
 void drawPieces(){
     SDL_Rect dest,src;
@@ -58,7 +59,7 @@ void drawPieces(){
         Piece &currentPiece = pieces.at(i);
 
         //We show the pieces if it's not captured
-        if(currentPiece.isOnBoard){
+        if(currentPiece.isOnBoard && !currentPiece.isSelected){
             switch(currentPiece.type){
 				case ROOK: dest.x = 0;
 				    break;
@@ -76,8 +77,8 @@ void drawPieces(){
             
             dest.y = currentPiece.color == WHITE ? 0 : 50;
 
-            src.x = BORDER_SIZE / 2 + (currentPiece.x - 1) * CASE_SIZE + 16;
-            src.y = BORDER_SIZE / 2 + (8 - currentPiece.y) * CASE_SIZE + 16;
+            src.x = BORDER_SIZE / 2 + currentPiece.x * CASE_SIZE + 16;
+            src.y = BORDER_SIZE / 2 + currentPiece.y * CASE_SIZE + 16;
 
             SDL_RenderCopy(getRenderer(),pieceImage,&dest,&src);
 		}

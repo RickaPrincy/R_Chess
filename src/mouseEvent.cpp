@@ -12,7 +12,7 @@ void handlerMouseEvent(){
         input->mouseX > BORDER_SIZE + 8 * CASE_SIZE ||
         input->mouseY > BORDER_SIZE + 8 * CASE_SIZE 
     ){
-        cout << "out the chessboard" << endl;
+        initPieceSelected();
         return;
     }
 
@@ -21,21 +21,24 @@ void handlerMouseEvent(){
         //to know the x and y case[x][y] clicked
         xCase = (input->mouseX - BORDER_SIZE) / CASE_SIZE;
         yCase = (input->mouseY - BORDER_SIZE) / CASE_SIZE;
-        cout << "xCase : " << xCase << " et yCase : " << yCase << endl;
         
         if(input->left == CLICKED){
-            if(pieceSelected == NULL){
-                if(getCase(xCase,yCase)->piece != NULL){
-                    pieceSelected = getCase(xCase,yCase)->piece;
-                    pieceSelected->isSelected = true;
+            Case *currentCase = getCase(xCase,yCase);
+
+            if(pieceSelected == NULL && !currentCase->isEmpty()){
+                makeSelected(currentCase->piece);
+            }
+            else if(pieceSelected != NULL){
+                if(currentCase->isEmpty()){
+                    changePosition(xCase, yCase);
                 }
-            }else{
-                if(getCase(xCase,yCase)->piece != NULL){
-                    pieceSelected = getCase(xCase,yCase)->piece;
-                    pieceSelected->isSelected = true;
+                else{
+                    capture(currentCase->piece,xCase, yCase);
                 }
             }
         }
+
+        input->left = NOT_CLICKED;
     }
 
 }

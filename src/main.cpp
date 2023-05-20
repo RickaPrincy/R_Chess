@@ -8,9 +8,9 @@ SDL_bool *getProgramStatus(){
 }
 
 int main(int argc,char *argv[]){
-	atexit(cleanEverything);
 	firstInit("R_Chess",WINDOW_W,WINDOW_H);
 	unsigned int limit = SDL_GetTicks();
+	atexit(cleanEverything);
 
 	//loading
 	load();
@@ -26,6 +26,7 @@ int main(int argc,char *argv[]){
 		//handler event
 		handlerEvent();
 
+		//handler mouse :  click and move 
 		handlerMouseEvent();
 
 		LimitFPS(limit);
