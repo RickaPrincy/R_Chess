@@ -9,6 +9,7 @@ Piece *getPieceSelected(){
 void initPieceSelected(){
     pieceSelected->isSelected = false;
     pieceSelected = NULL;
+    initCases(true);
 }
 
 void changePosition(int x, int y){

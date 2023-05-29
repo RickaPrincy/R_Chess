@@ -6,4 +6,5 @@
     void initCases(bool);
     void drawHollowRect(SDL_Rect,int);
     void drawCasesSelected();
+    void drawCasesValid();
 #endif

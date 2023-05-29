@@ -7,10 +7,11 @@ void handlerMouseEvent(){
 
     //it's not necessary to calcul everything if the mouse isn't on the board
     if(
-        input->mouseX < BORDER_SIZE ||
+        (input->mouseX < BORDER_SIZE ||
         input->mouseY < BORDER_SIZE ||
         input->mouseX > BORDER_SIZE + 8 * CASE_SIZE ||
-        input->mouseY > BORDER_SIZE + 8 * CASE_SIZE
+        input->mouseY > BORDER_SIZE + 8 * CASE_SIZE )
+        && input->isOnMove
     ){
         if(pieceSelected != NULL){
             initPieceSelected();
@@ -28,34 +29,27 @@ void handlerMouseEvent(){
 
         if(input->left == CLICKED && pieceSelected == NULL && !currentCase->isEmpty()){
             makeSelected(currentCase->piece);
+            calcul();
         }
         else if(pieceSelected != NULL){
             if(currentCase->isEmpty()){
                 if(currentCase->isValid)
                     changePosition(xCase, yCase);
-                else
-                    initPieceSelected();
             }
             else{
                 if(currentCase->piece->color == pieceSelected->color){
                     if(input->left == CLICKED){
                         switchSelectedPiece(currentCase->piece);
-                    }
-                    else{
-                        initPieceSelected();
+                        calcul();
                     }
                 }
-                else{
-                    if(currentCase->isValid){
-                        capture(currentCase->piece,xCase, yCase);
-                    }
-                    else{
-                        initPieceSelected();
-                    }
+                else if(currentCase->isValid){
+                    capture(currentCase->piece,xCase, yCase);
                 }
             }
         }
 
+        input->isOnMove = false;    
         input->left = NOT_CLICKED;
     }
 

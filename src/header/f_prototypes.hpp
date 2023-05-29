@@ -11,6 +11,7 @@
 	#include "background.hpp"
 	#include "piecesFunction.hpp"
 	#include "pieceSelected.hpp"
+	#include "calcul.hpp"
 	#include "mouseEvent.hpp"
 	#include "casesFunction.hpp"
 	#include "mainStruct.hpp"
