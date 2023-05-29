@@ -6,10 +6,13 @@ Case *getCase(int x, int y){
     return &cases[x][y];
 }
 
-void initCases() {
-    std::for_each(cases.begin(), cases.end(), [](std::vector<Case>& row) {
-        std::for_each(row.begin(), row.end(), [](Case& c) {
-            c.piece = NULL;
+void initCases(bool isCaseValidOnly) {
+    std::for_each(cases.begin(), cases.end(), [isCaseValidOnly](std::vector<Case>& row) {
+        std::for_each(row.begin(), row.end(), [isCaseValidOnly](Case& c) {
+            if(!isCaseValidOnly){
+                c.piece = NULL;
+            }
+            c.isValid = false;
         });
     });
 }

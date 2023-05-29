@@ -6,7 +6,7 @@ void load(){
 }
 
 void init(){
-    initCases();
+    initCases(false);
     initPieces();
 }
 

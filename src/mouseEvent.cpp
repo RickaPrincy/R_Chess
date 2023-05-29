@@ -31,7 +31,10 @@ void handlerMouseEvent(){
         }
         else if(pieceSelected != NULL){
             if(currentCase->isEmpty()){
-                changePosition(xCase, yCase);
+                if(currentCase->isValid)
+                    changePosition(xCase, yCase);
+                else
+                    initPieceSelected();
             }
             else{
                 if(currentCase->piece->color == pieceSelected->color){
@@ -43,7 +46,12 @@ void handlerMouseEvent(){
                     }
                 }
                 else{
-                    capture(currentCase->piece,xCase, yCase);
+                    if(currentCase->isValid){
+                        capture(currentCase->piece,xCase, yCase);
+                    }
+                    else{
+                        initPieceSelected();
+                    }
                 }
             }
         }
