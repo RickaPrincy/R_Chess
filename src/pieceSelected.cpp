@@ -25,6 +25,12 @@ void makeSelected(Piece *piece){
     pieceSelected = piece;
 }
 
+void switchSelectedPiece(Piece *piece){
+    initPieceSelected();
+    pieceSelected = piece;
+    pieceSelected->isSelected = true;
+}
+
 void capture(Piece *piece, int x, int y){
     if(!piece->isSelected)
         piece->isOnBoard = false;

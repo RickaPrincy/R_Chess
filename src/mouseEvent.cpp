@@ -34,7 +34,17 @@ void handlerMouseEvent(){
                 changePosition(xCase, yCase);
             }
             else{
-                capture(currentCase->piece,xCase, yCase);
+                if(currentCase->piece->color == pieceSelected->color){
+                    if(input->left == CLICKED){
+                        switchSelectedPiece(currentCase->piece);
+                    }
+                    else{
+                        initPieceSelected();
+                    }
+                }
+                else{
+                    capture(currentCase->piece,xCase, yCase);
+                }
             }
         }
 

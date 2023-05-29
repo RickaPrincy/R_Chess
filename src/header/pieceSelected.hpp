@@ -7,6 +7,7 @@
     void initPieceSelected();
     void changePosition(int, int);
     void makeSelected(Piece*);
+    void switchSelectedPiece(Piece*);
     void capture(Piece*,int,int);
     void drawPieceSelected();
 
