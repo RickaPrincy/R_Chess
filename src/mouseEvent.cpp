@@ -12,10 +12,9 @@ void handlerMouseEvent(){
         input->mouseX > BORDER_SIZE + 8 * CASE_SIZE ||
         input->mouseY > BORDER_SIZE + 8 * CASE_SIZE )
         && input->isOnMove
+        && pieceSelected != NULL
     ){
-        if(pieceSelected != NULL){
-            initPieceSelected();
-        }
+        initPieceSelected();
         return;
     }
 
@@ -35,6 +34,8 @@ void handlerMouseEvent(){
             if(currentCase->isEmpty()){
                 if(currentCase->isValid)
                     changePosition(xCase, yCase);
+                else if(input->left == CLICKED)
+                    initPieceSelected();
             }
             else{
                 if(currentCase->piece->color == pieceSelected->color){
@@ -43,9 +44,10 @@ void handlerMouseEvent(){
                         calcul();
                     }
                 }
-                else if(currentCase->isValid){
+                else if(currentCase->isValid)
                     capture(currentCase->piece,xCase, yCase);
-                }
+                else if(input->left == CLICKED)
+                    initPieceSelected();
             }
         }
 
