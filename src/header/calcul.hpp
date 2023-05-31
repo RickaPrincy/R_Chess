@@ -3,7 +3,7 @@
 
     #include "f_prototypes.hpp"
 
+    bool testCase(Piece*,int,int);
     void calcul();
-    void testCase(Piece*,int,int);
 
 #endif
