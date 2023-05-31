@@ -12,7 +12,6 @@ void init(){
 
 void draw(){
     drawBackground();
-    drawCasesSelected();
     drawCasesValid();
     drawPieces();
     drawPieceSelected();

@@ -17,19 +17,6 @@ void initCases(bool isCaseValidOnly) {
     });
 }
 
-void drawCasesSelected(){
-    if(getPieceSelected() != NULL){
-        
-        SDL_Rect rect;
-        rect.w = rect.h =  CASE_SIZE;
-        rect.x = BORDER_SIZE - 2 + getPieceSelected()->x * CASE_SIZE;
-        rect.y = BORDER_SIZE - 2 + getPieceSelected()->y * CASE_SIZE;
-
-		SDL_SetRenderDrawColor(getRenderer(),255,242,0,255);
-		drawHollowRect(rect,3);
-    }
-}
-
 void drawHollowRect(SDL_Rect rect, int thickness) {
     SDL_RenderDrawRect(getRenderer(), &rect);
     
@@ -48,14 +35,23 @@ void drawHollowRect(SDL_Rect rect, int thickness) {
 
 void drawCasesValid(){
     SDL_Rect rect;
-    rect.w = rect.h =  CASE_SIZE;
 
     for(int i = 0; i< 8; i++){
         for(int j = 0; j < 8; j++){
             if(getCase(i,j)->isValid){
-                rect.x = BORDER_SIZE - 2 + i * CASE_SIZE;
-                rect.y = BORDER_SIZE - 2 + j * CASE_SIZE;
-                SDL_SetRenderDrawColor(getRenderer(),255,0,0,255);
+                if( getCase(i,j)->isEmpty()){
+                    rect.w = rect.h =  18;
+                    rect.x = BORDER_SIZE + CASE_SIZE / 2 - 9 - 2 + i * CASE_SIZE;
+                    rect.y = BORDER_SIZE + CASE_SIZE / 2 - 9 - 2 + j * CASE_SIZE;
+                    SDL_SetRenderDrawColor(getRenderer(),255,255,0,255);
+                }
+                else{
+                    rect.w = rect.h =  CASE_SIZE;
+                    rect.x = BORDER_SIZE - 2 + i * CASE_SIZE;
+                    rect.y = BORDER_SIZE - 2 + j * CASE_SIZE;
+                    SDL_SetRenderDrawColor(getRenderer(),255,15,15,255);
+                }
+
                 SDL_RenderFillRect(getRenderer(), &rect);
             }
         }

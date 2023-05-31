@@ -9,6 +9,7 @@ bool testCase(int x, int y){
     else
         return false;
 }
+
 void calcul(){
     Piece *piece = getPieceSelected();
     int xx, yy;
