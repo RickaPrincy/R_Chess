@@ -11,6 +11,7 @@ bool testCase(int x, int y){
 }
 void calcul(){
     Piece *piece = getPieceSelected();
+    int xx, yy;
     
     if(piece->type == PAWN){
 
@@ -78,7 +79,7 @@ void calcul(){
     else{
         if(piece->type == QUEEN || piece->type == BISHOP){
             
-            int xx = piece->x,yy = piece->y;
+            xx = piece->x,yy = piece->y;
             while(true){
                 if(xx == 7 || yy == 7 || !testCase(++xx,++yy))
                     break;
@@ -105,5 +106,33 @@ void calcul(){
                     break;
             }
         }
+        if(piece->type == QUEEN || piece->type == ROOK){
+            xx = piece->x,yy = piece->y;
+            while(true){
+                if(yy == 7 || !testCase(xx,++yy))
+                    break;
+            }
+            
+            /* ----------------------------------------------- */
+            xx = piece->x,yy = piece->y;
+            while(true){
+                if(yy == 0 || !testCase(xx,--yy))
+                    break;
+            }
+            /* ----------------------------------------------- */
+            xx = piece->x,yy = piece->y;
+            while(true){
+                if(xx == 7 || !testCase(++xx,yy))
+                    break;
+            }
+            
+            /* ----------------------------------------------- */
+            xx = piece->x,yy = piece->y;
+            while(true){
+                if(xx == 0 || !testCase(--xx,yy))
+                    break;
+            }
+        }
     }
+    
 }
