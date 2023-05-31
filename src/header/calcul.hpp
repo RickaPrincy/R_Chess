@@ -4,5 +4,6 @@
     #include "f_prototypes.hpp"
 
     void calcul();
+    void testCase(Piece*,int,int);
 
 #endif
