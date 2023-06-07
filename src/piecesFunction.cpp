@@ -22,6 +22,10 @@ void initPieces(){
         currentPiece->color = i < 16 ? BLACK : WHITE;
         currentPiece->isOnBoard = true;
         currentPiece->isSelected = false;
+        currentPiece->isPinnedX= false;
+        currentPiece->isPinnedY = false;
+        currentPiece->isPinnedDiagonalRight = false;
+        currentPiece->isPinnedDiagonalLeft = false;
         
         //init positions
         if(i < 16){

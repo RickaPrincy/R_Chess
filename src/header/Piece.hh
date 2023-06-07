@@ -8,7 +8,7 @@
             int x,y,color;
             Type type;
             bool isOnBoard, isSelected, alreadyMove;
-            int attacker = 0, protection = 0;
+            bool isPinnedX, isPinnedY, isPinnedDiagonalRight, isPinnedDiagonalLeft;
     };
 
 #endif

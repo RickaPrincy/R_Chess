@@ -1,28 +1,68 @@
 #include "header/f_prototypes.hpp"
 
 //test if one case is a case valid for a selected piece
-bool testCase(Piece *piece,int x, int y,bool isForCaseValid){
-    if(getCase(x,y)->isEmpty() || getCase(x,y)->piece->color != piece->color){
-        if(isForCaseValid){
-            getCase(x,y)->isValid = true;
-        }else{
-            if(piece->color == WHITE){
-                getCase(x,y)->attackerWhite.push_back(piece);
-            }else{
-                getCase(x,y)->attackerBlack.push_back(piece);
+bool testCase(Piece *piece,int x, int y,bool isForCaseValid,bool &isPinnedPossible, Piece *hasfoundPiece,short typeOfPin){
+    if(isForCaseValid){
+        if(getCase(x,y)->isEmpty() || getCase(x,y)->piece->color != piece->color){
+            if(isForCaseValid){
+                getCase(x,y)->isValid = true;
             }
         }
-
         return getCase(x,y)->isEmpty();
     }
-    else
+    else if(hasfoundPiece == NULL){
+        if(piece->color == WHITE){
+            getCase(x,y)->attackerWhite.push_back(piece);
+        }
+        else{
+            getCase(x,y)->attackerBlack.push_back(piece);
+        }
+
+        if(!getCase(x,y)->isEmpty()){
+            if(getCase(x,y)->piece->color == piece->color){
+                return false;
+            }
+            hasfoundPiece = getCase(x,y)->piece;
+        } 
+        return isPinnedPossible;
+    }
+    else if(getCase(x,y)->isEmpty()){
+        return true;
+    }
+    else{
+        if(getCase(x,y)->piece->color != piece->color && getCase(x,y)->piece->type == KING){
+            switch(typeOfPin){
+                case PINX:
+                    hasfoundPiece->isPinnedX = true;
+                    break;
+                case PINY:
+                    hasfoundPiece->isPinnedY = true;
+                    break;
+                case PINL:
+                    hasfoundPiece->isPinnedDiagonalLeft = true;
+                    break;
+                case PINR:
+                    hasfoundPiece->isPinnedDiagonalRight= true;
+                    break;
+                default: break;
+            }
+        }
+        
         return false;
+    }
 }
 
 //calcul all case attacked
 void globalCalcul(){
     initCases(LIST_OF_ATTACKER);
+    
+    //reset old pinned
+    for(int i =0; i < 32; i++){
+        getPiece(i)->isPinnedX = getPiece(i)->isPinnedY = false;
+        getPiece(i)->isPinnedDiagonalRight = getPiece(i)->isPinnedDiagonalLeft = false;
+    }
 
+    //calcul case attacked and current pinned
     for(int i = 0; i < 32; i++){
         if(getPiece(i)->isOnBoard){
             calcul(getPiece(i),false);
@@ -32,13 +72,20 @@ void globalCalcul(){
 
 void calcul(Piece *piece, bool isForCaseValid){
     int xx, yy;
-    
+    bool isPinnedPossible = false;
+    Piece *hasfoundPiece = NULL;
+
     if(piece->type == PAWN){
 
         int increment = piece->color == WHITE ? -1 : 1;
         int y = piece->y + increment;
         
-        if(isForCaseValid){
+        if(
+            isForCaseValid && 
+            !piece->isPinnedX && 
+            !piece->isPinnedDiagonalLeft &&
+            !piece->isPinnedDiagonalRight
+        ){
             if(y >= 0 && y < 8 && getCase(piece->x,y)->isEmpty()){
                 getCase(piece->x,y)->isValid = true;
             }
@@ -51,108 +98,184 @@ void calcul(Piece *piece, bool isForCaseValid){
             }
         }
         /* ----------------------------------------------------- */
-        if( piece->x < 7 && !getCase(piece->x + 1,y)->isEmpty() && getCase(piece->x + 1,y)->piece->color != piece->color ){
-            testCase(piece,piece->x + 1,y,isForCaseValid);
+        if(piece->x > 0 && !getCase(piece->x + 1,y)->isEmpty() && getCase(piece->x + 1,y)->piece->color != piece->color){
+            if(
+                !isForCaseValid ||
+                (
+                    !piece->isPinnedX && 
+                    !piece->isPinnedY &&
+                    (
+                        (piece->color == WHITE && !piece->isPinnedDiagonalLeft) ||
+                        (piece->color == BLACK && !piece->isPinnedDiagonalRight)
+                    ) 
+                )
+            )
+            testCase(piece,piece->x + 1,y,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
         }
         /* ----------------------------------------------------- */
         if(piece->x > 0 && !getCase(piece->x - 1,y)->isEmpty() && getCase(piece->x - 1,y)->piece->color != piece->color){
-            testCase(piece,piece->x - 1,y,isForCaseValid);
+            if(
+                !isForCaseValid
+                ||
+                (
+                    !piece->isPinnedX && 
+                    !piece->isPinnedY &&
+                    (
+                        (piece->color == WHITE && !piece->isPinnedDiagonalRight) ||
+                        (piece->color == BLACK && !piece->isPinnedDiagonalLeft)
+                    )
+                )
+            ){
+                testCase(piece,piece->x - 1,y,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
+            }
         }
     }
     else if(piece->type == KNIGHT){
-		if(piece->y < 6){
-			
-            if(piece->x < 7)
-                testCase(piece,piece->x + 1, piece->y + 2,isForCaseValid);
-			if(piece->x > 0)
-               	testCase(piece,piece->x - 1, piece->y + 2,isForCaseValid);
-		
+		if(
+            !isForCaseValid || 
+            (
+                !piece->isPinnedX && 
+                !piece->isPinnedY &&
+                !piece->isPinnedDiagonalRight &&
+                !piece->isPinnedDiagonalLeft 
+            )
+        ){
+            if(piece->y < 6){
+                if(piece->x < 7)
+                    testCase(piece,piece->x + 1, piece->y + 2,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
+                if(piece->x > 0)
+                    testCase(piece,piece->x - 1, piece->y + 2,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
+            }
+
+            /*---------------------------------------------------*/
+
+            if(piece->y > 1){
+                if(piece->x < 7)
+                    testCase(piece,piece->x + 1, piece->y - 2,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
+                if(piece->x > 0)
+                    testCase(piece,piece->x - 1, piece->y - 2,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
+            }
+
+            /*---------------------------------------------------*/
+
+            if(piece->x < 6){
+                if(piece->y < 7)
+                    testCase(piece,piece->x + 2, piece->y + 1,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
+                if(piece->y > 0)
+                    testCase(piece,piece->x + 2, piece->y - 1,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
+            }
+
+            /*---------------------------------------------------*/
+
+            if(piece->x > 1){
+                if(piece->y < 7)
+                    testCase(piece,piece->x - 2, piece->y + 1,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
+                if(piece->y > 0)
+                    testCase(piece,piece->x - 2, piece->y - 1,isForCaseValid,isPinnedPossible,hasfoundPiece,NONE);
+            }
         }
-
-		/*---------------------------------------------------*/
-
-		if(piece->y > 1){
-			if(piece->x < 7)
-                testCase(piece,piece->x + 1, piece->y - 2,isForCaseValid);
-			if(piece->x > 0)
-                testCase(piece,piece->x - 1, piece->y - 2,isForCaseValid);
-		}
-
-		/*---------------------------------------------------*/
-
-		if(piece->x < 6){
-
-			if(piece->y < 7)
-                testCase(piece,piece->x + 2, piece->y + 1,isForCaseValid);
-			if(piece->y > 0)
-				testCase(piece,piece->x + 2, piece->y - 1,isForCaseValid);
-		}
-
-		/*---------------------------------------------------*/
-
-		if(piece->x > 1){
-
-			if(piece->y < 7)
-               	testCase(piece,piece->x - 2, piece->y + 1,isForCaseValid);
-			if(piece->y > 0)
-                testCase(piece,piece->x - 2, piece->y - 1,isForCaseValid);
-		}
     }
     else{
         if(piece->type == QUEEN || piece->type == BISHOP){
-            
-            xx = piece->x,yy = piece->y;
-            while(true){
-                if(xx == 7 || yy == 7 || !testCase(piece,++xx,++yy,isForCaseValid))
-                    break;
-            }
-            
-            /* ----------------------------------------------- */
-            xx = piece->x,yy = piece->y;
-            while(true){
-                if(xx == 0 || yy == 0 || !testCase(piece,--xx,--yy,isForCaseValid))
-                    break;
+            if(
+                !isForCaseValid || 
+                (
+                    !piece->isPinnedX && 
+                    !piece->isPinnedY &&
+                    !piece->isPinnedDiagonalRight
+                )
+            ){
+                xx = piece->x,yy = piece->y;
+                isPinnedPossible = false;
+                while(true){
+                    if(xx == 7 || yy == 7 || !testCase(piece,++xx,++yy,isForCaseValid,isPinnedPossible,hasfoundPiece,PINL))
+                        break;
+                }
+                
+                /* ----------------------------------------------- */
+                hasfoundPiece = NULL;
+                xx = piece->x,yy = piece->y;
+                while(true){
+                    if(xx == 0 || yy == 0 || !testCase(piece,--xx,--yy,isForCaseValid,isPinnedPossible,hasfoundPiece,PINL))
+                        break;
+                }
             }
 
             /* ----------------------------------------------- */
-            xx = piece->x,yy = piece->y;
-            while(true){
-                if(xx == 0 || yy == 7 || !testCase(piece,--xx,++yy,isForCaseValid))
-                    break;
-            }
-            
-            /* ----------------------------------------------- */
-            xx = piece->x,yy = piece->y;
-            while(true){
-                if(xx == 7 || yy == 0 || !testCase(piece,++xx,--yy,isForCaseValid))
-                    break;
+            if(
+                !isForCaseValid || 
+                (
+                    !piece->isPinnedX && 
+                    !piece->isPinnedY &&
+                    !piece->isPinnedDiagonalLeft
+                )
+            ){
+                hasfoundPiece = NULL;
+                xx = piece->x,yy = piece->y;
+                while(true){
+                    if(xx == 0 || yy == 7 || !testCase(piece,--xx,++yy,isForCaseValid,isPinnedPossible,hasfoundPiece,PINR))
+                        break;
+                }
+                
+                /* ----------------------------------------------- */
+                hasfoundPiece = NULL;
+                xx = piece->x,yy = piece->y;
+                while(true){
+                    if(xx == 7 || yy == 0 || !testCase(piece,++xx,--yy,isForCaseValid,isPinnedPossible,hasfoundPiece,PINR))
+                        break;
+                }
             }
         }
         if(piece->type == QUEEN || piece->type == ROOK){
-            xx = piece->x,yy = piece->y;
-            while(true){
-                if(yy == 7 || !testCase(piece,xx,++yy,isForCaseValid))
-                    break;
+            if(
+                !isForCaseValid || 
+                (
+                    !piece->isPinnedX && 
+                    !piece->isPinnedDiagonalLeft &&
+                    !piece->isPinnedDiagonalRight
+                )
+            ){
+                isPinnedPossible = true;
+                hasfoundPiece = NULL;
+                xx = piece->x,yy = piece->y;
+                while(true){
+                    if(yy == 7 || !testCase(piece,xx,++yy,isForCaseValid,isPinnedPossible,hasfoundPiece,PINY))
+                        break;
+                }
+                
+                /* ----------------------------------------------- */
+                hasfoundPiece = NULL;
+                xx = piece->x,yy = piece->y;
+                while(true){
+                    if(yy == 0 || !testCase(piece,xx,--yy,isForCaseValid,isPinnedPossible,hasfoundPiece,PINY))
+                        break;
+                }
             }
-            
+
             /* ----------------------------------------------- */
-            xx = piece->x,yy = piece->y;
-            while(true){
-                if(yy == 0 || !testCase(piece,xx,--yy,isForCaseValid))
-                    break;
-            }
-            /* ----------------------------------------------- */
-            xx = piece->x,yy = piece->y;
-            while(true){
-                if(xx == 7 || !testCase(piece,++xx,yy,isForCaseValid))
-                    break;
-            }
-            
-            /* ----------------------------------------------- */
-            xx = piece->x,yy = piece->y;
-            while(true){
-                if(xx == 0 || !testCase(piece,--xx,yy,isForCaseValid))
-                    break;
+
+            if(
+                !isForCaseValid || 
+                (
+                    !piece->isPinnedY && 
+                    !piece->isPinnedDiagonalLeft &&
+                    !piece->isPinnedDiagonalRight
+                )
+            ){
+                hasfoundPiece = NULL;
+                xx = piece->x,yy = piece->y;
+                while(true){
+                    if(xx == 7 || !testCase(piece,++xx,yy,isForCaseValid,isPinnedPossible,hasfoundPiece,PINX))
+                        break;
+                }
+                
+                /* ----------------------------------------------- */
+                hasfoundPiece = NULL;
+                xx = piece->x,yy = piece->y;
+                while(true){
+                    if(xx == 0 || !testCase(piece,--xx,yy,isForCaseValid,isPinnedPossible,hasfoundPiece,PINX))
+                        break;
+                }
             }
         }
     }

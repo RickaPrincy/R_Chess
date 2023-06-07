@@ -14,5 +14,12 @@
     #define PIECE 0
     #define LIST_OF_ATTACKER 1
     #define CASE_VALID 2
+    
+    #define NONE 0
+    #define PINX 1
+    #define PINY 2
+    #define PINR 3
+    #define PINL 4
+
 
 #endif
