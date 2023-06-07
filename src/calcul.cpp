@@ -21,11 +21,12 @@ bool testCase(Piece *piece,int x, int y,bool isForCaseValid){
 
 //calcul all case attacked
 void globalCalcul(){
-    cout << "calcul global" << endl;
     initCases(LIST_OF_ATTACKER);
 
     for(int i = 0; i < 32; i++){
-        calcul(getPiece(i),false);
+        if(getPiece(i)->isOnBoard){
+            calcul(getPiece(i),false);
+        }
     }
 }
 
@@ -37,15 +38,17 @@ void calcul(Piece *piece, bool isForCaseValid){
         int increment = piece->color == WHITE ? -1 : 1;
         int y = piece->y + increment;
         
-        if(y >= 0 && y < 8 && getCase(piece->x,y)->isEmpty()){
-            getCase(piece->x,y)->isValid = true;
-        }
-        /* ----------------------------------------------------- */
-        if(
-            ((piece->y == 1 && piece->color == BLACK) || (piece->y == 6 && piece->color == WHITE))
-            && getCase(piece->x,y)->isEmpty() && getCase(piece->x,y + increment)->isEmpty()
-        ){
-            getCase(piece->x,y + increment)->isValid = true;
+        if(isForCaseValid){
+            if(y >= 0 && y < 8 && getCase(piece->x,y)->isEmpty()){
+                getCase(piece->x,y)->isValid = true;
+            }
+            /* ----------------------------------------------------- */
+            if(
+                ((piece->y == 1 && piece->color == BLACK) || (piece->y == 6 && piece->color == WHITE))
+                && getCase(piece->x,y)->isEmpty() && getCase(piece->x,y + increment)->isEmpty()
+            ){
+                getCase(piece->x,y + increment)->isValid = true;
+            }
         }
         /* ----------------------------------------------------- */
         if( piece->x < 7 && !getCase(piece->x + 1,y)->isEmpty() && getCase(piece->x + 1,y)->piece->color != piece->color ){

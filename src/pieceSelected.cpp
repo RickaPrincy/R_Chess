@@ -20,6 +20,7 @@ void changePosition(int x, int y){
     getCase(x,y)->piece = pieceSelected;
     initPieceSelected();
     *getTurn() = *getTurn() == WHITE ? BLACK : WHITE; 
+    globalCalcul();
     return;
 }
 

@@ -63,3 +63,22 @@ void drawCasesValid(){
         }
     }
 }
+
+//draw a purple on king if there is a check
+void drawCheck(){
+    Piece *kingBlack = getPiece(4), *kingWhite = getPiece(28);
+    SDL_Rect rect;
+    rect.w = rect.h =  CASE_SIZE;
+    SDL_SetRenderDrawColor(getRenderer(),196,4,196,255);
+
+    if(getCase(kingBlack->x,kingBlack->y)->attackerWhite.size() > 0){
+        rect.x = BORDER_SIZE - 2 + kingBlack->x * CASE_SIZE;
+        rect.y = BORDER_SIZE - 2 + kingBlack->y * CASE_SIZE;
+        SDL_RenderFillRect(getRenderer(), &rect);
+    }
+    else if(getCase(kingWhite->x,kingWhite->y)->attackerBlack.size() > 0){
+        rect.x = BORDER_SIZE - 2 + kingWhite->x * CASE_SIZE;
+        rect.y = BORDER_SIZE - 2 + kingWhite->y * CASE_SIZE;
+        SDL_RenderFillRect(getRenderer(), &rect);
+    }
+}
