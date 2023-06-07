@@ -1,5 +1,12 @@
 #include "header/f_prototypes.hpp"
 
+static short turn = WHITE;
+
+short *getTurn(){
+    return &turn;
+}
+
+
 void handlerMouseEvent(){
     Input *input = getInput();
     Piece *pieceSelected = getPieceSelected();
@@ -28,7 +35,7 @@ void handlerMouseEvent(){
 
         if(input->left == CLICKED && pieceSelected == NULL && !currentCase->isEmpty()){
             makeSelected(currentCase->piece);
-            calcul();
+            calcul(currentCase->piece,true);
         }
         else if(pieceSelected != NULL){
             if(currentCase->isEmpty()){
@@ -41,7 +48,7 @@ void handlerMouseEvent(){
                 if(currentCase->piece->color == pieceSelected->color){
                     if(input->left == CLICKED){
                         switchSelectedPiece(currentCase->piece);
-                        calcul();
+                        calcul(currentCase->piece,true);
                     }
                 }
                 else if(currentCase->isValid)

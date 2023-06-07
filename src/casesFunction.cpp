@@ -6,10 +6,16 @@ Case *getCase(int x, int y){
     return &cases[x][y];
 }
 
-void initCases(bool isCaseValidOnly) {
-    std::for_each(cases.begin(), cases.end(), [isCaseValidOnly](std::vector<Case>& row) {
-        std::for_each(row.begin(), row.end(), [isCaseValidOnly](Case& c) {
-            if(!isCaseValidOnly){
+void initCases(short typeOfInit) {
+    std::for_each(cases.begin(), cases.end(), [typeOfInit](std::vector<Case>& row) {
+        std::for_each(row.begin(), row.end(), [typeOfInit](Case& c) {
+            if(typeOfInit == LIST_OF_ATTACKER){
+                c.attackerWhite.clear();
+                c.attackerBlack.clear();
+            }
+            else if(typeOfInit == PIECE){
+                c.attackerWhite.clear();
+                c.attackerBlack.clear();
                 c.piece = NULL;
             }
             c.isValid = false;

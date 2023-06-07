@@ -11,4 +11,8 @@
     #define WHITE 0
     #define BLACK 1
 
+    #define PIECE 0
+    #define LIST_OF_ATTACKER 1
+    #define CASE_VALID 2
+
 #endif

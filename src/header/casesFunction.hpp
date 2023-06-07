@@ -3,7 +3,7 @@
 
     #include "f_prototypes.hpp"
     Case *getCase(int x, int y);
-    void initCases(bool);
+    void initCases(short);
     void drawHollowRect(SDL_Rect,int);
     void drawCasesValid();
 #endif

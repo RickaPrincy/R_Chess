@@ -9,15 +9,19 @@ Piece *getPieceSelected(){
 void initPieceSelected(){
     pieceSelected->isSelected = false;
     pieceSelected = NULL;
-    initCases(true);
+    initCases(CASE_VALID);
 }
 
 void changePosition(int x, int y){
     getCase(pieceSelected->x, pieceSelected->y)->piece = NULL;
     pieceSelected->x = x;
     pieceSelected->y = y;
+    pieceSelected->alreadyMove = true;
     getCase(x,y)->piece = pieceSelected;
     initPieceSelected();
+    *getTurn() = *getTurn() == WHITE ? BLACK : WHITE; 
+    cout << *getTurn() << endl;
+    globalCalcul();
     return;
 }
 
