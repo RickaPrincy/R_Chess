@@ -8,6 +8,7 @@ void load(){
 void init(){
     initCases(PIECE);
     initPieces();
+    *getTurn() = WHITE;
 }
 
 void draw(){

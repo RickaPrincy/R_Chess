@@ -1,56 +1,10 @@
 #include "header/f_prototypes.hpp"
 
-//make a temporary change to know if there is a check or not after a move
-bool temporaryChange(Piece *piece,int x, int y){
-    int originX = piece->x, originY = piece->y;
-    bool result = true;
-    Piece *blackKing = getPiece(4);
-    Piece *whiteKing = getPiece(28);
-    Piece *temp = NULL;
-
-    if(getCase(x,y)->isEmpty()){
-        changePosition(x,y);
-    }
-    else{
-        temp = getCase(x,y)->piece;
-        capture(getCase(x,y)->piece,x,y);
-    }
-
-    globalCalcul();
-    if(*getTurn() == WHITE){
-        if(getCase(blackKing->x,blackKing->y)->attackerWhite.size() > 0){
-            result = false;
-        }
-    }
-    else if(*getTurn() == BLACK){
-        if(getCase(whiteKing->x,whiteKing->y)->attackerBlack.size() > 0){
-            result = false;
-        }
-    }
-
-    *getTurn() = *getTurn() == WHITE ? BLACK : WHITE; 
-    
-    makeSelected(piece);
-    changePosition(originX,originY);
-    
-    if(temp != NULL){
-        temp->isOnBoard = false;
-    }
-
-    globalCalcul();
-    return result;
-}
-
 //test if one case is a case valid for a selected piece
 bool testCase(Piece *piece,int x, int y,bool isForCaseValid){
     if(getCase(x,y)->isEmpty() || getCase(x,y)->piece->color != piece->color){
-        
         if(isForCaseValid){
-            if(temporaryChange(piece,x,y)){
-                getCase(x,y)->isValid = true;
-            }else{
-                getCase(x,y)->isValid = false;
-            }
+            getCase(x,y)->isValid = true;
         }else{
             if(piece->color == WHITE){
                 getCase(x,y)->attackerWhite.push_back(piece);
@@ -160,7 +114,7 @@ void calcul(Piece *piece, bool isForCaseValid){
             /* ----------------------------------------------- */
             xx = piece->x,yy = piece->y;
             while(true){
-                if(xx == 0 || yy == 7 || !!testCase(piece,--xx,++yy,isForCaseValid))
+                if(xx == 0 || yy == 7 || !testCase(piece,--xx,++yy,isForCaseValid))
                     break;
             }
             

@@ -34,8 +34,10 @@ void handlerMouseEvent(){
         Case *currentCase = getCase(xCase,yCase);
 
         if(input->left == CLICKED && pieceSelected == NULL && !currentCase->isEmpty()){
-            makeSelected(currentCase->piece);
-            calcul(currentCase->piece,true);
+            if(currentCase->piece->color == *getTurn()){
+                makeSelected(currentCase->piece);
+                calcul(getPieceSelected(),true);
+            }
         }
         else if(pieceSelected != NULL){
             if(currentCase->isEmpty()){
@@ -48,7 +50,7 @@ void handlerMouseEvent(){
                 if(currentCase->piece->color == pieceSelected->color){
                     if(input->left == CLICKED){
                         switchSelectedPiece(currentCase->piece);
-                        calcul(currentCase->piece,true);
+                        calcul(getPieceSelected(),true);
                     }
                 }
                 else if(currentCase->isValid)
