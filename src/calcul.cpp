@@ -94,19 +94,20 @@ void calcul(Piece *piece, bool isForCaseValid){
             }
         }
         /* ----------------------------------------------------- */
-        if(piece->x < 0 && !getCase(piece->x + 1,y)->isEmpty() && getCase(piece->x + 1,y)->piece->color != piece->color){
+        if(piece->x < 7 && !getCase(piece->x + 1,y)->isEmpty() && getCase(piece->x + 1,y)->piece->color != piece->color){
             if(
-                !isForCaseValid ||
+                !isForCaseValid||
                 (
                     !piece->isPinnedX && 
                     !piece->isPinnedY &&
                     (
                         (piece->color == WHITE && !piece->isPinnedDiagonalLeft) ||
                         (piece->color == BLACK && !piece->isPinnedDiagonalRight)
-                    ) 
+                    )
                 )
-            )
-            testCase(piece,piece->x + 1,y,isForCaseValid,&hasfoundPiece,NONE);
+            ){
+                testCase(piece,piece->x + 1,y,isForCaseValid,&hasfoundPiece,NONE);
+            }
         }
         /* ----------------------------------------------------- */
         if(piece->x > 0 && !getCase(piece->x - 1,y)->isEmpty() && getCase(piece->x - 1,y)->piece->color != piece->color){
