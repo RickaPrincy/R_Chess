@@ -8,7 +8,7 @@ bool testCase(Piece *piece,int x, int y,bool isForCaseValid, Piece **hasfoundPie
         }
         return getCase(x,y)->isEmpty();
     }
-    else if(hasfoundPiece == NULL){
+    else if(*hasfoundPiece == NULL){
         if(piece->color == WHITE){
             getCase(x,y)->attackerWhite.push_back(piece);
         }
@@ -40,7 +40,7 @@ bool testCase(Piece *piece,int x, int y,bool isForCaseValid, Piece **hasfoundPie
                     (*hasfoundPiece)->isPinnedDiagonalLeft = true;
                     break;
                 case PINR:
-                    (*hasfoundPiece)->isPinnedDiagonalRight= true;
+                    (*hasfoundPiece)->isPinnedDiagonalRight = true;
                     break;
                 default: break;
             }
@@ -106,13 +106,12 @@ void calcul(Piece *piece, bool isForCaseValid){
                     ) 
                 )
             )
-            testCase(piece,piece->x + 1,y,isForCaseValid,NULL,NONE);
+            testCase(piece,piece->x + 1,y,isForCaseValid,&hasfoundPiece,NONE);
         }
         /* ----------------------------------------------------- */
         if(piece->x > 0 && !getCase(piece->x - 1,y)->isEmpty() && getCase(piece->x - 1,y)->piece->color != piece->color){
             if(
-                !isForCaseValid
-                ||
+                !isForCaseValid||
                 (
                     !piece->isPinnedX && 
                     !piece->isPinnedY &&
@@ -122,7 +121,7 @@ void calcul(Piece *piece, bool isForCaseValid){
                     )
                 )
             ){
-                testCase(piece,piece->x - 1,y,isForCaseValid,NULL,NONE);
+                testCase(piece,piece->x - 1,y,isForCaseValid,&hasfoundPiece,NONE);
             }
         }
     }
@@ -138,36 +137,36 @@ void calcul(Piece *piece, bool isForCaseValid){
         ){
             if(piece->y < 6){
                 if(piece->x < 7)
-                    testCase(piece,piece->x + 1, piece->y + 2,isForCaseValid,NULL,NONE);
+                    testCase(piece,piece->x + 1, piece->y + 2,isForCaseValid,&hasfoundPiece,NONE);
                 if(piece->x > 0)
-                    testCase(piece,piece->x - 1, piece->y + 2,isForCaseValid,NULL,NONE);
+                    testCase(piece,piece->x - 1, piece->y + 2,isForCaseValid,&hasfoundPiece,NONE);
             }
 
             /*---------------------------------------------------*/
 
             if(piece->y > 1){
                 if(piece->x < 7)
-                    testCase(piece,piece->x + 1, piece->y - 2,isForCaseValid,NULL,NONE);
+                    testCase(piece,piece->x + 1, piece->y - 2,isForCaseValid,&hasfoundPiece,NONE);
                 if(piece->x > 0)
-                    testCase(piece,piece->x - 1, piece->y - 2,isForCaseValid,NULL,NONE);
+                    testCase(piece,piece->x - 1, piece->y - 2,isForCaseValid,&hasfoundPiece,NONE);
             }
 
             /*---------------------------------------------------*/
 
             if(piece->x < 6){
                 if(piece->y < 7)
-                    testCase(piece,piece->x + 2, piece->y + 1,isForCaseValid,NULL,NONE);
+                    testCase(piece,piece->x + 2, piece->y + 1,isForCaseValid,&hasfoundPiece,NONE);
                 if(piece->y > 0)
-                    testCase(piece,piece->x + 2, piece->y - 1,isForCaseValid,NULL,NONE);
+                    testCase(piece,piece->x + 2, piece->y - 1,isForCaseValid,&hasfoundPiece,NONE);
             }
 
             /*---------------------------------------------------*/
 
             if(piece->x > 1){
                 if(piece->y < 7)
-                    testCase(piece,piece->x - 2, piece->y + 1,isForCaseValid,NULL,NONE);
+                    testCase(piece,piece->x - 2, piece->y + 1,isForCaseValid,&hasfoundPiece,NONE);
                 if(piece->y > 0)
-                    testCase(piece,piece->x - 2, piece->y - 1,isForCaseValid,NULL,NONE);
+                    testCase(piece,piece->x - 2, piece->y - 1,isForCaseValid,&hasfoundPiece,NONE);
             }
         }
     }
@@ -181,6 +180,7 @@ void calcul(Piece *piece, bool isForCaseValid){
                     !piece->isPinnedDiagonalRight
                 )
             ){
+                hasfoundPiece = NULL;
                 xx = piece->x,yy = piece->y;
                 while(true){
                     if(xx == 7 || yy == 7 || !testCase(piece,++xx,++yy,isForCaseValid,&hasfoundPiece,PINL))
