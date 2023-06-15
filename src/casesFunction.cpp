@@ -6,6 +6,10 @@ Case *getCase(int x, int y){
     return &cases[x][y];
 }
 
+std::vector<std::vector<Case>> getAllCase(){
+    return cases;
+}
+
 void initCases(short typeOfInit) {
     std::for_each(cases.begin(), cases.end(), [typeOfInit](std::vector<Case>& row) {
         std::for_each(row.begin(), row.end(), [typeOfInit](Case& c) {
@@ -17,8 +21,16 @@ void initCases(short typeOfInit) {
                 c.attackerWhite.clear();
                 c.attackerBlack.clear();
                 c.piece = NULL;
+                c.isValid = false;
             }
-            c.isValid = false;
+            else if(typeOfInit == LIST_AND_VALID){
+                c.attackerWhite.clear();
+                c.attackerBlack.clear();
+                c.isValid = false;
+            }
+            else{
+                c.isValid = false;
+            }
         });
     });
 }
@@ -71,14 +83,17 @@ void drawCheck(){
     rect.w = rect.h =  CASE_SIZE;
     SDL_SetRenderDrawColor(getRenderer(),196,4,196,255);
 
-    if(getCase(kingBlack->x,kingBlack->y)->attackerWhite.size() > 0){
-        rect.x = BORDER_SIZE - 2 + kingBlack->x * CASE_SIZE;
-        rect.y = BORDER_SIZE - 2 + kingBlack->y * CASE_SIZE;
-        SDL_RenderFillRect(getRenderer(), &rect);
-    }
-    else if(getCase(kingWhite->x,kingWhite->y)->attackerBlack.size() > 0){
-        rect.x = BORDER_SIZE - 2 + kingWhite->x * CASE_SIZE;
-        rect.y = BORDER_SIZE - 2 + kingWhite->y * CASE_SIZE;
-        SDL_RenderFillRect(getRenderer(), &rect);
-    }
+    if(isThereACheck() > 0){
+        if(*getTurn() == WHITE){
+            rect.x = BORDER_SIZE - 2 + kingWhite->x * CASE_SIZE;
+            rect.y = BORDER_SIZE - 2 + kingWhite->y * CASE_SIZE;
+            SDL_RenderFillRect(getRenderer(), &rect);
+        }
+        else{
+            rect.x = BORDER_SIZE - 2 + kingBlack->x * CASE_SIZE;
+            rect.y = BORDER_SIZE - 2 + kingBlack->y * CASE_SIZE;
+            SDL_RenderFillRect(getRenderer(), &rect);
+        }
+    }  
+
 }

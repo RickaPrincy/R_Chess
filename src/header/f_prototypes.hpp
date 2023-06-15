@@ -12,6 +12,7 @@
 	#include "piecesFunction.hpp"
 	#include "pieceSelected.hpp"
 	#include "calcul.hpp"
+	#include "tempCalcul.hpp"
 	#include "mouseEvent.hpp"
 	#include "casesFunction.hpp"
 	#include "mainStruct.hpp"

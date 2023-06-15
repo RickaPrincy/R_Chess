@@ -1,10 +1,30 @@
 #include "header/f_prototypes.hpp"
 
+int isThereACheck(){
+    Piece *kingBlack = getPiece(4), *kingWhite = getPiece(28);
+    
+    if(*getTurn() == BLACK){
+        return getCase(kingBlack->x,kingBlack->y)->attackerWhite.size();
+    }
+    else{
+        return getCase(kingWhite->x,kingWhite->y)->attackerBlack.size();
+    }
+}
+
 //test if one case is a case valid for a selected piece
 bool testCase(Piece *piece,int x, int y,bool isForCaseValid, Piece **hasfoundPiece,short typeOfPin){
     if(isForCaseValid){
         if(getCase(x,y)->isEmpty() || getCase(x,y)->piece->color != piece->color){
-            getCase(x,y)->isValid = true;
+            int isCheck = isThereACheck();
+
+            if(isCheck == 1){
+                if(!isCheckAfterMove(piece,x,y)){
+                    getCase(x,y)->isValid = true;
+                }
+            }
+            else if(isCheck == 0){
+                getCase(x,y)->isValid = true;
+            }
         }
         return getCase(x,y)->isEmpty();
     }
@@ -50,15 +70,20 @@ bool testCase(Piece *piece,int x, int y,bool isForCaseValid, Piece **hasfoundPie
 }
 
 //calcul all case attacked
-void globalCalcul(){
-    initCases(LIST_OF_ATTACKER);
-
-    //reset old pinned
-    for(int i = 0; i < 32; i++){
-        getPiece(i)->isPinnedX = getPiece(i)->isPinnedY = false;
-        getPiece(i)->isPinnedDiagonalRight = getPiece(i)->isPinnedDiagonalLeft = false;
+void globalCalcul(bool shouldInitCaseValid){
+    
+    if(shouldInitCaseValid){
+        initCases(LIST_AND_VALID);
     }
-
+    else{
+        initCases(LIST_OF_ATTACKER);    
+        //reset old pinned
+        for(int i = 0; i < 32; i++){
+            getPiece(i)->isPinnedX = getPiece(i)->isPinnedY = false;
+            getPiece(i)->isPinnedDiagonalRight = getPiece(i)->isPinnedDiagonalLeft = false;
+        }
+    }
+    
     //calcul case attacked and current pinned
     for(int i = 0; i < 32; i++){
         if(getPiece(i)->isOnBoard){

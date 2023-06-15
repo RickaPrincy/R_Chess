@@ -41,8 +41,10 @@ void handlerMouseEvent(){
         }
         else if(pieceSelected != NULL){
             if(currentCase->isEmpty()){
-                if(currentCase->isValid)
+                if(currentCase->isValid){
                     changePosition(xCase, yCase);
+                    resetAfterChange();
+                }
                 else if(input->left == CLICKED)
                     initPieceSelected();
             }
@@ -53,8 +55,10 @@ void handlerMouseEvent(){
                         calcul(getPieceSelected(),true);
                     }
                 }
-                else if(currentCase->isValid)
-                    capture(currentCase->piece,xCase, yCase);
+                else if(currentCase->isValid){
+                    capture(xCase, yCase);
+                    resetAfterChange();
+                }
                 else if(input->left == CLICKED)
                     initPieceSelected();
             }

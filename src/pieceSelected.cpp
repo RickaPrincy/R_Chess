@@ -18,10 +18,13 @@ void changePosition(int x, int y){
     pieceSelected->y = y;
     pieceSelected->alreadyMove = true;
     getCase(x,y)->piece = pieceSelected;
+    return;
+}
+
+void resetAfterChange(){
     initPieceSelected();
     *getTurn() = *getTurn() == WHITE ? BLACK : WHITE; 
-    globalCalcul();
-    return;
+    globalCalcul(true);
 }
 
 void makeSelected(Piece *piece){
@@ -31,13 +34,14 @@ void makeSelected(Piece *piece){
 
 void switchSelectedPiece(Piece *piece){
     initPieceSelected();
+    cout << "switch" << endl;
     pieceSelected = piece;
     pieceSelected->isSelected = true;
 }
 
-void capture(Piece *piece, int x, int y){
-    if(!piece->isSelected)
-        piece->isOnBoard = false;
+void capture( int x, int y){
+    if(getCase(x,y)->piece->isSelected)
+        getCase(x,y)->piece->isOnBoard = false;
     
     changePosition(x,y);
 }

@@ -5,6 +5,7 @@
 
     bool testCase(Piece*,int, int,bool,Piece**,short);
     void calcul(Piece*,bool);
-    void globalCalcul();
+    void globalCalcul(bool);
+    int isThereACheck();
 
 #endif
