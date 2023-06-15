@@ -108,14 +108,32 @@ void calcul(Piece *piece, bool isForCaseValid){
             !piece->isPinnedDiagonalRight
         ){
             if(y >= 0 && y < 8 && getCase(piece->x,y)->isEmpty()){
-                getCase(piece->x,y)->isValid = true;
+                int isCheck = isThereACheck();
+
+                if(isCheck == 1){
+                    if(!isCheckAfterMove(piece,piece->x,y)){
+                        getCase(piece->x,y)->isValid = true;
+                    }
+                }
+                else if(isCheck == 0){
+                    getCase(piece->x,y)->isValid = true;
+                }
             }
             /* ----------------------------------------------------- */
             if(
                 ((piece->y == 1 && piece->color == BLACK) || (piece->y == 6 && piece->color == WHITE))
                 && getCase(piece->x,y)->isEmpty() && getCase(piece->x,y + increment)->isEmpty()
             ){
-                getCase(piece->x,y + increment)->isValid = true;
+                int isCheck = isThereACheck();
+
+                if(isCheck == 1){
+                    if(!isCheckAfterMove(piece,piece->x,y)){
+                        getCase(piece->x,y + increment)->isValid = true;
+                    }
+                }
+                else if(isCheck == 0){
+                    getCase(piece->x,y + increment)->isValid = true;
+                }
             }
         }
         /* ----------------------------------------------------- */
