@@ -39,7 +39,7 @@ void switchSelectedPiece(Piece *piece){
 }
 
 void capture( int x, int y){
-    if(getCase(x,y)->piece->isSelected)
+    if(!getCase(x,y)->piece->isSelected)
         getCase(x,y)->piece->isOnBoard = false;
     
     changePosition(x,y);
