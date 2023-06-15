@@ -6,10 +6,6 @@ Case *getCase(int x, int y){
     return &cases[x][y];
 }
 
-std::vector<std::vector<Case>> getAllCase(){
-    return cases;
-}
-
 void initCases(short typeOfInit) {
     std::for_each(cases.begin(), cases.end(), [typeOfInit](std::vector<Case>& row) {
         std::for_each(row.begin(), row.end(), [typeOfInit](Case& c) {

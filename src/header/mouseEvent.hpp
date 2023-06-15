@@ -4,5 +4,4 @@
     #include "f_prototypes.hpp"
     void handlerMouseEvent();
     short *getTurn();
-    // void handlerHoldingEvent()
 #endif

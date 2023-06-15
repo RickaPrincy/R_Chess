@@ -34,7 +34,6 @@ void makeSelected(Piece *piece){
 
 void switchSelectedPiece(Piece *piece){
     initPieceSelected();
-    cout << "switch" << endl;
     pieceSelected = piece;
     pieceSelected->isSelected = true;
 }
