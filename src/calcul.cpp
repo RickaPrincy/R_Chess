@@ -1,5 +1,6 @@
 #include "header/f_prototypes.hpp"
 
+//test if there is a check
 int isThereACheck(){
     Piece *kingBlack = getPiece(4), *kingWhite = getPiece(28);
     
@@ -77,11 +78,12 @@ void globalCalcul(bool shouldInitCaseValid){
     }
     else{
         initCases(LIST_OF_ATTACKER);    
-        //reset old pinned
-        for(int i = 0; i < 32; i++){
-            getPiece(i)->isPinnedX = getPiece(i)->isPinnedY = false;
-            getPiece(i)->isPinnedDiagonalRight = getPiece(i)->isPinnedDiagonalLeft = false;
-        }
+    }
+    
+    //reset old pinned
+    for(int i = 0; i < 32; i++){
+        getPiece(i)->isPinnedX = getPiece(i)->isPinnedY = false;
+        getPiece(i)->isPinnedDiagonalRight = getPiece(i)->isPinnedDiagonalLeft = false;
     }
     
     //calcul case attacked and current pinned
