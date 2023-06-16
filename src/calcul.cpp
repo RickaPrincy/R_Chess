@@ -88,7 +88,10 @@ void globalCalcul(bool shouldInitCaseValid){
     
     //calcul case attacked and current pinned
     for(int i = 0; i < 32; i++){
-        if(getPiece(i)->isOnBoard){
+        if(getPiece(i)->type == KING){
+            calculKing(getPiece(i),false);
+        }
+        else if(getPiece(i)->isOnBoard){
             calcul(getPiece(i),false);
         }
     }

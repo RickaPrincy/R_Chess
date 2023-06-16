@@ -36,7 +36,10 @@ void handlerMouseEvent(){
         if(input->left == CLICKED && pieceSelected == NULL && !currentCase->isEmpty()){
             if(currentCase->piece->color == *getTurn()){
                 makeSelected(currentCase->piece);
-                calcul(getPieceSelected(),true);
+                if(getPieceSelected()->type == KING)
+                    calculKing(getPieceSelected(),true);
+                else
+                    calcul(getPieceSelected(),true);
             }
         }
         else if(pieceSelected != NULL){
@@ -52,7 +55,10 @@ void handlerMouseEvent(){
                 if(currentCase->piece->color == pieceSelected->color){
                     if(input->left == CLICKED){
                         switchSelectedPiece(currentCase->piece);
-                        calcul(getPieceSelected(),true);
+                        if(getPieceSelected()->type == KING)
+                            calculKing(getPieceSelected(),true);
+                        else
+                            calcul(getPieceSelected(),true);
                     }
                 }
                 else if(currentCase->isValid){
