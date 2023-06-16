@@ -143,7 +143,7 @@ void calcul(Piece *piece, bool isForCaseValid){
             }
         }
         /* ----------------------------------------------------- */
-        if(piece->x < 7 && !getCase(piece->x + 1,y)->isEmpty() && getCase(piece->x + 1,y)->piece->color != piece->color){
+        if(piece->x < 7 && !getCase(piece->x + 1,y)->isEmpty()){
             if(
                 !isForCaseValid||
                 (
@@ -159,7 +159,7 @@ void calcul(Piece *piece, bool isForCaseValid){
             }
         }
         /* ----------------------------------------------------- */
-        if(piece->x > 0 && !getCase(piece->x - 1,y)->isEmpty() && getCase(piece->x - 1,y)->piece->color != piece->color){
+        if(piece->x > 0 && !getCase(piece->x - 1,y)->isEmpty()){
             if(
                 !isForCaseValid||
                 (
