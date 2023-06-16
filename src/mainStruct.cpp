@@ -15,6 +15,7 @@ void draw(){
     drawBackground();
     drawCasesValid();
     drawCheck();
+    drawCasesSelected();
     drawPieces();
     drawPieceSelected();
     

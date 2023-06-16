@@ -93,3 +93,18 @@ void drawCheck(){
     }  
 
 }
+
+
+//draw some color a case selected
+void drawCasesSelected(){
+    if(getPieceSelected() != NULL){
+
+        SDL_Rect rect;
+        rect.w = rect.h =  CASE_SIZE;
+        rect.x = BORDER_SIZE - 2 + getPieceSelected()->x * CASE_SIZE;
+        rect.y = BORDER_SIZE - 2 + getPieceSelected()->y * CASE_SIZE;
+
+		SDL_SetRenderDrawColor(getRenderer(),255,242,0,255);
+		drawHollowRect(rect,3);
+    }
+}

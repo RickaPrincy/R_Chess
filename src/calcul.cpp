@@ -94,6 +94,7 @@ void globalCalcul(bool shouldInitCaseValid){
     }
 }
 
+//calcul case valid || case attacked for a given piece
 void calcul(Piece *piece, bool isForCaseValid){
     int xx, yy;
     Piece *hasfoundPiece = NULL;
