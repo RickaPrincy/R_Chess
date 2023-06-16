@@ -14,6 +14,20 @@ void initPieceSelected(){
 
 void changePosition(int x, int y){
     getCase(pieceSelected->x, pieceSelected->y)->piece = NULL;
+
+    if( pieceSelected->type == KING ){
+        if(pieceSelected->x + 2 == x){
+            getCase(x + 1, y)->piece->x = x - 1;
+            getCase(x - 1, y)->piece = getCase(x + 1, y)->piece;
+            getCase(x + 1, y)->piece = NULL;
+        }
+        else if(pieceSelected->x - 2 == x){
+            getCase(x - 2, y)->piece->x = x + 1;
+            getCase(x + 1, y)->piece = getCase(x - 2, y)->piece;
+            getCase(x - 2, y)->piece = NULL;
+        }
+    }
+
     pieceSelected->x = x;
     pieceSelected->y = y;
     pieceSelected->alreadyMove = true;
