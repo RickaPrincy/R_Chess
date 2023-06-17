@@ -20,7 +20,8 @@ void testCaseForKing(Piece *piece,bool isForCaseValid,int x,int y){
         ) 
         
     ){
-        getCase(x,y)->isValid = true;
+        if(isThereACheck() == 0 || (isThereACheck() != 0 && !isCheckAfterMove(piece, x, y)))
+            getCase(x,y)->isValid = true;
     }
 }
 
