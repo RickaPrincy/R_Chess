@@ -22,5 +22,8 @@
     #define PINR 3
     #define PINL 4
 
+    #define ATTACKER 0
+    #define CHECK_MATE 1
+
 
 #endif

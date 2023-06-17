@@ -3,8 +3,8 @@
 
     #include "f_prototypes.hpp"
 
-    bool testCase(Piece*,int, int,bool,Piece**,short);
-    void calcul(Piece*,bool);
+    bool testCase(Piece*,int, int,short,Piece**,short);
+    void calcul(Piece*,short);
     void globalCalcul(bool);
     int isThereACheck();
 

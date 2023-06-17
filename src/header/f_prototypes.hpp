@@ -12,6 +12,7 @@
 	#include "piecesFunction.hpp"
 	#include "pieceSelected.hpp"
 	#include "calculKing.hpp"
+	#include "calculCheckMate.hpp"
 	#include "calcul.hpp"
 	#include "tempCalcul.hpp"
 	#include "mouseEvent.hpp"

@@ -1,56 +1,55 @@
 #include "header/f_prototypes.hpp"
 
-void testCaseForKing(Piece *piece,bool isForCaseValid,int x,int y){
-    if(!isForCaseValid){
+void testCaseForKing(Piece *piece,short forWhat,int x,int y){
+    if(forWhat == ATTACKER){
         if(piece->color == WHITE)
             getCase(x,y)->attackerWhite.push_back(piece);
         else
             getCase(x,y)->attackerBlack.push_back(piece);
     }
     else if(
+        (getCase(x,y)->isEmpty() || getCase(x,y)->piece->color != piece->color)
+        &&
         (
-            getCase(x,y)->attackerBlack.size() == 0 
-            &&piece->color == WHITE
-            && (getCase(x,y)->isEmpty() || getCase(x,y)->piece->color != piece->color)
-        ) ||
-        (
-            getCase(x,y)->attackerWhite.size() == 0 
-            &&piece->color == BLACK
-            && (getCase(x,y)->isEmpty() || getCase(x,y)->piece->color != piece->color)
+            ( getCase(x,y)->attackerBlack.size() == 0 && piece->color == WHITE) ||
+            ( getCase(x,y)->attackerWhite.size() == 0 && piece->color == BLACK)
         ) 
-        
     ){
-        if(isThereACheck() == 0 || (isThereACheck() != 0 && !isCheckAfterMove(piece, x, y)))
-            getCase(x,y)->isValid = true;
+        if(isThereACheck() == 0 || !isCheckAfterMove(piece, x, y)){
+            if(forWhat == CASE_VALID)
+                getCase(x,y)->isValid = true;
+            else
+                *getCheckMatePossible() = false;
+        }
     }
 }
 
-void calculKing(Piece *piece, bool isForCaseValid){
+void calculKing(Piece *piece, short forWhat){
     int x = piece->x, y = piece->y;
 
     if(x > 0){
-        testCaseForKing(piece,isForCaseValid,x - 1 , y);
+        testCaseForKing(piece,forWhat,x - 1 , y);
         if(y < 7)
-            testCaseForKing(piece,isForCaseValid,x - 1, y + 1);
+            testCaseForKing(piece,forWhat,x - 1, y + 1);
         if(y > 0)
-            testCaseForKing(piece,isForCaseValid,x - 1, y - 1);
+            testCaseForKing(piece,forWhat,x - 1, y - 1);
     }
     
     if(x < 7){
-        testCaseForKing(piece,isForCaseValid,x + 1 , y);
+        testCaseForKing(piece,forWhat,x + 1 , y);
         if(y < 7)
-            testCaseForKing(piece,isForCaseValid,x + 1, y + 1);
+            testCaseForKing(piece,forWhat,x + 1, y + 1);
         if(y > 0)
-            testCaseForKing(piece,isForCaseValid,x + 1, y - 1);
+            testCaseForKing(piece,forWhat,x + 1, y - 1);
     }
 
     if(y < 7)
-        testCaseForKing(piece,isForCaseValid,x, y + 1);
+        testCaseForKing(piece,forWhat,x, y + 1);
     if(y > 0)
-        testCaseForKing(piece,isForCaseValid,x,y - 1);
+        testCaseForKing(piece,forWhat,x,y - 1);
     
     //handler castle
-    if(isForCaseValid && x == 4 && !piece->alreadyMove && isThereACheck() == 0){
+    if(forWhat && x == 4 && !piece->alreadyMove && isThereACheck() == 0){
         
         //on the king's side
         if(

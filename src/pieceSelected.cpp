@@ -37,8 +37,14 @@ void changePosition(int x, int y){
 
 void resetAfterChange(){
     initPieceSelected();
+    *getCheckMatePossible() = true;
     *getTurn() = *getTurn() == WHITE ? BLACK : WHITE; 
     globalCalcul(true);
+    calculCheckMate();
+    
+    if(*getCheckMatePossible()){
+        cout << "finish" << endl;
+    }
 }
 
 void makeSelected(Piece *piece){

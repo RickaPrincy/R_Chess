@@ -3,7 +3,7 @@
 
     #include "f_prototypes.hpp"
 
-    void calculKing(Piece*, bool);
-    void testCaseForKing(Piece*, bool, int, int);
+    void calculKing(Piece*, short);
+    void testCaseForKing(Piece*, short, int, int);
 
 #endif

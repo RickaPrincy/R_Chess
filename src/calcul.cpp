@@ -13,17 +13,20 @@ int isThereACheck(){
 }
 
 //test if one case is a case valid for a selected piece
-bool testCase(Piece *piece,int x, int y,bool isForCaseValid, Piece **hasfoundPiece,short typeOfPin){
-    if(isForCaseValid){
+bool testCase(Piece *piece,int x, int y,short forWhat, Piece **hasfoundPiece,short typeOfPin){
+    if(forWhat != ATTACKER){
         if(getCase(x,y)->isEmpty() || getCase(x,y)->piece->color != piece->color){
             int isCheck = isThereACheck();
 
             if(isCheck == 1){
                 if(!isCheckAfterMove(piece,x,y)){
-                    getCase(x,y)->isValid = true;
+                    if(forWhat == CASE_VALID)
+                        getCase(x,y)->isValid = true;
+                    else  
+                        *getCheckMatePossible() = false;
                 }
             }
-            else if(isCheck == 0){
+            else if(isCheck == 0 && forWhat == CASE_VALID){
                 getCase(x,y)->isValid = true;
             }
         }
@@ -89,16 +92,16 @@ void globalCalcul(bool shouldInitCaseValid){
     //calcul case attacked and current pinned
     for(int i = 0; i < 32; i++){
         if(getPiece(i)->type == KING){
-            calculKing(getPiece(i),false);
+            calculKing(getPiece(i),ATTACKER);
         }
         else if(getPiece(i)->isOnBoard){
-            calcul(getPiece(i),false);
+            calcul(getPiece(i),ATTACKER);
         }
     }
 }
 
 //calcul case valid || case attacked for a given piece
-void calcul(Piece *piece, bool isForCaseValid){
+void calcul(Piece *piece, short forWhat){
     int xx, yy;
     Piece *hasfoundPiece = NULL;
 
@@ -108,7 +111,7 @@ void calcul(Piece *piece, bool isForCaseValid){
         int y = piece->y + increment;
         
         if(
-            isForCaseValid && 
+            forWhat != ATTACKER && 
             !piece->isPinnedX && 
             !piece->isPinnedDiagonalLeft &&
             !piece->isPinnedDiagonalRight
@@ -118,10 +121,13 @@ void calcul(Piece *piece, bool isForCaseValid){
 
                 if(isCheck == 1){
                     if(!isCheckAfterMove(piece,piece->x,y)){
-                        getCase(piece->x,y)->isValid = true;
+                        if(forWhat == CASE_VALID)
+                            getCase(piece->x,y)->isValid = true;
+                        else
+                            *getCheckMatePossible() = false;
                     }
                 }
-                else if(isCheck == 0){
+                else if(isCheck == 0 && forWhat == CASE_VALID){
                     getCase(piece->x,y)->isValid = true;
                 }
             }
@@ -134,10 +140,13 @@ void calcul(Piece *piece, bool isForCaseValid){
 
                 if(isCheck == 1){
                     if(!isCheckAfterMove(piece,piece->x,y)){
-                        getCase(piece->x,y + increment)->isValid = true;
+                        if(forWhat == CASE_VALID)
+                            getCase(piece->x,y + increment)->isValid = true;
+                        else
+                            *getCheckMatePossible() = false;
                     }
                 }
-                else if(isCheck == 0){
+                else if(isCheck == 0 && forWhat == CASE_VALID){
                     getCase(piece->x,y + increment)->isValid = true;
                 }
             }
@@ -145,7 +154,7 @@ void calcul(Piece *piece, bool isForCaseValid){
         /* ----------------------------------------------------- */
         if(piece->x < 7 && !getCase(piece->x + 1,y)->isEmpty()){
             if(
-                !isForCaseValid||
+                forWhat != ATTACKER||
                 (
                     !piece->isPinnedX && 
                     !piece->isPinnedY &&
@@ -155,13 +164,13 @@ void calcul(Piece *piece, bool isForCaseValid){
                     )
                 )
             ){
-                testCase(piece,piece->x + 1,y,isForCaseValid,&hasfoundPiece,NONE);
+                testCase(piece,piece->x + 1,y,forWhat,&hasfoundPiece,NONE);
             }
         }
         /* ----------------------------------------------------- */
         if(piece->x > 0 && !getCase(piece->x - 1,y)->isEmpty()){
             if(
-                !isForCaseValid||
+                forWhat != ATTACKER||
                 (
                     !piece->isPinnedX && 
                     !piece->isPinnedY &&
@@ -171,13 +180,13 @@ void calcul(Piece *piece, bool isForCaseValid){
                     )
                 )
             ){
-                testCase(piece,piece->x - 1,y,isForCaseValid,&hasfoundPiece,NONE);
+                testCase(piece,piece->x - 1,y,forWhat,&hasfoundPiece,NONE);
             }
         }
     }
     else if(piece->type == KNIGHT){
 		if(
-            !isForCaseValid || 
+            forWhat != ATTACKER || 
             (
                 !piece->isPinnedX && 
                 !piece->isPinnedY &&
@@ -187,43 +196,43 @@ void calcul(Piece *piece, bool isForCaseValid){
         ){
             if(piece->y < 6){
                 if(piece->x < 7)
-                    testCase(piece,piece->x + 1, piece->y + 2,isForCaseValid,&hasfoundPiece,NONE);
+                    testCase(piece,piece->x + 1, piece->y + 2,forWhat,&hasfoundPiece,NONE);
                 if(piece->x > 0)
-                    testCase(piece,piece->x - 1, piece->y + 2,isForCaseValid,&hasfoundPiece,NONE);
+                    testCase(piece,piece->x - 1, piece->y + 2,forWhat,&hasfoundPiece,NONE);
             }
 
             /*---------------------------------------------------*/
 
             if(piece->y > 1){
                 if(piece->x < 7)
-                    testCase(piece,piece->x + 1, piece->y - 2,isForCaseValid,&hasfoundPiece,NONE);
+                    testCase(piece,piece->x + 1, piece->y - 2,forWhat,&hasfoundPiece,NONE);
                 if(piece->x > 0)
-                    testCase(piece,piece->x - 1, piece->y - 2,isForCaseValid,&hasfoundPiece,NONE);
+                    testCase(piece,piece->x - 1, piece->y - 2,forWhat,&hasfoundPiece,NONE);
             }
 
             /*---------------------------------------------------*/
 
             if(piece->x < 6){
                 if(piece->y < 7)
-                    testCase(piece,piece->x + 2, piece->y + 1,isForCaseValid,&hasfoundPiece,NONE);
+                    testCase(piece,piece->x + 2, piece->y + 1,forWhat,&hasfoundPiece,NONE);
                 if(piece->y > 0)
-                    testCase(piece,piece->x + 2, piece->y - 1,isForCaseValid,&hasfoundPiece,NONE);
+                    testCase(piece,piece->x + 2, piece->y - 1,forWhat,&hasfoundPiece,NONE);
             }
 
             /*---------------------------------------------------*/
 
             if(piece->x > 1){
                 if(piece->y < 7)
-                    testCase(piece,piece->x - 2, piece->y + 1,isForCaseValid,&hasfoundPiece,NONE);
+                    testCase(piece,piece->x - 2, piece->y + 1,forWhat,&hasfoundPiece,NONE);
                 if(piece->y > 0)
-                    testCase(piece,piece->x - 2, piece->y - 1,isForCaseValid,&hasfoundPiece,NONE);
+                    testCase(piece,piece->x - 2, piece->y - 1,forWhat,&hasfoundPiece,NONE);
             }
         }
     }
     else{
         if(piece->type == QUEEN || piece->type == BISHOP){
             if(
-                !isForCaseValid || 
+                forWhat != ATTACKER || 
                 (
                     !piece->isPinnedX && 
                     !piece->isPinnedY &&
@@ -233,7 +242,7 @@ void calcul(Piece *piece, bool isForCaseValid){
                 hasfoundPiece = NULL;
                 xx = piece->x,yy = piece->y;
                 while(true){
-                    if(xx == 7 || yy == 7 || !testCase(piece,++xx,++yy,isForCaseValid,&hasfoundPiece,PINL))
+                    if(xx == 7 || yy == 7 || !testCase(piece,++xx,++yy,forWhat,&hasfoundPiece,PINL))
                         break;
                 }
                 
@@ -241,14 +250,14 @@ void calcul(Piece *piece, bool isForCaseValid){
                 hasfoundPiece = NULL;
                 xx = piece->x,yy = piece->y;
                 while(true){
-                    if(xx == 0 || yy == 0 || !testCase(piece,--xx,--yy,isForCaseValid,&hasfoundPiece,PINL))
+                    if(xx == 0 || yy == 0 || !testCase(piece,--xx,--yy,forWhat,&hasfoundPiece,PINL))
                         break;
                 }
             }
 
             /* ----------------------------------------------- */
             if(
-                !isForCaseValid || 
+                forWhat != ATTACKER || 
                 (
                     !piece->isPinnedX && 
                     !piece->isPinnedY &&
@@ -258,7 +267,7 @@ void calcul(Piece *piece, bool isForCaseValid){
                 hasfoundPiece = NULL;
                 xx = piece->x,yy = piece->y;
                 while(true){
-                    if(xx == 0 || yy == 7 || !testCase(piece,--xx,++yy,isForCaseValid,&hasfoundPiece,PINR))
+                    if(xx == 0 || yy == 7 || !testCase(piece,--xx,++yy,forWhat,&hasfoundPiece,PINR))
                         break;
                 }
                 
@@ -266,14 +275,14 @@ void calcul(Piece *piece, bool isForCaseValid){
                 hasfoundPiece = NULL;
                 xx = piece->x,yy = piece->y;
                 while(true){
-                    if(xx == 7 || yy == 0 || !testCase(piece,++xx,--yy,isForCaseValid,&hasfoundPiece,PINR))
+                    if(xx == 7 || yy == 0 || !testCase(piece,++xx,--yy,forWhat,&hasfoundPiece,PINR))
                         break;
                 }
             }
         }
         if(piece->type == QUEEN || piece->type == ROOK){
             if(
-                !isForCaseValid || 
+                forWhat != ATTACKER || 
                 (
                     !piece->isPinnedX && 
                     !piece->isPinnedDiagonalLeft &&
@@ -283,7 +292,7 @@ void calcul(Piece *piece, bool isForCaseValid){
                 hasfoundPiece = NULL;
                 xx = piece->x,yy = piece->y;
                 while(true){
-                    if(yy == 7 || !testCase(piece,xx,++yy,isForCaseValid,&hasfoundPiece,PINY))
+                    if(yy == 7 || !testCase(piece,xx,++yy,forWhat,&hasfoundPiece,PINY))
                         break;
                 }
                 
@@ -291,7 +300,7 @@ void calcul(Piece *piece, bool isForCaseValid){
                 hasfoundPiece = NULL;
                 xx = piece->x,yy = piece->y;
                 while(true){
-                    if(yy == 0 || !testCase(piece,xx,--yy,isForCaseValid,&hasfoundPiece,PINY))
+                    if(yy == 0 || !testCase(piece,xx,--yy,forWhat,&hasfoundPiece,PINY))
                         break;
                 }
             }
@@ -299,7 +308,7 @@ void calcul(Piece *piece, bool isForCaseValid){
             /* ----------------------------------------------- */
 
             if(
-                !isForCaseValid || 
+                forWhat != ATTACKER || 
                 (
                     !piece->isPinnedY && 
                     !piece->isPinnedDiagonalLeft &&
@@ -309,7 +318,7 @@ void calcul(Piece *piece, bool isForCaseValid){
                 hasfoundPiece = NULL;
                 xx = piece->x,yy = piece->y;
                 while(true){
-                    if(xx == 7 || !testCase(piece,++xx,yy,isForCaseValid,&hasfoundPiece,PINX))
+                    if(xx == 7 || !testCase(piece,++xx,yy,forWhat,&hasfoundPiece,PINX))
                         break;
                 }
                 
@@ -317,7 +326,7 @@ void calcul(Piece *piece, bool isForCaseValid){
                 hasfoundPiece = NULL;
                 xx = piece->x,yy = piece->y;
                 while(true){
-                    if(xx == 0 || !testCase(piece,--xx,yy,isForCaseValid,&hasfoundPiece,PINX))
+                    if(xx == 0 || !testCase(piece,--xx,yy,forWhat,&hasfoundPiece,PINX))
                         break;
                 }
             }

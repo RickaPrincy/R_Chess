@@ -29,6 +29,7 @@ int main(int argc,char *argv[]){
 		//handler mouse :  click and move 
 		handlerMouseEvent();
 		
+		//control FPS
 		LimitFPS(limit);
 	}
 	return EXIT_SUCCESS;
