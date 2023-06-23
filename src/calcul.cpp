@@ -139,7 +139,7 @@ void calcul(Piece *piece, short forWhat){
                 int isCheck = isThereACheck();
 
                 if(isCheck == 1){
-                    if(!isCheckAfterMove(piece,piece->x,y)){
+                    if(!isCheckAfterMove(piece,piece->x,y + increment)){
                         if(forWhat == CASE_VALID)
                             getCase(piece->x,y + increment)->isValid = true;
                         else
