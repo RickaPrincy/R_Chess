@@ -9,6 +9,7 @@
             Type type;
             bool isOnBoard, isSelected, alreadyMove;
             bool isPinnedX, isPinnedY, isPinnedDiagonalRight, isPinnedDiagonalLeft;
+            string notation;
     };
 
 #endif

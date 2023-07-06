@@ -47,10 +47,19 @@ void initPieces(){
     }
 
     //init type for pieces which not a pawn
+    pieces.at(0).notation = pieces.at(7).notation = pieces.at(24).notation = pieces.at(31).notation= "R";
     pieces.at(0).type = pieces.at(7).type = pieces.at(24).type = pieces.at(31).type = ROOK;
+
+	pieces.at(1).notation = pieces.at(6).notation = pieces.at(25).notation = pieces.at(30).notation = "N";
 	pieces.at(1).type = pieces.at(6).type = pieces.at(25).type = pieces.at(30).type = KNIGHT;
+
+	pieces.at(2).notation = pieces.at(5).notation = pieces.at(26).notation = pieces.at(29).notation = "B";
 	pieces.at(2).type = pieces.at(5).type = pieces.at(26).type = pieces.at(29).type = BISHOP;
+
+	pieces.at(3).notation = pieces.at(27).notation = "Q";
 	pieces.at(3).type = pieces.at(27).type = QUEEN;
+
+	pieces.at(4).notation = pieces.at(28).notation = "K";
 	pieces.at(4).type = pieces.at(28).type = KING;
 }
 
