@@ -71,13 +71,6 @@ void firstInit(char const *title,int window_w,int window_h){
 
 	/*-----------------------------------------*/
 
-	//Initialisation de la  SDL_TTF 2 
-	if (TTF_Init() < 0){
-		Error("Initialisation : sdl_ttf");
-		exit(EXIT_FAILURE);
-	}
-
-
 	SDL_RenderPresent(renderer);
 }
 
@@ -99,7 +92,6 @@ void cleanFirstInit(){
 		cout << "Window Destroyed" << endl;
 	}
 
-	TTF_Quit();
 	SDL_Quit();
 }
 
@@ -157,30 +149,4 @@ void renderCopy(SDL_Texture *image, int x, int y){
 		Error("SDL_RenderCopy ; RenderCopy");
 		exit(EXIT_FAILURE);
 	}
-}
-
-/*-----------------------------------------*/
-
-SDL_Texture *textLoad(char const *Texte,int Taille,SDL_Color color,char const *path){
-	SDL_Surface *Surface = NULL;
-	SDL_Texture *Texture = NULL;
-
-	TTF_Font *font = TTF_OpenFont(path,Taille);
-	Surface = TTF_RenderText_Solid(font,Texte,color);
-	TTF_CloseFont(font);
-
-	if(Surface == NULL){
-		Error("Surface : TextLoad()");
-		exit(EXIT_FAILURE);
-	}
-
-	Texture = SDL_CreateTextureFromSurface(renderer,Surface);
-	SDL_FreeSurface(Surface);
-
-	if(Texture == NULL){
-		Error("Texture : TextLoad()");
-		exit(EXIT_FAILURE);
-	}
-
-	return Texture;
 }

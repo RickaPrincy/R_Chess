@@ -332,5 +332,4 @@ void calcul(Piece *piece, short forWhat){
             }
         }
     }
-    
 }
