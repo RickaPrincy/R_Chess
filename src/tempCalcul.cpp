@@ -29,5 +29,4 @@ bool isCheckAfterMove(Piece *piece, int x,int y){
 
     globalCalcul(false);
     return result;
-
 }
