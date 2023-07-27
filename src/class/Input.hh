@@ -1,7 +1,7 @@
 #ifndef __INPUT__
 #define __INPUT__ 
 	
-	#include "f_prototypes.hpp"
+	#include "../header/f_prototypes.hpp"
 	
     enum MouseStatus{
         CLICKED,

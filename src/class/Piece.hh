@@ -1,7 +1,7 @@
 #ifndef __PIECE__
 #define __PIECE__
 
-    #include "f_prototypes.hpp"
+    #include "../header/f_prototypes.hpp"
 
     class Piece{
         public:

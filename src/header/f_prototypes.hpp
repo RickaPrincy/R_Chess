@@ -3,10 +3,10 @@
 
 	#include "lib.hpp"
 	#include "../var/var.hpp"
-	#include "Type.hh"
-	#include "Piece.hh"
-	#include "Case.hh"
-	#include "Input.hh"
+	#include "../class/Type.hh"
+	#include "../class/Piece.hh"
+	#include "../class/Case.hh"
+	#include "../class/Input.hh"
 	#include "event.hpp"
 	#include "background.hpp"
 	#include "piecesFunction.hpp"
@@ -31,7 +31,6 @@
 
 	void setIcon(char const *path);
 
-	SDL_Texture *textLoad(char const *Texte,int Taille,SDL_Color color,char const *path);
 	void renderCopy(SDL_Texture *image, int x, int y);
 	SDL_Texture *imageLoad(char const *path);
 	

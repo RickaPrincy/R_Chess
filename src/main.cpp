@@ -15,7 +15,7 @@ int main(int argc,char *argv[]){
 	//loading
 	load();
 
-	//initisalisation
+	//initisalization
 	init();
 	
 	while(program_launched){
