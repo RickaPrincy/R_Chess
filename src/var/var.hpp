@@ -16,14 +16,7 @@
     #define CASE_VALID 2
     #define LIST_AND_VALID 3
     
-    #define NONE 0
-    #define PINX 1
-    #define PINY 2
-    #define PINR 3
-    #define PINL 4
-
     #define ATTACKER 0
     #define CHECK_MATE 1
-
 
 #endif
