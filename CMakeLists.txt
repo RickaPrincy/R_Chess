@@ -1,21 +1,52 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.18)
 
-project(R_Chess)
+project(r_chess VERSION 0.0.1)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
-set(INCLUDES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
-include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
+# deps find_package(rcli REQUIRED)
 
-file(GLOB SOURCES "${SOURCES_DIR}/*.cpp" "${SOURCES_DIR}/*.c")
-file(GLOB HEADERS "${INCLUDES_DIR}/*.h" "${INCLUDES_DIR}/*.hh" "${INCLUDES_DIR}/*.hpp")
- 
-add_executable(R_Chess WIN32 ${SOURCES} ${HEADERS})
-target_link_libraries(R_Chess ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+set(R_CHESS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(R_CHESS_IS_MAIN_PROJECT OFF)
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  set(R_CHESS_IS_MAIN_PROJECT ON)
+endif()
 
-file(GLOB IMAGES "${CMAKE_CURRENT_SOURCE_DIR}/graphics/*")
-file(COPY ${IMAGES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/graphics/")
+# target names
+set(R_CHESS_BIN_NAME r_chess)
+set(R_CHESS_BIN_VERSION 0.0.1)
+set(R_CHESS_BIN_VERSION_MAJOR 0)
+set(R_CHESS_VERSION ${PROJECT_VERSION})
+set(R_CHESS_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+
+# configure build type
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Debug")
+endif()
+
+if(WIN32)
+  add_compile_options(WIN32)
+endif()
+
+add_subdirectory(src)
+
+# clang-format configuration
+find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
+if(CLANG_FORMAT_EXECUTABLE)
+  file(GLOB_RECURSE ALL_SOURCE_FILES "${R_CHESS_SOURCE_DIR}/src/*.cpp")
+  add_custom_target(
+    clang-format
+    COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
+    COMMENT "Running clang-format")
+else()
+  message(
+    WARNING "clang-format not found. Clang-format target will not be available."
+  )
+endif()
+
+# CPack configuration
+set(CPACK_PACKAGE_VENDOR "RickaPrincy <rckprincy@gmail.com>")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY R_Chess is a simple chessboard)
+include(CPack)
