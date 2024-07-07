@@ -1,4 +1,4 @@
-set(R_CHESS_SOURCES main.cpp)
+set(R_CHESS_SOURCES main.cpp rchess.cpp)
 
 add_executable(${R_CHESS_BIN_NAME} ${R_CHESS_SOURCES})
 
@@ -8,8 +8,7 @@ target_link_libraries(${R_CHESS_BIN_NAME} PUBLIC sdlk)
 # set properties
 set_target_properties(
   ${R_CHESS_BIN_NAME}
-  PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-             BINRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+  PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
              SOVERSION ${R_CHESS_BIN_VERSION_MAJOR}
              VERSION ${R_CHESS_BIN_VERSION})
 

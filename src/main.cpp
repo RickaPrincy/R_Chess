@@ -1,7 +1,7 @@
-#include <iostream>
+#include "rchess.hpp"
 
 int main(int argc, char *argv[])
 {
-	std::cout << "Hello world" << std::endl;
+	rchess::run();
 	return 0;
 }
