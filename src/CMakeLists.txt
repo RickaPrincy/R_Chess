@@ -1,9 +1,14 @@
-set(R_CHESS_SOURCES main.cpp rchess.cpp)
+set(R_CHESS_SOURCES main.cpp rchess.cpp pieces/pieces.cpp)
 
 add_executable(${R_CHESS_BIN_NAME} ${R_CHESS_SOURCES})
 
 # target_link
-target_link_libraries(${R_CHESS_BIN_NAME} PUBLIC sdlk)
+target_link_libraries(
+  ${R_CHESS_BIN_NAME}
+  PUBLIC sdlk
+  PRIVATE SDL2
+  PRIVATE SDL2_image
+  PRIVATE SDL2_ttf)
 
 # set properties
 set_target_properties(
