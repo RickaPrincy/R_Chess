@@ -1,4 +1,4 @@
-set(R_CHESS_SOURCES main.cpp rchess.cpp pieces/pieces.cpp config/config.cpp)
+set(R_CHESS_SOURCES main.cpp rchess.cpp pieces/pieces.cpp pieces/rook.cpp pieces/knight.cpp pieces/bishop.cpp pieces/queen.cpp pieces/king.cpp pieces/pawn.cpp config/config.cpp)
 
 add_executable(${R_CHESS_BIN_NAME} ${R_CHESS_SOURCES})
 

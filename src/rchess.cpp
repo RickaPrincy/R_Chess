@@ -33,7 +33,7 @@ namespace rchess
 
 	void RChessApp::run()
 	{
-		Piece rook(PieceType::ROOK, PieceColor::BLACK, 0, 3);
+		Rook rook(PieceColor::BLACK, 0, 3);
 
 		rook.add_event_listener(sdlk::EventType::MOUSE_MOTION,
 			[&](const SDL_Event &event)

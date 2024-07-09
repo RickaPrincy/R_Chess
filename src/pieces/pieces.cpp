@@ -3,7 +3,6 @@
 #include <SDL2/SDL_render.h>
 
 #include <sdlk/utils/basic_wrapper.hpp>
-#include <stdexcept>
 
 #include "../config/config.hpp"
 
@@ -23,12 +22,6 @@ namespace rchess
 		m_src_rect = {
 			static_cast<int>(m_type) * PIECE_SIZE, static_cast<int>(m_color) * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE
 		};
-
-		if (sdlk::check::is_null(p_main_window))
-		{
-			throw std::runtime_error("Piece was not setting up");
-		}
-		p_main_window->append_child(this);
 	}
 
 	void Piece::render(SDL_Renderer *renderer)
@@ -59,8 +52,10 @@ namespace rchess
 	{
 		if (!config::is_on_board(event))
 		{
-            return sdlk::Position(-1,-1);
+			return sdlk::Position(-1, -1);
 		}
+		return sdlk::Position();
 	}
+
 }  // namespace rchess
 //
