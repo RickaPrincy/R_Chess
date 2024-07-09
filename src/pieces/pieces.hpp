@@ -43,7 +43,7 @@ namespace rchess
 		GETTER(PieceColor, color);
 
 		Piece(std::string name, PieceType type, PieceColor color, int x, int y);
-		virtual void calc_possible_moves() {};
+		virtual void calc_possible_moves() = 0;
 		void init_position();
 
 		static void setup(sdlk::Window *background, const std::string &path);

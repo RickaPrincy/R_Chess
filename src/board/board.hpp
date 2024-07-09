@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL_events.h>
 
+#include <memory>
 #include <sdlk/core/properties/position.hpp>
 
 #include "../pieces/pieces.hpp"
@@ -11,7 +12,7 @@ namespace rchess
 	class Board
 	{
 	private:
-		std::vector<Piece> m_pieces{};
+		std::vector<std::shared_ptr<Piece>> m_pieces{};
 		void setup_all_pieces();
 
 	public:
