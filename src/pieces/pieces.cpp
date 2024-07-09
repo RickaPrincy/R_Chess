@@ -17,7 +17,8 @@ namespace rchess
 	Piece::Piece(PieceType type, PieceColor color, int x, int y)
 		: sdlk::Component(p_main_window, sdlk::Size(PIECE_SIZE), sdlk::Position(x, y)),
 		  m_type(type),
-		  m_color(color)
+		  m_color(color),
+		  m_initial_position(sdlk::Position(x, y))
 	{
 		m_src_rect = {
 			static_cast<int>(m_type) * PIECE_SIZE, static_cast<int>(m_color) * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE
@@ -53,4 +54,13 @@ namespace rchess
 			SDL_DestroyTexture(all_image_texture);
 		}
 	}
+
+	sdlk::Position Piece::get_position_from_mouse_position(const SDL_MouseMotionEvent &event)
+	{
+		if (!config::is_on_board(event))
+		{
+            return sdlk::Position(-1,-1);
+		}
+	}
 }  // namespace rchess
+//

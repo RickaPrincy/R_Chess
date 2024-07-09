@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
 
 #include <sdlk/core/component.hpp>
@@ -32,6 +33,7 @@ namespace rchess
 		bool m_is_selected{ false }, m_is_on_board{ true };
 		PieceType m_type{ PieceType::PAWN };
 		PieceColor m_color{ PieceColor::BLACK };
+		sdlk::Position m_initial_position;
 
 		virtual void render(SDL_Renderer *renderer) override;
 
@@ -43,5 +45,6 @@ namespace rchess
 
 		static void setup(sdlk::Window *background, const std::string &path);
 		static void clean_up();
+		static sdlk::Position get_position_from_mouse_position(const SDL_MouseMotionEvent &mouse_motion);
 	};
 }  // namespace rchess
