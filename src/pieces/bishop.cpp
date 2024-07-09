@@ -2,7 +2,7 @@
 
 namespace rchess
 {
-	Bishop::Bishop(PieceColor color, int x, int y) : Piece(PieceType::BISHOP, color, x, y)
+	Bishop::Bishop(std::string name, PieceColor color, int x, int y) : Piece(name, PieceType::BISHOP, color, x, y)
 	{
 	}
 

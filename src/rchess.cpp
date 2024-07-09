@@ -5,6 +5,7 @@
 #include <sdlk/sdlk.hpp>
 #include <stdexcept>
 
+#include "board/board.hpp"
 #include "config/config.hpp"
 #include "pieces/pieces.hpp"
 
@@ -33,16 +34,7 @@ namespace rchess
 
 	void RChessApp::run()
 	{
-		Rook rook(PieceColor::BLACK, 0, 3);
-
-		rook.add_event_listener(sdlk::EventType::MOUSE_MOTION,
-			[&](const SDL_Event &event)
-			{
-				rook.set_x(event.motion.x);
-				rook.set_y(event.motion.x);
-				rook.do_re_render();
-			});
-
+		Board rchess_board;
 		sdlk::App::run();
 	}
 

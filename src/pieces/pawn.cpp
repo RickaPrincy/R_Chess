@@ -2,7 +2,7 @@
 
 namespace rchess
 {
-	Pawn::Pawn(PieceColor color, int x, int y) : Piece(PieceType::PAWN, color, x, y)
+	Pawn::Pawn(std::string name, PieceColor color, int x, int y) : Piece(name, PieceType::PAWN, color, x, y)
 	{
 	}
 

@@ -13,8 +13,9 @@ namespace rchess
 	static sdlk::Window *p_main_window = nullptr;
 	static SDL_Texture *all_image_texture = nullptr;
 
-	Piece::Piece(PieceType type, PieceColor color, int x, int y)
+	Piece::Piece(std::string name, PieceType type, PieceColor color, int x, int y)
 		: sdlk::Component(p_main_window, sdlk::Size(PIECE_SIZE), sdlk::Position(x, y)),
+		  m_name(name),
 		  m_type(type),
 		  m_color(color),
 		  m_initial_position(sdlk::Position(x, y))
@@ -22,6 +23,12 @@ namespace rchess
 		m_src_rect = {
 			static_cast<int>(m_type) * PIECE_SIZE, static_cast<int>(m_color) * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE
 		};
+	}
+
+	void Piece::init_position()
+	{
+		this->set_position(m_initial_position);
+		this->do_re_render();
 	}
 
 	void Piece::render(SDL_Renderer *renderer)
@@ -47,15 +54,4 @@ namespace rchess
 			SDL_DestroyTexture(all_image_texture);
 		}
 	}
-
-	sdlk::Position Piece::get_position_from_mouse_position(const SDL_MouseMotionEvent &event)
-	{
-		if (!config::is_on_board(event))
-		{
-			return sdlk::Position(-1, -1);
-		}
-		return sdlk::Position();
-	}
-
 }  // namespace rchess
-//

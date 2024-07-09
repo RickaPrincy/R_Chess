@@ -31,6 +31,7 @@ namespace rchess
 	{
 	protected:
 		bool m_is_selected{ false }, m_is_on_board{ true };
+		std::string m_name{};
 		PieceType m_type{ PieceType::PAWN };
 		PieceColor m_color{ PieceColor::BLACK };
 		sdlk::Position m_initial_position;
@@ -41,53 +42,53 @@ namespace rchess
 		GETTER(PieceType, type);
 		GETTER(PieceColor, color);
 
-		Piece(PieceType type, PieceColor color, int x, int y);
-		virtual void calc_possible_moves() = 0;
+		Piece(std::string name, PieceType type, PieceColor color, int x, int y);
+		virtual void calc_possible_moves() {};
+		void init_position();
 
 		static void setup(sdlk::Window *background, const std::string &path);
 		static void clean_up();
-		static sdlk::Position get_position_from_mouse_position(const SDL_MouseMotionEvent &mouse_motion);
 	};
 
 	class Rook : public Piece
 	{
 	public:
 		virtual void calc_possible_moves() override;
-		Rook(PieceColor color, int x, int y);
+		Rook(std::string name, PieceColor color, int x, int y);
 	};
 
 	class Knight : public Piece
 	{
 	public:
 		virtual void calc_possible_moves() override;
-		Knight(PieceColor color, int x, int y);
+		Knight(std::string name, PieceColor color, int x, int y);
 	};
 
 	class Bishop : public Piece
 	{
 	public:
 		virtual void calc_possible_moves() override;
-		Bishop(PieceColor color, int x, int y);
+		Bishop(std::string name, PieceColor color, int x, int y);
 	};
 
 	class Queen : public Piece
 	{
 	public:
 		virtual void calc_possible_moves() override;
-		Queen(PieceColor color, int x, int y);
+		Queen(std::string name, PieceColor color, int x, int y);
 	};
 
 	class King : public Piece
 	{
 	public:
 		virtual void calc_possible_moves() override;
-		King(PieceColor color, int x, int y);
+		King(std::string name, PieceColor color, int x, int y);
 	};
 
 	class Pawn : public Piece
 	{
 	public:
 		virtual void calc_possible_moves() override;
-		Pawn(PieceColor color, int x, int y);
+		Pawn(std::string name, PieceColor color, int x, int y);
 	};
 }  // namespace rchess

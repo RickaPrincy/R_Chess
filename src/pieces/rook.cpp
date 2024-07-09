@@ -2,7 +2,7 @@
 
 namespace rchess
 {
-	Rook::Rook(PieceColor color, int x, int y) : Piece(PieceType::ROOK, color, x, y)
+	Rook::Rook(std::string name, PieceColor color, int x, int y) : Piece(name, PieceType::ROOK, color, x, y)
 	{
 	}
 

@@ -2,7 +2,7 @@
 
 namespace rchess
 {
-	Queen::Queen(PieceColor color, int x, int y) : Piece(PieceType::QUEEN, color, x, y)
+	Queen::Queen(std::string name, PieceColor color, int x, int y) : Piece(name, PieceType::QUEEN, color, x, y)
 	{
 	}
 
