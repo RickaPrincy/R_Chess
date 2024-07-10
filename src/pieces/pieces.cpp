@@ -10,11 +10,11 @@ using namespace rchess::config;
 
 namespace rchess
 {
-	static sdlk::Window *p_main_window = nullptr;
+	static sdlk::Image *p_background = nullptr;
 	static SDL_Texture *all_image_texture = nullptr;
 
 	Piece::Piece(std::string name, PieceType type, PieceColor color, int x, int y)
-		: sdlk::Component(p_main_window, sdlk::Size(PIECE_SIZE), sdlk::Position(x, y)),
+		: sdlk::Component(p_background, sdlk::Size(PIECE_SIZE), sdlk::Position(x, y)),
 		  m_name(name),
 		  m_type(type),
 		  m_color(color),
@@ -24,7 +24,6 @@ namespace rchess
 			static_cast<int>(m_type) * PIECE_SIZE, static_cast<int>(m_color) * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE
 		};
 	}
-
 	void Piece::init_position()
 	{
 		this->set_position(m_initial_position);
@@ -41,10 +40,10 @@ namespace rchess
 			SDL_RenderCopy(renderer, all_image_texture, &m_src_rect, &dest_rect), "Cannot copy Pieces texture");
 	}
 
-	void Piece::setup(sdlk::Window *window, const std::string &path)
+	void Piece::setup(sdlk::Image *background, SDL_Renderer *renderer, const std::string &path)
 	{
-		all_image_texture = sdlk::load_image(window->get_sdl_renderer(), path);
-		p_main_window = window;
+		all_image_texture = sdlk::load_image(renderer, path);
+		p_background = background;
 	}
 
 	void Piece::clean_up()

@@ -3,6 +3,7 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
 
+#include <sdlk/components/image.hpp>
 #include <sdlk/core/component.hpp>
 #include <sdlk/core/preprocessor/getter_setter.hpp>
 #include <sdlk/core/properties/position.hpp>
@@ -46,7 +47,7 @@ namespace rchess
 		virtual void calc_possible_moves() = 0;
 		void init_position();
 
-		static void setup(sdlk::Window *background, const std::string &path);
+		static void setup(sdlk::Image *background, SDL_Renderer *renderer, const std::string &path);
 		static void clean_up();
 	};
 

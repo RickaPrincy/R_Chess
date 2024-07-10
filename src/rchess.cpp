@@ -23,7 +23,7 @@ namespace rchess
 		{
 			p_background =
 				new sdlk::Image(this->get_window(), "../graphics/background.jpg", sdlk::Size(config::WINDOW_SIZE));
-			Piece::setup(this->get_window(), "../graphics/pieces.png");
+			Piece::setup(p_background, this->get_window()->get_sdl_renderer(), "../graphics/pieces.png");
 		}
 		catch (const std::runtime_error &error)
 		{

@@ -19,6 +19,7 @@ namespace rchess
 
 	void Board::setup_all_pieces()
 	{
+		// whites
 		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteA2", PieceColor::WHITE, 0, 6));
 		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteB2", PieceColor::WHITE, 1, 6));
 		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteC2", PieceColor::WHITE, 2, 6));
@@ -37,22 +38,22 @@ namespace rchess
 		m_pieces.push_back(std::make_shared<Rook>("rookWhiteH1", PieceColor::WHITE, 7, 7));
 
 		// blacks
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackA2", PieceColor::BLACK, 0, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackB2", PieceColor::BLACK, 1, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackC2", PieceColor::BLACK, 2, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackD2", PieceColor::BLACK, 3, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackE2", PieceColor::BLACK, 4, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackF2", PieceColor::BLACK, 5, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackG2", PieceColor::BLACK, 6, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackH2", PieceColor::BLACK, 7, 1));
-		m_pieces.push_back(std::make_shared<Rook>("rookBlackA1", PieceColor::BLACK, 0, 0));
-		m_pieces.push_back(std::make_shared<Knight>("knightBlackB1", PieceColor::BLACK, 1, 0));
-		m_pieces.push_back(std::make_shared<Bishop>("bishopBlackC1", PieceColor::BLACK, 2, 0));
-		m_pieces.push_back(std::make_shared<Queen>("bishopBlackD1", PieceColor::BLACK, 3, 0));
-		m_pieces.push_back(std::make_shared<King>("kingBlackE1", PieceColor::BLACK, 4, 0));
-		m_pieces.push_back(std::make_shared<Bishop>("bishopBlackF1", PieceColor::BLACK, 5, 0));
-		m_pieces.push_back(std::make_shared<Knight>("kingBlackG1", PieceColor::BLACK, 6, 0));
-		m_pieces.push_back(std::make_shared<Rook>("rookBlackH1", PieceColor::BLACK, 7, 0));
+		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackA7", PieceColor::BLACK, 0, 1));
+		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackB7", PieceColor::BLACK, 1, 1));
+		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackC7", PieceColor::BLACK, 2, 1));
+		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackD7", PieceColor::BLACK, 3, 1));
+		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackE7", PieceColor::BLACK, 4, 1));
+		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackF7", PieceColor::BLACK, 5, 1));
+		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackG7", PieceColor::BLACK, 6, 1));
+		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackH7", PieceColor::BLACK, 7, 1));
+		m_pieces.push_back(std::make_shared<Rook>("rookBlackA8", PieceColor::BLACK, 0, 0));
+		m_pieces.push_back(std::make_shared<Knight>("knightBlackB8", PieceColor::BLACK, 1, 0));
+		m_pieces.push_back(std::make_shared<Bishop>("bishopBlackC8", PieceColor::BLACK, 2, 0));
+		m_pieces.push_back(std::make_shared<Queen>("bishopBlackD8", PieceColor::BLACK, 3, 0));
+		m_pieces.push_back(std::make_shared<King>("kingBlackE8", PieceColor::BLACK, 4, 0));
+		m_pieces.push_back(std::make_shared<Bishop>("bishopBlackF8", PieceColor::BLACK, 5, 0));
+		m_pieces.push_back(std::make_shared<Knight>("kingBlackG8", PieceColor::BLACK, 6, 0));
+		m_pieces.push_back(std::make_shared<Rook>("rookBlackH8", PieceColor::BLACK, 7, 0));
 	}
 
 	sdlk::Position Board::get_case_position_from_mouse_position(const SDL_MouseMotionEvent &event)
