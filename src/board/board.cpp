@@ -1,15 +1,22 @@
 #include "board.hpp"
 
 #include <algorithm>
+#include <iostream>
+#include <sdlk/core/events/types.hpp>
 
 #include "../config/config.hpp"
 #include "../pieces/pieces.hpp"
 
 namespace rchess
 {
-	Board::Board()
+	static sdlk::EventListener *p_main_event_listener = nullptr;
+
+	Board::Board() : sdlk::Observer()
 	{
 		this->setup_all_pieces();
+		this->p_event_listener = p_main_event_listener;
+		this->add_event_listener(
+			sdlk::EventType::KEY_DOWN, [&](const SDL_Event &event) { std::cout << "Hello" << std::endl; });
 	}
 
 	void Board::init_new_game()
@@ -62,7 +69,15 @@ namespace rchess
 		{
 			return sdlk::Position(-1, -1);
 		}
-		// TODO
-		return sdlk::Position();
+
+		// to know the x and y case[x][y] clicked
+		int x_case = (event.x - config::BORDER_SIZE) / config::CASE_SIZE;
+		int y_case = (event.y - config::BORDER_SIZE) / config::CASE_SIZE;
+		return sdlk::Position(x_case, y_case);
+	}
+
+	void Board::setup(sdlk::EventListener *event_listener)
+	{
+		p_main_event_listener = event_listener;
 	}
 }  // namespace rchess

@@ -24,6 +24,7 @@ namespace rchess
 			p_background =
 				new sdlk::Image(this->get_window(), "../graphics/background.jpg", sdlk::Size(config::WINDOW_SIZE));
 			Piece::setup(p_background, this->get_window()->get_sdl_renderer(), "../graphics/pieces.png");
+			Board::setup(&this->m_event_listener);
 		}
 		catch (const std::runtime_error &error)
 		{

@@ -38,6 +38,11 @@ namespace rchess
 			this->get_height() };
 		sdlk::throw_if_not_success(
 			SDL_RenderCopy(renderer, all_image_texture, &m_src_rect, &dest_rect), "Cannot copy Pieces texture");
+
+		if (this->m_is_on_board && this->m_is_selected)
+		{
+			// render square
+		}
 	}
 
 	void Piece::setup(sdlk::Image *background, SDL_Renderer *renderer, const std::string &path)

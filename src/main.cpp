@@ -1,8 +1,10 @@
 #include "rchess.hpp"
 
+using namespace rchess;
+
 int main(int argc, char *argv[])
 {
-	rchess::RChessApp rchess;
+	RChessApp rchess;
 	rchess.run();
 	return 0;
 }
