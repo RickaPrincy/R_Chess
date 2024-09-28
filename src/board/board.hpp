@@ -20,9 +20,9 @@ namespace rchess
 		void setup_all_pieces();
 
 	public:
+		Board();
 		GETTER(PieceColor, turn);
 		void init_new_game();
-		Board();
 		static sdlk::Position get_case_position_from_mouse_position(const SDL_MouseMotionEvent &mouse_motion);
 		static void setup(sdlk::EventListener *event_listener);
 		friend class RChessApp;

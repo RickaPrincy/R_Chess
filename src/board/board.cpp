@@ -15,8 +15,13 @@ namespace rchess
 	{
 		this->setup_all_pieces();
 		this->p_event_listener = p_main_event_listener;
-		this->add_event_listener(
-			sdlk::EventType::KEY_DOWN, [&](const SDL_Event &event) { std::cout << "Hello" << std::endl; });
+		this->add_event_listener(sdlk::EventType::MOUSE_BUTTON_DOWN,
+			[&](const SDL_Event &event)
+			{
+				std::cout << "Hello" << std::endl;
+				const auto test = get_case_position_from_mouse_position(event.motion);
+				std::cout << test.get_x() << " " << test.get_y() << std::endl;
+			});
 	}
 
 	void Board::init_new_game()

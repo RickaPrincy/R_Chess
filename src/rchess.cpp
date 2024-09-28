@@ -11,10 +11,10 @@
 
 namespace rchess
 {
-	static void clean_resources(sdlk::Image *backround)
+	static void clean_resources(sdlk::Image *background)
 	{
 		Piece::clean_up();
-		delete backround;
+		delete background;
 	}
 
 	RChessApp::RChessApp() : sdlk::App("R_Chess", sdlk::Size(config::WINDOW_SIZE))
