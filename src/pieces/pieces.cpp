@@ -5,6 +5,7 @@
 #include <sdlk/utils/basic_wrapper.hpp>
 
 #include "../config/config.hpp"
+#include "../ui/draw.hpp"
 
 using namespace rchess::config;
 
@@ -36,13 +37,14 @@ namespace rchess
 			this->get_y() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE,
 			this->get_width(),
 			this->get_height() };
-		sdlk::throw_if_not_success(
-			SDL_RenderCopy(renderer, all_image_texture, &m_src_rect, &dest_rect), "Cannot copy Pieces texture");
 
 		if (this->m_is_on_board && this->m_is_selected)
 		{
-			// render square
+			draw::line_rect(renderer, { dest_rect.x, dest_rect.y, CASE_SIZE, CASE_SIZE }, { 255, 242, 0, 255 });
 		}
+
+		sdlk::throw_if_not_success(
+			SDL_RenderCopy(renderer, all_image_texture, &m_src_rect, &dest_rect), "Cannot copy Pieces texture");
 	}
 
 	void Piece::setup(sdlk::Image *background, SDL_Renderer *renderer, const std::string &path)

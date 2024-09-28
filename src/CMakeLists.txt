@@ -9,7 +9,9 @@ set(R_CHESS_SOURCES
     pieces/king.cpp
     pieces/pawn.cpp
     config/config.cpp
-    board/board.cpp)
+    board/board.cpp
+    ui/rect.cpp
+    events/events.cpp)
 
 add_executable(${R_CHESS_BIN_NAME} ${R_CHESS_SOURCES})
 

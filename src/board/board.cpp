@@ -1,10 +1,10 @@
 #include "board.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <sdlk/core/events/types.hpp>
 
 #include "../config/config.hpp"
+#include "../events/events.hpp"
 #include "../pieces/pieces.hpp"
 
 namespace rchess
@@ -18,9 +18,11 @@ namespace rchess
 		this->add_event_listener(sdlk::EventType::MOUSE_BUTTON_DOWN,
 			[&](const SDL_Event &event)
 			{
-				std::cout << "Hello" << std::endl;
-				const auto test = get_case_position_from_mouse_position(event.motion);
-				std::cout << test.get_x() << " " << test.get_y() << std::endl;
+				auto case_position = get_case_position_from_mouse_position(event.motion);
+				if (case_position.get_x() == -1)
+					return;
+
+				rchess::handle_case_click(case_position.get_x(), case_position.get_y(), this);
 			});
 	}
 
@@ -84,5 +86,17 @@ namespace rchess
 	void Board::setup(sdlk::EventListener *event_listener)
 	{
 		p_main_event_listener = event_listener;
+	}
+
+	void Board::set_selected_piece(std::shared_ptr<Piece> piece)
+	{
+		if (this->m_selected_pieces != nullptr)
+			this->m_selected_pieces->set_is_selected(false);
+
+		if (piece != nullptr)
+		{
+			piece->set_is_selected(true);
+			this->m_selected_pieces = piece;
+		}
 	}
 }  // namespace rchess

@@ -42,6 +42,7 @@ namespace rchess
 	public:
 		GETTER(PieceType, type);
 		GETTER(PieceColor, color);
+		SETTER(bool, is_selected);
 
 		Piece(std::string name, PieceType type, PieceColor color, int x, int y);
 		virtual void calc_possible_moves() = 0;

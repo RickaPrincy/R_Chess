@@ -22,7 +22,11 @@ namespace rchess
 	public:
 		Board();
 		GETTER(PieceColor, turn);
+		GETTER(std::vector<std::shared_ptr<Piece>>, pieces);
+
 		void init_new_game();
+		void set_selected_piece(std::shared_ptr<Piece> piece);
+
 		static sdlk::Position get_case_position_from_mouse_position(const SDL_MouseMotionEvent &mouse_motion);
 		static void setup(sdlk::EventListener *event_listener);
 		friend class RChessApp;
