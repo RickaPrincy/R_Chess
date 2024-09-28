@@ -1,43 +1,17 @@
 # Project generated with [Templi](https://github.com/RickaPrincy/Templi)
 
-#R_Chess :memo:
+# **R_Chess**
 
-R_Chess is a simple chessboard
+## What is R_Chess ?
 
-# Installation :seedling:
+R_Chess is a simple chessboard that I have created for pure enjoyment and to test my own SDL2 wrapper, [sdlk](http://github.com/RickaPrincy/sdlk). I have designed it with my own unique algorithms.
 
-- Archlinux
+## Old version (without sdlk)
 
-```bash
-yay -Sy rchess 
-```
-For the moment, you have to build templi to use it if you use another system (not archlinux)
+You will find the old version of R_Chess (which I didn’t have sdlk for yet) [OLD_VERSION](http://github.com/RickaPrincy/R_Chess/tree/old-version).
 
-- Dependancies
-    - CMake (Version 3.18 or later)
-    - C++ Compiler with C++17 support
+## What else ?
 
-- Build manually
+For now, you can only play against someone or against yourself on R_Chess. However, in the future, I plan to integrate [Stockfish](https://github.com/official-stockfish/Stockfish.git) into this program, and R_Chess will be able to be used as an analysis chessboard.
 
-```bash
-git clone -b v0.0.1 https://github.com/RickaPrincy/R_Chess 
-
-cd R_Chess 
-
-mkdir build
-
-cd build
-
-cmake -DCMAKE_BUILD_TYPE=Release -S .. -B .
-
-sudo make install
-```
-#### :warning: If some libs are not found after building manually
-
-Identify the installation path of the missing library. For example, let's assume the library is installed in `/usr/local/lib` (on linux it should be there).
-
-If you are using Linux, add the following code to your `~/.zshrc` or `~/.bashrc` based on what you use (replacing `/usr/local/lib` with the actual installation path):
-
-```bash
-export LD_LIBRARY_PATH=/usr/local/lib:\$LD_LIBRARY_PATH
-```
+![R_Chess](/graphics/preview.png "R_Chess")
