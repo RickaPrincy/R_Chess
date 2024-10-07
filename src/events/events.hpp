@@ -4,6 +4,7 @@
 
 namespace rchess
 {
-	void handle_case_click(int x, int y, Board *board);
+	void handle_case_click(Board *board, int x, int y);
 	void reset_selected_piece(Board *board);
+	void move_piece_position(std::shared_ptr<Piece> piece, int x, int y);
 }  // namespace rchess

@@ -14,7 +14,7 @@ namespace rchess
 	{
 	private:
 		PieceColor m_turn{ PieceColor::WHITE };
-		std::shared_ptr<Piece> m_selected_pieces = nullptr;
+		std::shared_ptr<Piece> m_selected_piece = nullptr;
 		std::vector<std::shared_ptr<Piece>> m_pieces{};
 		void setup_all_pieces();
 
@@ -22,6 +22,7 @@ namespace rchess
 		Board();
 		GETTER(PieceColor, turn);
 		GETTER(std::vector<std::shared_ptr<Piece>>, pieces);
+		GETTER(std::shared_ptr<Piece>, selected_piece);
 
 		void init_new_game();
 		void set_selected_piece(std::shared_ptr<Piece> piece);

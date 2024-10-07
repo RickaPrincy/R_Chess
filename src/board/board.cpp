@@ -22,7 +22,7 @@ namespace rchess
 				if (case_position.get_x() == -1)
 					return;
 
-				rchess::handle_case_click(case_position.get_x(), case_position.get_y(), this);
+				rchess::handle_case_click(this, case_position.get_x(), case_position.get_y());
 			});
 	}
 
@@ -90,13 +90,13 @@ namespace rchess
 
 	void Board::set_selected_piece(std::shared_ptr<Piece> piece)
 	{
-		if (this->m_selected_pieces != nullptr)
+		if (this->m_selected_piece != nullptr)
 		{
-			this->m_selected_pieces->set_is_selected(false);
+			this->m_selected_piece->set_is_selected(false);
 
 			if (piece == nullptr)
 			{
-				this->m_selected_pieces->do_re_render();
+				this->m_selected_piece->do_re_render();
 				return;
 			}
 		}
@@ -104,7 +104,7 @@ namespace rchess
 		if (piece != nullptr)
 		{
 			piece->set_is_selected(true);
-			this->m_selected_pieces = piece;
+			this->m_selected_piece = piece;
 		}
 	}
 }  // namespace rchess
