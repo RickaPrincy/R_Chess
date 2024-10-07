@@ -91,7 +91,15 @@ namespace rchess
 	void Board::set_selected_piece(std::shared_ptr<Piece> piece)
 	{
 		if (this->m_selected_pieces != nullptr)
+		{
 			this->m_selected_pieces->set_is_selected(false);
+
+			if (piece == nullptr)
+			{
+				this->m_selected_pieces->do_re_render();
+				return;
+			}
+		}
 
 		if (piece != nullptr)
 		{

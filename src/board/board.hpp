@@ -8,7 +8,6 @@
 #include <sdlk/core/properties/position.hpp>
 
 #include "../pieces/pieces.hpp"
-
 namespace rchess
 {
 	class Board : public sdlk::Observer

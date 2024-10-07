@@ -8,6 +8,7 @@
 #include "../ui/draw.hpp"
 
 using namespace rchess::config;
+constexpr const int THICKNESS_RECT_SELECTED_PIECE = 3;
 
 namespace rchess
 {
@@ -33,14 +34,17 @@ namespace rchess
 
 	void Piece::render(SDL_Renderer *renderer)
 	{
-		SDL_Rect dest_rect = { this->get_x() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE,
-			this->get_y() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE,
+		SDL_Rect dest_rect = { this->get_x() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE / 2,
+			this->get_y() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE / 2,
 			this->get_width(),
 			this->get_height() };
 
 		if (this->m_is_on_board && this->m_is_selected)
 		{
-			draw::line_rect(renderer, { dest_rect.x, dest_rect.y, CASE_SIZE, CASE_SIZE }, { 255, 242, 0, 255 });
+			draw::line_rect(renderer,
+				{ dest_rect.x - PADDING_SIZE / 2, dest_rect.y - PADDING_SIZE / 2, CASE_SIZE, CASE_SIZE },
+				{ 255, 242, 0, 255 },
+				THICKNESS_RECT_SELECTED_PIECE);
 		}
 
 		sdlk::throw_if_not_success(
