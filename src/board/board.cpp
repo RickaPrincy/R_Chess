@@ -93,18 +93,14 @@ namespace rchess
 		if (this->m_selected_piece != nullptr)
 		{
 			this->m_selected_piece->set_is_selected(false);
-
-			if (piece == nullptr)
-			{
-				this->m_selected_piece->do_re_render();
-				return;
-			}
+			this->m_selected_piece->do_re_render();
 		}
 
-		if (piece != nullptr)
+		this->m_selected_piece = piece;
+		if (m_selected_piece != nullptr)
 		{
 			piece->set_is_selected(true);
-			this->m_selected_piece = piece;
+			piece->do_re_render();
 		}
 	}
 }  // namespace rchess
