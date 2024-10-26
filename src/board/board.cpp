@@ -103,4 +103,10 @@ namespace rchess
 			piece->do_re_render();
 		}
 	}
+
+	void Board::toggle_turn()
+	{
+		auto last_turn = this->get_turn();
+		this->set_turn(last_turn == rchess::PieceColor::BLACK ? rchess::PieceColor::WHITE : rchess::PieceColor::BLACK);
+	}
 }  // namespace rchess

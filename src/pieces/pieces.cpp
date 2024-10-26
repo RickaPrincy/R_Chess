@@ -34,12 +34,17 @@ namespace rchess
 
 	void Piece::render(SDL_Renderer *renderer)
 	{
+		if (!this->m_is_on_board)
+		{
+			return;
+		}
+
 		SDL_Rect dest_rect = { this->get_x() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE / 2,
 			this->get_y() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE / 2,
 			this->get_width(),
 			this->get_height() };
 
-		if (this->m_is_on_board && this->m_is_selected)
+		if (this->m_is_selected)
 		{
 			draw::line_rect(renderer,
 				{ dest_rect.x - PADDING_SIZE / 2, dest_rect.y - PADDING_SIZE / 2, CASE_SIZE, CASE_SIZE },
