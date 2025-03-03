@@ -6,7 +6,7 @@ namespace rchess
 	{
 	}
 
-	void King::calc_possible_moves()
+	void King::calc_possible_moves(Board &board)
 	{
 		// TODO
 	}

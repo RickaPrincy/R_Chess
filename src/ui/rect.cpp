@@ -1,6 +1,5 @@
 #include <SDL2/SDL_render.h>
 
-#include <ios>
 #include <sdlk/utils/basic_wrapper.hpp>
 
 #include "./draw.hpp"

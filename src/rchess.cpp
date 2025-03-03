@@ -28,7 +28,7 @@ namespace rchess
 		}
 		catch (const std::runtime_error &error)
 		{
-			clean_resources(p_background);
+			rchess::clean_resources(p_background);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -41,6 +41,6 @@ namespace rchess
 
 	RChessApp::~RChessApp()
 	{
-		clean_resources(p_background);
+		rchess::clean_resources(p_background);
 	}
 }  // namespace rchess

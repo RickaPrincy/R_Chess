@@ -12,6 +12,7 @@
 
 namespace rchess
 {
+	class Board;
 	enum class PieceType
 	{
 		ROOK = 0,  // based on pieces graphics order
@@ -47,7 +48,7 @@ namespace rchess
 		SETTER(bool, is_on_board);
 
 		Piece(std::string name, PieceType type, PieceColor color, int x, int y);
-		virtual void calc_possible_moves() = 0;
+		virtual void calc_possible_moves(Board &board) = 0;
 		void init_position();
 
 		static void setup(sdlk::Image *background, SDL_Renderer *renderer, const std::string &path);
@@ -57,42 +58,45 @@ namespace rchess
 	class Rook : public Piece
 	{
 	public:
-		virtual void calc_possible_moves() override;
+		virtual void calc_possible_moves(Board &board) override;
 		Rook(std::string name, PieceColor color, int x, int y);
 	};
 
 	class Knight : public Piece
 	{
 	public:
-		virtual void calc_possible_moves() override;
+		virtual void calc_possible_moves(Board &board) override;
 		Knight(std::string name, PieceColor color, int x, int y);
 	};
 
 	class Bishop : public Piece
 	{
 	public:
-		virtual void calc_possible_moves() override;
+		virtual void calc_possible_moves(Board &board) override;
 		Bishop(std::string name, PieceColor color, int x, int y);
 	};
 
 	class Queen : public Piece
 	{
 	public:
-		virtual void calc_possible_moves() override;
+		virtual void calc_possible_moves(Board &board) override;
 		Queen(std::string name, PieceColor color, int x, int y);
 	};
 
 	class King : public Piece
 	{
 	public:
-		virtual void calc_possible_moves() override;
+		virtual void calc_possible_moves(Board &board) override;
 		King(std::string name, PieceColor color, int x, int y);
 	};
 
 	class Pawn : public Piece
 	{
+	private:
+		short m_increment_value{ 0 };
+
 	public:
-		virtual void calc_possible_moves() override;
+		virtual void calc_possible_moves(Board &board) override;
 		Pawn(std::string name, PieceColor color, int x, int y);
 	};
 }  // namespace rchess

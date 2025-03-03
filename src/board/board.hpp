@@ -7,7 +7,9 @@
 #include <sdlk/core/preprocessor/getter_setter.hpp>
 #include <sdlk/core/properties/position.hpp>
 
+#include "../case/case.hpp"
 #include "../pieces/pieces.hpp"
+
 namespace rchess
 {
 	class Board : public sdlk::Observer
@@ -16,6 +18,8 @@ namespace rchess
 		PieceColor m_turn{ PieceColor::WHITE };
 		std::shared_ptr<Piece> m_selected_piece = nullptr;
 		std::vector<std::shared_ptr<Piece>> m_pieces{};
+		std::vector<ValidCase> valid_cases{};
+
 		void setup_all_pieces();
 
 	public:
@@ -25,9 +29,11 @@ namespace rchess
 		GETTER(std::vector<std::shared_ptr<Piece>>, pieces);
 		GETTER(std::shared_ptr<Piece>, selected_piece);
 
+		void calc_valid_case();
 		void init_new_game();
 		void toggle_turn();
 		void set_selected_piece(std::shared_ptr<Piece> piece);
+    bool has_piece_on_position(int x, int y);
 
 		static sdlk::Position get_case_position_from_mouse_position(const SDL_MouseMotionEvent &mouse_motion);
 		static void setup(sdlk::EventListener *event_listener);

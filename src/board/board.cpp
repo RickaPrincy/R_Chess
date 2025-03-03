@@ -109,4 +109,24 @@ namespace rchess
 		auto last_turn = this->get_turn();
 		this->set_turn(last_turn == rchess::PieceColor::BLACK ? rchess::PieceColor::WHITE : rchess::PieceColor::BLACK);
 	}
+
+	bool Board::has_piece_on_position(int x, int y)
+	{
+		const auto pieces = this->get_pieces();
+		auto piece_on_position = std::find_if(pieces.begin(),
+			pieces.end(),
+			[&](const std::shared_ptr<Piece> piece)
+			{ return piece->get_x() == x && piece->get_y() == y && piece->get_is_on_board(); });
+		return piece_on_position != pieces.end();
+	}
+
+	void Board::calc_valid_case()
+	{
+		auto selected_piece = this->get_selected_piece();
+		if (selected_piece == nullptr)
+		{
+			return;
+		}
+		selected_piece->calc_possible_moves(*this);
+	}
 }  // namespace rchess
