@@ -112,12 +112,28 @@ namespace rchess
 
 	bool Board::has_piece_on_position(int x, int y)
 	{
+		return this->get_piece_on_position(x, y) != nullptr;
+	}
+
+	Piece *Board::get_piece_on_position(int x, int y)
+	{
 		const auto pieces = this->get_pieces();
 		auto piece_on_position = std::find_if(pieces.begin(),
 			pieces.end(),
 			[&](const std::shared_ptr<Piece> piece)
 			{ return piece->get_x() == x && piece->get_y() == y && piece->get_is_on_board(); });
-		return piece_on_position != pieces.end();
+
+		if (piece_on_position == pieces.end())
+		{
+			return nullptr;
+		}
+
+		return piece_on_position->get();
+	}
+
+	bool Board::is_empty_case(int x, int y)
+	{
+		return !this->has_piece_on_position(x, y);
 	}
 
 	void Board::calc_valid_case()
@@ -128,5 +144,24 @@ namespace rchess
 			return;
 		}
 		selected_piece->calc_possible_moves(*this);
+	}
+
+	void Board::append_or_update_case_valid(Piece *piece, int x, int y)
+	{
+		auto valid_cases = this->get_valid_cases();
+		auto select_valid_case = std::find_if(valid_cases.begin(),
+			valid_cases.end(),
+			[&](ValidCase &valid_case) { return valid_case.get_x() == x && valid_case.get_y() == y; });
+
+		if (select_valid_case == valid_cases.end())
+		{
+			ValidCase new_valid_case(x, y);
+			new_valid_case.append_piece_attack(piece);
+			this->m_valid_cases.push_back(new_valid_case);
+		}
+		else
+		{
+			select_valid_case->append_piece_attack(piece);
+		}
 	}
 }  // namespace rchess

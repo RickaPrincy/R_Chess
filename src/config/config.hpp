@@ -13,6 +13,8 @@ namespace rchess
 		inline constexpr const int PADDING_SIZE = CASE_SIZE - PIECE_SIZE;
 		inline constexpr const int MAX_COORD_ON_BOARD = 8 * CASE_SIZE + BORDER_SIZE;
 		inline constexpr const int MIN_COORD_ON_BOARD = BORDER_SIZE;
+		inline constexpr const int MAX_COORD = 7;
+		inline constexpr const int MIN_COORD = 0;
 		bool is_on_board(const SDL_MouseMotionEvent &event);
 	}  // namespace config
 

@@ -9,6 +9,7 @@ set(R_CHESS_SOURCES
     pieces/king.cpp
     pieces/pawn.cpp
     config/config.cpp
+    case/case.cpp
     board/board.cpp
     ui/rect.cpp
     events/events.cpp)
