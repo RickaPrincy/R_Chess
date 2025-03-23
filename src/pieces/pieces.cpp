@@ -70,6 +70,7 @@ namespace rchess
 		return x >= 0 && x < ROW_COUNT && y >= 0 && y < COLUMN_COUNT;
 	}
 
+	// Unified function for exploring all possible moves (for both Bishop and Rook and Queen)
 	void Piece::explore_direction(int dx,
 		int dy,
 		std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases)
@@ -82,12 +83,29 @@ namespace rchess
 			auto &current_case = cases[current_x][current_y];
 			current_case->add_piece_attacker(this);
 
-			if (current_case->get_piece() != nullptr)
+			if (current_case->has_piece())
 			{
 				break;
 			}
 			current_x += dx;
 			current_y += dy;
+		}
+	}
+
+	// Unified function for exploring all possible moves (for both King and Knight)
+	void Piece::explore_moves(const std::vector<std::array<int, 2>> &move_patterns,
+		std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases)
+	{
+		for (const auto &move : move_patterns)
+		{
+			int new_x = this->get_x() + move[0];
+			int new_y = this->get_y() + move[1];
+
+			if (is_valid_position(new_x, new_y))
+			{
+				auto &target_case = cases[new_x][new_y];
+				target_case->add_piece_attacker(this);
+			}
 		}
 	}
 }  // namespace rchess

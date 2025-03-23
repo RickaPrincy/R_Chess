@@ -40,7 +40,19 @@ file(COPY ${IMAGES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/graphics/")
 # clang-format configuration
 find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
 if(CLANG_FORMAT_EXECUTABLE)
-  file(GLOB_RECURSE ALL_SOURCE_FILES "${R_CHESS_SOURCE_DIR}/src/*.cpp")
+  file(
+    GLOB_RECURSE
+    ALL_SOURCE_FILES
+    "${R_CHESS_SOURCE_DIR}/src/*.cpp"
+    "${R_CHESS_SOURCE_DIR}/src/*.hpp"
+    "${R_CHESS_SOURCE_DIR}/src/case/*.cpp"
+    "${R_CHESS_SOURCE_DIR}/src/case/*.hpp"
+    "${R_CHESS_SOURCE_DIR}/src/board/*.cpp"
+    "${R_CHESS_SOURCE_DIR}/src/board/*.hpp"
+    "${R_CHESS_SOURCE_DIR}/src/pieces/*.cpp"
+    "${R_CHESS_SOURCE_DIR}/src/pieces/*.hpp"
+    "${R_CHESS_SOURCE_DIR}/src/ui/*.cpp"
+    "${R_CHESS_SOURCE_DIR}/src/ui/*.hpp")
   add_custom_target(
     clang-format
     COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}

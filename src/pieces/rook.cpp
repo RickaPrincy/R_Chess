@@ -1,5 +1,4 @@
 #include "../board/board.hpp"
-#include "../constant.hpp"
 #include "pieces.hpp"
 
 namespace rchess

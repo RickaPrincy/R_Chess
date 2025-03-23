@@ -61,7 +61,7 @@ namespace rchess
 			get_x() * UI_CASE_SIZE + UI_BORDER_SIZE, get_y() * UI_CASE_SIZE + UI_BORDER_SIZE, UI_CASE_SIZE, UI_CASE_SIZE
 		};
 
-		if (m_piece != nullptr)
+		if (this->has_piece())
 		{
 			draw::fill_rect(renderer, rect, { 255, 0, 0, 255 });
 			return;

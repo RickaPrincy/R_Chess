@@ -46,6 +46,8 @@ namespace rchess
 		void explore_direction(int dx,
 			int dy,
 			std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases);
+		void explore_moves(const std::vector<std::array<int, 2>> &move_patterns,
+			std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases);
 
 	public:
 		GETTER(PieceType, type);
