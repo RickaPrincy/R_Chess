@@ -1,3 +1,4 @@
+#include "../board/board.hpp"
 #include "pieces.hpp"
 
 namespace rchess
@@ -8,6 +9,10 @@ namespace rchess
 
 	void Bishop::calc_possible_moves(Board *board)
 	{
-		// TODO
+		auto cases = board->get_cases();
+		this->explore_direction(1, 1, cases);
+		this->explore_direction(1, -1, cases);
+		this->explore_direction(-1, 1, cases);
+		this->explore_direction(-1, -1, cases);
 	}
 }  // namespace rchess

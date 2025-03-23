@@ -64,15 +64,14 @@ namespace rchess
 		if (m_piece != nullptr)
 		{
 			draw::fill_rect(renderer, rect, { 255, 0, 0, 255 });
+			return;
 		}
-		else
-		{
-			int center_x = rect.x + (UI_CASE_SIZE / 2) - (UI_CASE_SIZE / 8);
-			int center_y = rect.y + (UI_CASE_SIZE / 2) - (UI_CASE_SIZE / 8);
-			int size = UI_CASE_SIZE / 4;
 
-			SDL_Rect small_rect = { center_x, center_y, size, size };
-			draw::fill_rect(renderer, small_rect, { 255, 255, 0, 255 });
-		}
+		int center_x = rect.x + (UI_CASE_SIZE / 2) - (UI_CASE_SIZE / 8);
+		int center_y = rect.y + (UI_CASE_SIZE / 2) - (UI_CASE_SIZE / 8);
+		int size = UI_CASE_SIZE / 4;
+
+		SDL_Rect small_rect = { center_x, center_y, size, size };
+		draw::fill_rect(renderer, small_rect, { 255, 255, 0, 255 });
 	}
 }  // namespace rchess

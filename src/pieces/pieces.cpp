@@ -4,6 +4,7 @@
 
 #include <sdlk/utils/basic_wrapper.hpp>
 
+#include "../case/case.hpp"
 #include "../constant.hpp"
 #include "../ui/draw.hpp"
 
@@ -67,5 +68,26 @@ namespace rchess
 	bool Piece::is_valid_position(int x, int y)
 	{
 		return x >= 0 && x < ROW_COUNT && y >= 0 && y < COLUMN_COUNT;
+	}
+
+	void Piece::explore_direction(int dx,
+		int dy,
+		std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases)
+	{
+		int current_x = this->get_x() + dx;
+		int current_y = this->get_y() + dy;
+
+		while (is_valid_position(current_x, current_y))
+		{
+			auto &current_case = cases[current_x][current_y];
+			current_case->add_piece_attacker(this);
+
+			if (current_case->get_piece() != nullptr)
+			{
+				break;
+			}
+			current_x += dx;
+			current_y += dy;
+		}
 	}
 }  // namespace rchess
