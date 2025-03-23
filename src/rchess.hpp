@@ -11,7 +11,7 @@ namespace rchess
 		sdlk::Image *p_background = nullptr;
 
 	public:
-		void run();
+		int run(int argc, char *argv[]);
 		RChessApp();
 		virtual ~RChessApp();
 	};

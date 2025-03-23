@@ -4,10 +4,11 @@
 
 #include <sdlk/utils/basic_wrapper.hpp>
 
-#include "../config/config.hpp"
+#include "../case/case.hpp"
+#include "../constant.hpp"
 #include "../ui/draw.hpp"
 
-using namespace rchess::config;
+using namespace rchess::constant;
 constexpr const int THICKNESS_RECT_SELECTED_PIECE = 3;
 
 namespace rchess
@@ -15,21 +16,15 @@ namespace rchess
 	static sdlk::Image *p_background = nullptr;
 	static SDL_Texture *all_image_texture = nullptr;
 
-	Piece::Piece(std::string name, PieceType type, PieceColor color, int x, int y)
-		: sdlk::Component(p_background, sdlk::Size(PIECE_SIZE), sdlk::Position(x, y)),
-		  m_name(name),
+	Piece::Piece(PieceType type, PieceColor color, int x, int y)
+		: sdlk::Component(p_background, sdlk::Size(UI_PIECE_SIZE), sdlk::Position(x, y)),
 		  m_type(type),
-		  m_color(color),
-		  m_initial_position(sdlk::Position(x, y))
+		  m_color(color)
 	{
-		m_src_rect = {
-			static_cast<int>(m_type) * PIECE_SIZE, static_cast<int>(m_color) * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE
-		};
-	}
-	void Piece::init_position()
-	{
-		this->set_position(m_initial_position);
-		this->do_re_render();
+		m_src_rect = { static_cast<int>(m_type) * UI_PIECE_SIZE,
+			static_cast<int>(m_color) * UI_PIECE_SIZE,
+			UI_PIECE_SIZE,
+			UI_PIECE_SIZE };
 	}
 
 	void Piece::render(SDL_Renderer *renderer)
@@ -39,15 +34,15 @@ namespace rchess
 			return;
 		}
 
-		SDL_Rect dest_rect = { this->get_x() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE / 2,
-			this->get_y() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE / 2,
+		SDL_Rect dest_rect = { this->get_x() * UI_CASE_SIZE + UI_BORDER_SIZE + UI_PADDING_SIZE / 2,
+			this->get_y() * UI_CASE_SIZE + UI_BORDER_SIZE + UI_PADDING_SIZE / 2,
 			this->get_width(),
 			this->get_height() };
 
 		if (this->m_is_selected)
 		{
 			draw::line_rect(renderer,
-				{ dest_rect.x - PADDING_SIZE / 2, dest_rect.y - PADDING_SIZE / 2, CASE_SIZE, CASE_SIZE },
+				{ dest_rect.x - UI_PADDING_SIZE / 2, dest_rect.y - UI_PADDING_SIZE / 2, UI_CASE_SIZE, UI_CASE_SIZE },
 				{ 255, 242, 0, 255 },
 				THICKNESS_RECT_SELECTED_PIECE);
 		}
@@ -67,6 +62,50 @@ namespace rchess
 		if (!sdlk::check::is_null(all_image_texture))
 		{
 			SDL_DestroyTexture(all_image_texture);
+		}
+	}
+
+	bool Piece::is_valid_position(int x, int y)
+	{
+		return x >= 0 && x < ROW_COUNT && y >= 0 && y < COLUMN_COUNT;
+	}
+
+	// Unified function for exploring all possible moves (for both Bishop and Rook and Queen)
+	void Piece::explore_direction(int dx,
+		int dy,
+		std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases)
+	{
+		int current_x = this->get_x() + dx;
+		int current_y = this->get_y() + dy;
+
+		while (is_valid_position(current_x, current_y))
+		{
+			auto &current_case = cases[current_x][current_y];
+			current_case->add_piece_attacker(this);
+
+			if (current_case->has_piece())
+			{
+				break;
+			}
+			current_x += dx;
+			current_y += dy;
+		}
+	}
+
+	// Unified function for exploring all possible moves (for both King and Knight)
+	void Piece::explore_moves(const std::vector<std::array<int, 2>> &move_patterns,
+		std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases)
+	{
+		for (const auto &move : move_patterns)
+		{
+			int new_x = this->get_x() + move[0];
+			int new_y = this->get_y() + move[1];
+
+			if (is_valid_position(new_x, new_y))
+			{
+				auto &target_case = cases[new_x][new_y];
+				target_case->add_piece_attacker(this);
+			}
 		}
 	}
 }  // namespace rchess

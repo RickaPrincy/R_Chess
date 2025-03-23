@@ -5,6 +5,5 @@ using namespace rchess;
 int main(int argc, char *argv[])
 {
 	RChessApp rchess;
-	rchess.run();
-	return 0;
+	return rchess.run(argc, argv);
 }
