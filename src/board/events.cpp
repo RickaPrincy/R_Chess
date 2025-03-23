@@ -46,5 +46,6 @@ namespace rchess
 		this->m_selected_piece->do_re_render();
 		this->m_selected_piece->set_position(sdlk::Position(click_case->get_x(), click_case->get_y()));
 		this->set_selected_piece(nullptr);
+		this->re_calc_move_valid();
 	}
 }  // namespace rchess

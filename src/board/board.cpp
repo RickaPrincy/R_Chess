@@ -1,5 +1,6 @@
 #include "board.hpp"
 
+#include <algorithm>
 #include <sdlk/core/events/types.hpp>
 
 #include "../case/case.hpp"
@@ -50,13 +51,24 @@ namespace rchess
 			piece->set_is_selected(true);
 			piece->do_re_render();
 		}
+
+		for (int x = 0; x < ROW_COUNT; x++)
+		{
+			for (int y = 0; y < COLUMN_COUNT; y++)
+			{
+				std::shared_ptr<Case> one_case = this->m_cases[x][y];
+				bool is_valid =
+					this->m_selected_piece == nullptr ? false : one_case->is_attacker(this->m_selected_piece);
+				one_case->set_is_valid(is_valid);
+			}
+		}
 	}
 
 	void Board::setup_pieces_and_cases()
 	{
-		for (int x = 0; x < 8; x++)
+		for (int x = 0; x < ROW_COUNT; x++)
 		{
-			for (int y = 0; y < 8; y++)
+			for (int y = 0; y < COLUMN_COUNT; y++)
 			{
 				m_cases[x][y] = std::make_shared<Case>(x, y);
 			}
@@ -101,6 +113,27 @@ namespace rchess
 		{
 			m_cases[piece->get_x()][piece->get_y()].get()->set_piece(piece);
 		}
+	}
+
+	void Board::re_calc_move_valid()
+	{
+		for (int x = 0; x < ROW_COUNT; x++)
+		{
+			for (int y = 0; y < COLUMN_COUNT; y++)
+			{
+				m_cases[x][y]->reset_attackers();
+				m_cases[x][y]->set_is_valid(false);
+			}
+		}
+
+		std::for_each(this->m_pieces.begin(),
+			this->m_pieces.end(),
+			[&](std::shared_ptr<Piece> &piece) { piece->calc_possible_moves(this); });
+	}
+
+	std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> Board::get_cases()
+	{
+		return this->m_cases;
 	}
 
 	// STATIC FUNCTION MEMBER

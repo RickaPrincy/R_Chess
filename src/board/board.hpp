@@ -30,12 +30,14 @@ namespace rchess
 		void set_selected_piece(std::shared_ptr<Piece> piece);
 		void handle_case_click(std::shared_ptr<Case> click_case);
 		void move_selected_piece_position(std::shared_ptr<Case> selected_case);
+		void re_calc_move_valid();
 
 	public:
 		Board();
 		GETTER(PieceColor, turn);
 		GETTER(std::shared_ptr<Piece>, selected_piece);
 		std::array<std::shared_ptr<Piece>, PIECES_COUNT> get_pieces();
+		std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> get_cases();
 
 		static sdlk::Position get_case_position_from_mouse_position(const SDL_MouseMotionEvent &mouse_motion);
 		static void setup_observer(sdlk::EventListener *event_listener);
