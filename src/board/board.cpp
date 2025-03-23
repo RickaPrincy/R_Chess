@@ -1,91 +1,39 @@
 #include "board.hpp"
 
-#include <algorithm>
 #include <sdlk/core/events/types.hpp>
 
-#include "../config/config.hpp"
-#include "../events/events.hpp"
+#include "../case/case.hpp"
+#include "../constant.hpp"
 #include "../pieces/pieces.hpp"
 
 namespace rchess
 {
+	using namespace constant;
 	static sdlk::EventListener *p_main_event_listener = nullptr;
 
 	Board::Board() : sdlk::Observer()
 	{
-		this->setup_all_pieces();
+		this->setup_pieces_and_cases();
 		this->p_event_listener = p_main_event_listener;
 		this->add_event_listener(sdlk::EventType::MOUSE_BUTTON_DOWN,
 			[&](const SDL_Event &event)
 			{
-				auto case_position = get_case_position_from_mouse_position(event.motion);
+				auto case_position = Board::get_case_position_from_mouse_position(event.motion);
 				if (case_position.get_x() == -1)
 					return;
-
-				rchess::handle_case_click(this, case_position.get_x(), case_position.get_y());
+				this->handle_case_click(this->m_cases[case_position.get_x()][case_position.get_y()]);
 			});
 	}
 
-	void Board::init_new_game()
+	std::array<std::shared_ptr<Piece>, 32> Board::get_pieces()
 	{
-		std::for_each(m_pieces.begin(), m_pieces.end(), [](const auto piece) { piece->init_position(); });
+		return this->m_pieces;
 	}
 
-	void Board::setup_all_pieces()
+	void Board::toggle_turn()
 	{
-		// whites
-		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteA2", PieceColor::WHITE, 0, 6));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteB2", PieceColor::WHITE, 1, 6));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteC2", PieceColor::WHITE, 2, 6));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteD2", PieceColor::WHITE, 3, 6));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteE2", PieceColor::WHITE, 4, 6));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteF2", PieceColor::WHITE, 5, 6));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteG2", PieceColor::WHITE, 6, 6));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnWhiteH2", PieceColor::WHITE, 7, 6));
-		m_pieces.push_back(std::make_shared<Rook>("rookWhiteA1", PieceColor::WHITE, 0, 7));
-		m_pieces.push_back(std::make_shared<Knight>("knightWhiteB1", PieceColor::WHITE, 1, 7));
-		m_pieces.push_back(std::make_shared<Bishop>("bishopWhiteC1", PieceColor::WHITE, 2, 7));
-		m_pieces.push_back(std::make_shared<Queen>("bishopWhiteD1", PieceColor::WHITE, 3, 7));
-		m_pieces.push_back(std::make_shared<King>("kingWhiteE1", PieceColor::WHITE, 4, 7));
-		m_pieces.push_back(std::make_shared<Bishop>("bishopWhiteF1", PieceColor::WHITE, 5, 7));
-		m_pieces.push_back(std::make_shared<Knight>("kingWhiteG1", PieceColor::WHITE, 6, 7));
-		m_pieces.push_back(std::make_shared<Rook>("rookWhiteH1", PieceColor::WHITE, 7, 7));
-
-		// blacks
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackA7", PieceColor::BLACK, 0, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackB7", PieceColor::BLACK, 1, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackC7", PieceColor::BLACK, 2, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackD7", PieceColor::BLACK, 3, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackE7", PieceColor::BLACK, 4, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackF7", PieceColor::BLACK, 5, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackG7", PieceColor::BLACK, 6, 1));
-		m_pieces.push_back(std::make_shared<Pawn>("pawnBlackH7", PieceColor::BLACK, 7, 1));
-		m_pieces.push_back(std::make_shared<Rook>("rookBlackA8", PieceColor::BLACK, 0, 0));
-		m_pieces.push_back(std::make_shared<Knight>("knightBlackB8", PieceColor::BLACK, 1, 0));
-		m_pieces.push_back(std::make_shared<Bishop>("bishopBlackC8", PieceColor::BLACK, 2, 0));
-		m_pieces.push_back(std::make_shared<Queen>("bishopBlackD8", PieceColor::BLACK, 3, 0));
-		m_pieces.push_back(std::make_shared<King>("kingBlackE8", PieceColor::BLACK, 4, 0));
-		m_pieces.push_back(std::make_shared<Bishop>("bishopBlackF8", PieceColor::BLACK, 5, 0));
-		m_pieces.push_back(std::make_shared<Knight>("kingBlackG8", PieceColor::BLACK, 6, 0));
-		m_pieces.push_back(std::make_shared<Rook>("rookBlackH8", PieceColor::BLACK, 7, 0));
-	}
-
-	sdlk::Position Board::get_case_position_from_mouse_position(const SDL_MouseMotionEvent &event)
-	{
-		if (!config::is_on_board(event))
-		{
-			return sdlk::Position(-1, -1);
-		}
-
-		// to know the x and y case[x][y] clicked
-		int x_case = (event.x - config::BORDER_SIZE) / config::CASE_SIZE;
-		int y_case = (event.y - config::BORDER_SIZE) / config::CASE_SIZE;
-		return sdlk::Position(x_case, y_case);
-	}
-
-	void Board::setup(sdlk::EventListener *event_listener)
-	{
-		p_main_event_listener = event_listener;
+		auto last_turn = this->get_turn();
+		this->set_turn(last_turn == rchess::PieceColor::BLACK ? rchess::PieceColor::WHITE : rchess::PieceColor::BLACK);
 	}
 
 	void Board::set_selected_piece(std::shared_ptr<Piece> piece)
@@ -104,64 +52,76 @@ namespace rchess
 		}
 	}
 
-	void Board::toggle_turn()
+	void Board::setup_pieces_and_cases()
 	{
-		auto last_turn = this->get_turn();
-		this->set_turn(last_turn == rchess::PieceColor::BLACK ? rchess::PieceColor::WHITE : rchess::PieceColor::BLACK);
-	}
-
-	bool Board::has_piece_on_position(int x, int y)
-	{
-		return this->get_piece_on_position(x, y) != nullptr;
-	}
-
-	Piece *Board::get_piece_on_position(int x, int y)
-	{
-		const auto pieces = this->get_pieces();
-		auto piece_on_position = std::find_if(pieces.begin(),
-			pieces.end(),
-			[&](const std::shared_ptr<Piece> piece)
-			{ return piece->get_x() == x && piece->get_y() == y && piece->get_is_on_board(); });
-
-		if (piece_on_position == pieces.end())
+		for (int x = 0; x < 8; x++)
 		{
-			return nullptr;
+			for (int y = 0; y < 8; y++)
+			{
+				m_cases[x][y] = std::make_shared<Case>(x, y);
+			}
 		}
 
-		return piece_on_position->get();
+		m_pieces[0] = std::make_shared<Pawn>(PieceColor::WHITE, 0, 6);
+		m_pieces[1] = std::make_shared<Pawn>(PieceColor::WHITE, 1, 6);
+		m_pieces[2] = std::make_shared<Pawn>(PieceColor::WHITE, 2, 6);
+		m_pieces[3] = std::make_shared<Pawn>(PieceColor::WHITE, 3, 6);
+		m_pieces[4] = std::make_shared<Pawn>(PieceColor::WHITE, 4, 6);
+		m_pieces[5] = std::make_shared<Pawn>(PieceColor::WHITE, 5, 6);
+		m_pieces[6] = std::make_shared<Pawn>(PieceColor::WHITE, 6, 6);
+		m_pieces[7] = std::make_shared<Pawn>(PieceColor::WHITE, 7, 6);
+		m_pieces[8] = std::make_shared<Rook>(PieceColor::WHITE, 0, 7);
+		m_pieces[9] = std::make_shared<Knight>(PieceColor::WHITE, 1, 7);
+		m_pieces[10] = std::make_shared<Bishop>(PieceColor::WHITE, 2, 7);
+		m_pieces[11] = std::make_shared<Queen>(PieceColor::WHITE, 3, 7);
+		m_pieces[12] = std::make_shared<King>(PieceColor::WHITE, 4, 7);
+		m_pieces[13] = std::make_shared<Bishop>(PieceColor::WHITE, 5, 7);
+		m_pieces[14] = std::make_shared<Knight>(PieceColor::WHITE, 6, 7);
+		m_pieces[15] = std::make_shared<Rook>(PieceColor::WHITE, 7, 7);
+
+		// blacks
+		m_pieces[16] = std::make_shared<Pawn>(PieceColor::BLACK, 0, 1);
+		m_pieces[17] = std::make_shared<Pawn>(PieceColor::BLACK, 1, 1);
+		m_pieces[18] = std::make_shared<Pawn>(PieceColor::BLACK, 2, 1);
+		m_pieces[19] = std::make_shared<Pawn>(PieceColor::BLACK, 3, 1);
+		m_pieces[20] = std::make_shared<Pawn>(PieceColor::BLACK, 4, 1);
+		m_pieces[21] = std::make_shared<Pawn>(PieceColor::BLACK, 5, 1);
+		m_pieces[22] = std::make_shared<Pawn>(PieceColor::BLACK, 6, 1);
+		m_pieces[23] = std::make_shared<Pawn>(PieceColor::BLACK, 7, 1);
+		m_pieces[24] = std::make_shared<Rook>(PieceColor::BLACK, 0, 0);
+		m_pieces[25] = std::make_shared<Knight>(PieceColor::BLACK, 1, 0);
+		m_pieces[26] = std::make_shared<Bishop>(PieceColor::BLACK, 2, 0);
+		m_pieces[27] = std::make_shared<Queen>(PieceColor::BLACK, 3, 0);
+		m_pieces[28] = std::make_shared<King>(PieceColor::BLACK, 4, 0);
+		m_pieces[29] = std::make_shared<Bishop>(PieceColor::BLACK, 5, 0);
+		m_pieces[30] = std::make_shared<Knight>(PieceColor::BLACK, 6, 0);
+		m_pieces[31] = std::make_shared<Rook>(PieceColor::BLACK, 7, 0);
+
+		for (auto &piece : m_pieces)
+		{
+			m_cases[piece->get_x()][piece->get_y()].get()->set_piece(piece);
+		}
 	}
 
-	bool Board::is_empty_case(int x, int y)
+	// STATIC FUNCTION MEMBER
+	sdlk::Position Board::get_case_position_from_mouse_position(const SDL_MouseMotionEvent &event)
 	{
-		return !this->has_piece_on_position(x, y);
+		const auto is_on_board = event.x < MAX_COORD_ON_BOARD && event.y < MAX_COORD_ON_BOARD &&
+								 event.x > MIN_COORD_ON_BOARD && event.y > MIN_COORD_ON_BOARD;
+
+		if (!is_on_board)
+		{
+			return sdlk::Position(-1, -1);
+		}
+
+		// to know the x and y case[x][y] clicked
+		int x_case = (event.x - UI_BORDER_SIZE) / UI_CASE_SIZE;
+		int y_case = (event.y - UI_BORDER_SIZE) / UI_CASE_SIZE;
+		return sdlk::Position(x_case, y_case);
 	}
 
-	void Board::calc_valid_case()
+	void Board::setup_observer(sdlk::EventListener *event_listener)
 	{
-		auto selected_piece = this->get_selected_piece();
-		if (selected_piece == nullptr)
-		{
-			return;
-		}
-		selected_piece->calc_possible_moves(*this);
-	}
-
-	void Board::append_or_update_case_valid(Piece *piece, int x, int y)
-	{
-		auto valid_cases = this->get_valid_cases();
-		auto select_valid_case = std::find_if(valid_cases.begin(),
-			valid_cases.end(),
-			[&](ValidCase &valid_case) { return valid_case.get_x() == x && valid_case.get_y() == y; });
-
-		if (select_valid_case == valid_cases.end())
-		{
-			ValidCase new_valid_case(x, y);
-			new_valid_case.append_piece_attack(piece);
-			this->m_valid_cases.push_back(new_valid_case);
-		}
-		else
-		{
-			select_valid_case->append_piece_attack(piece);
-		}
+		p_main_event_listener = event_listener;
 	}
 }  // namespace rchess

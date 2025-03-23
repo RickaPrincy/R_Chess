@@ -2,45 +2,43 @@
 
 #include <SDL2/SDL_events.h>
 
+#include <array>
 #include <memory>
 #include <sdlk/core/events/observer.hpp>
 #include <sdlk/core/preprocessor/getter_setter.hpp>
 #include <sdlk/core/properties/position.hpp>
 
 #include "../case/case.hpp"
+#include "../constant.hpp"
 #include "../pieces/pieces.hpp"
 
 namespace rchess
 {
+	using namespace constant;
 	class Board : public sdlk::Observer
 	{
 	private:
 		PieceColor m_turn{ PieceColor::WHITE };
+		std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> m_cases{};
+		std::array<std::shared_ptr<Piece>, PIECES_COUNT> m_pieces{};
 		std::shared_ptr<Piece> m_selected_piece = nullptr;
-		std::vector<std::shared_ptr<Piece>> m_pieces{};
-		std::vector<ValidCase> m_valid_cases{};
 
-		void setup_all_pieces();
+		SETTER(PieceColor, turn);
+
+		void toggle_turn();
+		void setup_pieces_and_cases();
+		void set_selected_piece(std::shared_ptr<Piece> piece);
+		void handle_case_click(std::shared_ptr<Case> click_case);
+		void move_selected_piece_position(std::shared_ptr<Case> selected_case);
 
 	public:
 		Board();
 		GETTER(PieceColor, turn);
-		SETTER(PieceColor, turn);
-		GETTER(std::vector<ValidCase>, valid_cases);
-		GETTER(std::vector<std::shared_ptr<Piece>>, pieces);
 		GETTER(std::shared_ptr<Piece>, selected_piece);
-
-		void calc_valid_case();
-		void init_new_game();
-		void toggle_turn();
-		void append_or_update_case_valid(Piece *piece, int x, int y);
-		void set_selected_piece(std::shared_ptr<Piece> piece);
-		bool has_piece_on_position(int x, int y);
-		bool is_empty_case(int x, int y);
-		Piece *get_piece_on_position(int x, int y);
+		std::array<std::shared_ptr<Piece>, PIECES_COUNT> get_pieces();
 
 		static sdlk::Position get_case_position_from_mouse_position(const SDL_MouseMotionEvent &mouse_motion);
-		static void setup(sdlk::EventListener *event_listener);
+		static void setup_observer(sdlk::EventListener *event_listener);
 		friend class RChessApp;
 	};
 }  // namespace rchess

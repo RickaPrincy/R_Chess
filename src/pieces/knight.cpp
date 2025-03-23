@@ -2,7 +2,7 @@
 
 namespace rchess
 {
-	Knight::Knight(std::string name, PieceColor color, int x, int y) : Piece(name, PieceType::KNIGHT, color, x, y)
+	Knight::Knight(PieceColor color, int x, int y) : Piece(PieceType::KNIGHT, color, x, y)
 	{
 	}
 

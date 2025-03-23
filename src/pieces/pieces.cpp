@@ -4,10 +4,10 @@
 
 #include <sdlk/utils/basic_wrapper.hpp>
 
-#include "../config/config.hpp"
+#include "../constant.hpp"
 #include "../ui/draw.hpp"
 
-using namespace rchess::config;
+using namespace rchess::constant;
 constexpr const int THICKNESS_RECT_SELECTED_PIECE = 3;
 
 namespace rchess
@@ -15,21 +15,15 @@ namespace rchess
 	static sdlk::Image *p_background = nullptr;
 	static SDL_Texture *all_image_texture = nullptr;
 
-	Piece::Piece(std::string name, PieceType type, PieceColor color, int x, int y)
-		: sdlk::Component(p_background, sdlk::Size(PIECE_SIZE), sdlk::Position(x, y)),
-		  m_name(name),
+	Piece::Piece(PieceType type, PieceColor color, int x, int y)
+		: sdlk::Component(p_background, sdlk::Size(UI_PIECE_SIZE), sdlk::Position(x, y)),
 		  m_type(type),
-		  m_color(color),
-		  m_initial_position(sdlk::Position(x, y))
+		  m_color(color)
 	{
-		m_src_rect = {
-			static_cast<int>(m_type) * PIECE_SIZE, static_cast<int>(m_color) * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE
-		};
-	}
-	void Piece::init_position()
-	{
-		this->set_position(m_initial_position);
-		this->do_re_render();
+		m_src_rect = { static_cast<int>(m_type) * UI_PIECE_SIZE,
+			static_cast<int>(m_color) * UI_PIECE_SIZE,
+			UI_PIECE_SIZE,
+			UI_PIECE_SIZE };
 	}
 
 	void Piece::render(SDL_Renderer *renderer)
@@ -39,15 +33,15 @@ namespace rchess
 			return;
 		}
 
-		SDL_Rect dest_rect = { this->get_x() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE / 2,
-			this->get_y() * CASE_SIZE + BORDER_SIZE + PADDING_SIZE / 2,
+		SDL_Rect dest_rect = { this->get_x() * UI_CASE_SIZE + UI_BORDER_SIZE + UI_PADDING_SIZE / 2,
+			this->get_y() * UI_CASE_SIZE + UI_BORDER_SIZE + UI_PADDING_SIZE / 2,
 			this->get_width(),
 			this->get_height() };
 
 		if (this->m_is_selected)
 		{
 			draw::line_rect(renderer,
-				{ dest_rect.x - PADDING_SIZE / 2, dest_rect.y - PADDING_SIZE / 2, CASE_SIZE, CASE_SIZE },
+				{ dest_rect.x - UI_PADDING_SIZE / 2, dest_rect.y - UI_PADDING_SIZE / 2, UI_CASE_SIZE, UI_CASE_SIZE },
 				{ 255, 242, 0, 255 },
 				THICKNESS_RECT_SELECTED_PIECE);
 		}

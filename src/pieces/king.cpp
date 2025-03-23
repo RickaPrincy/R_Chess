@@ -2,7 +2,7 @@
 
 namespace rchess
 {
-	King::King(std::string name, PieceColor color, int x, int y) : Piece(name, PieceType::KING, color, x, y)
+	King::King(PieceColor color, int x, int y) : Piece(PieceType::KING, color, x, y)
 	{
 	}
 
