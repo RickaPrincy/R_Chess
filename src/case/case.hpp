@@ -1,6 +1,9 @@
 #pragma once
 
+#include <SDL2/SDL_render.h>
+
 #include <memory>
+#include <sdlk/core/component.hpp>
 #include <sdlk/core/preprocessor/getter_setter.hpp>
 #include <vector>
 
@@ -8,7 +11,7 @@
 
 namespace rchess
 {
-	class Case
+	class Case : private sdlk::Component
 	{
 	private:
 		int m_x{ 0 }, m_y{ 0 };
@@ -19,7 +22,6 @@ namespace rchess
 
 	public:
 		Case(int x, int y);
-		Case(int x, int y, Piece *piece);
 		GETTER(int, x);
 		GETTER(int, y);
 		GETTER(bool, is_valid);
@@ -33,5 +35,8 @@ namespace rchess
 		void reset_attackers();
 		bool has_piece();
 		bool is_attacker(std::shared_ptr<Piece> piece);
+		virtual void render(SDL_Renderer *renderer) override;
+
+		static void setup(sdlk::Image *background);
 	};
 }  // namespace rchess

@@ -6,7 +6,7 @@
 
 namespace rchess
 {
-	void draw::line_rect(SDL_Renderer *renderer, SDL_Rect rect, SDL_Color color, int thickness)
+	void draw::line_rect(SDL_Renderer* renderer, SDL_Rect rect, SDL_Color color, int thickness)
 	{
 		sdlk::throw_if_not_success(
 			SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a), "Cannot Set render target color");
@@ -22,5 +22,12 @@ namespace rchess
 
 		tempRect = { rect.x + rect.w - thickness, rect.y + thickness, thickness, rect.h - thickness * 2 };
 		sdlk::throw_if_not_success(SDL_RenderFillRect(renderer, &tempRect), "Cannot render rect");
+	}
+
+	void draw::fill_rect(SDL_Renderer* renderer, SDL_Rect rect, SDL_Color color)
+	{
+		sdlk::throw_if_not_success(
+			SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a), "Cannot set render draw color");
+		sdlk::throw_if_not_success(SDL_RenderFillRect(renderer, &rect), "Cannot render filled rect");
 	}
 }  // namespace rchess

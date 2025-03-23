@@ -25,8 +25,8 @@ namespace rchess
 		{
 			p_background =
 				new sdlk::Image(this->get_window(), "../graphics/background.jpg", sdlk::Size(UI_WINDOW_SIZE));
+			Case::setup(p_background);
 			Piece::setup(p_background, this->get_window()->get_sdl_renderer(), "../graphics/pieces.png");
-			Board::setup_observer(&this->m_event_listener);
 		}
 		catch (const std::runtime_error &error)
 		{
@@ -37,7 +37,7 @@ namespace rchess
 
 	int RChessApp::run(int argc, char *argv[])
 	{
-		Board rchess_board;
+		Board rchess_board(&this->m_event_listener);
 		try
 		{
 			sdlk::App::run();

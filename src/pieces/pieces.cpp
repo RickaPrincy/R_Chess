@@ -63,4 +63,9 @@ namespace rchess
 			SDL_DestroyTexture(all_image_texture);
 		}
 	}
+
+	bool Piece::is_valid_position(int x, int y)
+	{
+		return x >= 0 && x < ROW_COUNT && y >= 0 && y < COLUMN_COUNT;
+	}
 }  // namespace rchess

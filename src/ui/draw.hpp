@@ -8,6 +8,7 @@ namespace rchess
 {
 	namespace draw
 	{
-		void line_rect(SDL_Renderer *renderer, SDL_Rect rect, SDL_Color color, int thickness);
+		void line_rect(SDL_Renderer* renderer, SDL_Rect rect, SDL_Color color, int thickness);
+		void fill_rect(SDL_Renderer* renderer, SDL_Rect rect, SDL_Color color);
 	}  // namespace draw
 }  // namespace rchess

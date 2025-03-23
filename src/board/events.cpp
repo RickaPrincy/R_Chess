@@ -5,47 +5,60 @@ namespace rchess
 	void Board::handle_case_click(std::shared_ptr<Case> click_case)
 	{
 		auto current_selected_piece = this->get_selected_piece();
-		auto new_selected_piece = click_case->get_piece();
+		auto clicked_piece = click_case->get_piece();
 
-		if (new_selected_piece == nullptr)
+		// If no piece is selected and no piece on clicked square -> do nothing
+		if (current_selected_piece == nullptr && clicked_piece == nullptr)
 		{
-			if (current_selected_piece != nullptr)
+			return;
+		}
+
+		// If clicked square is invalid move destination
+		if (!click_case->get_is_valid())
+		{
+			// Select piece if clicking on a piece of the current turn
+			if (clicked_piece != nullptr && clicked_piece->get_color() == this->get_turn())
 			{
-				this->move_selected_piece_position(click_case);
+				this->set_selected_piece(clicked_piece);
+			}
+			else
+			{
+				// Clear current selection
+				// this->set_selected_piece(nullptr);
+				// //TODO: reset cases valid
 			}
 			return;
 		}
 
-		// change selected_piece if same colors
-		if (this->get_turn() == new_selected_piece->get_color())
+		// If clicked case is valid for movement
+		if (current_selected_piece != nullptr)
 		{
-			this->set_selected_piece(new_selected_piece);
-		}
-		// capture if piece selected exist and not same color
-		else if (current_selected_piece != nullptr)
-		{
+			// Move or capture
 			this->move_selected_piece_position(click_case);
 		}
 	}
 
-	void Board::move_selected_piece_position(std::shared_ptr<Case> click_case)
+	void Board::move_selected_piece_position(std::shared_ptr<Case> target_case)
 	{
-		if (this->m_selected_piece == nullptr)
+		auto target_piece = target_case->get_piece();
+		if (target_piece != nullptr)
 		{
-			return;
+			target_piece->set_is_on_board(false);
+			target_piece->do_re_render();
 		}
 
-		if (click_case->get_piece() != nullptr)
-		{
-			click_case->get_piece()->set_is_on_board(false);
-			click_case->get_piece()->do_re_render();
-		}
+		// Remove piece from old position
+		m_cases[m_selected_piece->get_x()][m_selected_piece->get_y()]->set_piece(nullptr);
 
-		click_case->set_piece(this->m_selected_piece);
-		this->toggle_turn();
-		this->m_selected_piece->do_re_render();
-		this->m_selected_piece->set_position(sdlk::Position(click_case->get_x(), click_case->get_y()));
-		this->set_selected_piece(nullptr);
-		this->re_calc_move_valid();
+		// Place selected piece on the target case
+		target_case->set_piece(m_selected_piece);
+
+		// Update piece position and re-render
+		m_selected_piece->set_position(sdlk::Position(target_case->get_x(), target_case->get_y()));
+		m_selected_piece->do_re_render();
+
+		toggle_turn();
+		set_selected_piece(nullptr);
+		re_calc_move_valid();
 	}
 }  // namespace rchess

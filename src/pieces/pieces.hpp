@@ -55,6 +55,7 @@ namespace rchess
 		virtual void calc_possible_moves(Board *board) = 0;
 		static void setup(sdlk::Image *background, SDL_Renderer *renderer, const std::string &path);
 		static void clean_up();
+    static bool is_valid_position(int x, int y);
 	};
 
 	class Rook : public Piece
@@ -62,6 +63,9 @@ namespace rchess
 	private:
 		bool add_attacker_and_should_stop(int &current_x,
 			int &current_y,
+			std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases);
+		void explore_direction(int dx,
+			int dy,
 			std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases);
 
 	public:
