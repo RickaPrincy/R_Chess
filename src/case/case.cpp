@@ -23,7 +23,7 @@ namespace rchess
 		}
 		else
 		{
-			this->m_white_attackers.push_back(piece);
+			this->m_black_attackers.push_back(piece);
 		}
 	}
 
@@ -54,12 +54,26 @@ namespace rchess
 
 	void Case::render(SDL_Renderer *renderer)
 	{
-		if (!m_is_valid)
-			return;
-
 		SDL_Rect rect = {
 			get_x() * UI_CASE_SIZE + UI_BORDER_SIZE, get_y() * UI_CASE_SIZE + UI_BORDER_SIZE, UI_CASE_SIZE, UI_CASE_SIZE
 		};
+
+		if (this->has_piece() && this->get_piece()->get_type() == PieceType::KING)
+		{
+			const auto has_attacker = this->get_piece()->get_color() == PieceColor::BLACK
+										  ? this->get_white_attackers().size()
+										  : this->get_black_attackers().size();
+			if (has_attacker)
+			{
+				draw::fill_rect(renderer, rect, { 128, 0, 128, 255 });
+				return;
+			}
+		}
+
+		if (!m_is_valid)
+		{
+			return;
+		}
 
 		if (this->has_piece())
 		{

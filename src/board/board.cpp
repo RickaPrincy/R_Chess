@@ -95,8 +95,9 @@ namespace rchess
 					current_case->set_is_valid(false);
 					continue;
 				}
-
-				current_case->set_is_valid(current_case->is_attacker(m_selected_piece));
+				const auto is_attacker = current_case->is_attacker(m_selected_piece);
+				// TODO: check (+)
+				current_case->set_is_valid(is_attacker);
 			}
 		}
 	}
