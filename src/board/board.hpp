@@ -11,6 +11,7 @@
 
 #include "../case/case.hpp"
 #include "../constant.hpp"
+#include "../moves/move_node.hpp"
 #include "../pieces/pieces.hpp"
 
 namespace rchess
@@ -23,6 +24,7 @@ namespace rchess
 		std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> m_cases{};
 		std::array<std::shared_ptr<Piece>, PIECES_COUNT> m_pieces{};
 		std::shared_ptr<Piece> m_selected_piece = nullptr;
+		std::shared_ptr<MoveNode> m_current_move = nullptr;
 
 		SETTER(PieceColor, turn);
 
@@ -33,11 +35,13 @@ namespace rchess
 		void move_selected_piece_position(std::shared_ptr<Case> selected_case);
 		void re_calc_move_valid();
 		void update_valid_moves();
+		void update_current_move(std::shared_ptr<Case> target_case);
 
 	public:
 		Board(sdlk::EventListener *event_listener);
 		GETTER(PieceColor, turn);
 		GETTER(std::shared_ptr<Piece>, selected_piece);
+		GETTER(std::shared_ptr<MoveNode>, current_move);
 		std::array<std::shared_ptr<Piece>, PIECES_COUNT> get_pieces();
 		std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> get_cases();
 

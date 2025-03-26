@@ -51,6 +51,8 @@ if(CLANG_FORMAT_EXECUTABLE)
     "${R_CHESS_SOURCE_DIR}/src/board/*.hpp"
     "${R_CHESS_SOURCE_DIR}/src/pieces/*.cpp"
     "${R_CHESS_SOURCE_DIR}/src/pieces/*.hpp"
+    "${R_CHESS_SOURCE_DIR}/src/moves/*.hpp"
+    "${R_CHESS_SOURCE_DIR}/src/moves/*.cpp"
     "${R_CHESS_SOURCE_DIR}/src/ui/*.cpp"
     "${R_CHESS_SOURCE_DIR}/src/ui/*.hpp")
   add_custom_target(

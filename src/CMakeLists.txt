@@ -9,9 +9,13 @@ set(R_CHESS_SOURCES
     pieces/king.cpp
     pieces/pawn.cpp
     case/case.cpp
+    case/case.cpp
     board/board.cpp
+    board/moves.cpp
     board/instanciation.cpp
     board/events.cpp
+    moves/move.cpp
+    moves/move_node.cpp
     ui/rect.cpp)
 
 add_executable(${R_CHESS_BIN_NAME} ${R_CHESS_SOURCES})

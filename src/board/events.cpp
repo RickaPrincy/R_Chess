@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "board.hpp"
 
 namespace rchess
@@ -52,6 +54,9 @@ namespace rchess
 
 		// Place selected piece on the target case
 		target_case->set_piece(m_selected_piece);
+
+		// Append move in move_node_tree
+		this->update_current_move(target_case);
 
 		// Update piece position and re-render
 		m_selected_piece->set_position(sdlk::Position(target_case->get_x(), target_case->get_y()));
