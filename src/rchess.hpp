@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL2/SDL_ttf.h>
+
 #include <sdlk/components/image.hpp>
 #include <sdlk/core/app.hpp>
 

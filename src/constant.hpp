@@ -6,7 +6,9 @@ namespace rchess
 {
 	namespace constant
 	{
-		inline constexpr const int UI_WINDOW_SIZE = 568;
+		inline constexpr const int UI_WINDOW_WIDTH = 968;
+		inline constexpr const int UI_WINDOW_HEIGHT = 568;
+		inline constexpr const int UI_BOARD_SIZE = 568;
 		inline constexpr const int UI_BORDER_SIZE = 20;
 		inline constexpr const int UI_CASE_SIZE = 66;
 		inline constexpr const int UI_PIECE_SIZE = 50;

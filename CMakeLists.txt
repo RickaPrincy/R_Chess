@@ -34,8 +34,8 @@ endif()
 
 add_subdirectory(src)
 
-file(GLOB IMAGES "${CMAKE_CURRENT_SOURCE_DIR}/graphics/*")
-file(COPY ${IMAGES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/graphics/")
+file(GLOB IMAGES "${CMAKE_CURRENT_SOURCE_DIR}/assets/*")
+file(COPY ${IMAGES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/assets/")
 
 # clang-format configuration
 find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
@@ -50,10 +50,14 @@ if(CLANG_FORMAT_EXECUTABLE)
     "${R_CHESS_SOURCE_DIR}/src/board/*.cpp"
     "${R_CHESS_SOURCE_DIR}/src/board/*.hpp"
     "${R_CHESS_SOURCE_DIR}/src/pieces/*.cpp"
+    "${R_CHESS_SOURCE_DIR}/src/components/*.cpp"
+    "${R_CHESS_SOURCE_DIR}/src/components/*.hpp"
     "${R_CHESS_SOURCE_DIR}/src/pieces/*.hpp"
     "${R_CHESS_SOURCE_DIR}/src/moves/*.hpp"
     "${R_CHESS_SOURCE_DIR}/src/moves/*.cpp"
     "${R_CHESS_SOURCE_DIR}/src/ui/*.cpp"
+    "${R_CHESS_SOURCE_DIR}/src/fonts/*.cpp"
+    "${R_CHESS_SOURCE_DIR}/src/fonts/*.hpp"
     "${R_CHESS_SOURCE_DIR}/src/ui/*.hpp")
   add_custom_target(
     clang-format

@@ -8,6 +8,7 @@ set(R_CHESS_SOURCES
     pieces/queen.cpp
     pieces/king.cpp
     pieces/pawn.cpp
+    components/square.cpp
     case/case.cpp
     case/case.cpp
     board/board.cpp
@@ -15,6 +16,7 @@ set(R_CHESS_SOURCES
     board/instanciation.cpp
     board/events.cpp
     moves/move.cpp
+    fonts/font.cpp
     moves/move_node.cpp
     ui/rect.cpp)
 

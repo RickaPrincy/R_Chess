@@ -14,4 +14,4 @@ You will find the old version of R_Chess (which I didn’t have sdlk for yet) [O
 
 For now, you can only play against someone or against yourself on R_Chess. However, in the future, I plan to integrate [Stockfish](https://github.com/official-stockfish/Stockfish.git) into this program, and R_Chess will be able to be used as an analysis chessboard.
 
-![R_Chess](/graphics/preview.png "R_Chess")
+![R_Chess](/images/preview.png "R_Chess")
