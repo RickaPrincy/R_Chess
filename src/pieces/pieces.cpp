@@ -108,4 +108,32 @@ namespace rchess
 			}
 		}
 	}
+
+	std::string Piece::get_uci_annotation() const
+	{
+		switch (m_type)
+		{
+			case PieceType::ROOK: return "R";
+			case PieceType::KNIGHT: return "N";
+			case PieceType::BISHOP: return "B";
+			case PieceType::QUEEN: return "Q";
+			case PieceType::KING: return "K";
+			case PieceType::PAWN: return "";
+		}
+		return "";
+	}
+
+	std::string Piece::get_fen_annotation() const
+	{
+		switch (m_type)
+		{
+			case PieceType::ROOK: return m_color == PieceColor::WHITE ? "R" : "r";
+			case PieceType::KNIGHT: return m_color == PieceColor::WHITE ? "N" : "n";
+			case PieceType::BISHOP: return m_color == PieceColor::WHITE ? "B" : "b";
+			case PieceType::QUEEN: return m_color == PieceColor::WHITE ? "Q" : "q";
+			case PieceType::KING: return m_color == PieceColor::WHITE ? "K" : "k";
+			case PieceType::PAWN: return m_color == PieceColor::WHITE ? "P" : "p";
+		}
+		return "?";	 // fallback in case of invalid type
+	}
 }  // namespace rchess

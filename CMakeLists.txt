@@ -2,13 +2,11 @@ cmake_minimum_required(VERSION 3.18)
 
 project(rchess VERSION 0.0.1)
 
-find_package(sdlk REQUIRED)
+find_package(sdlk REQUIRED VERSION 0.0.3)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# deps find_package(rcli REQUIRED)
 
 set(R_CHESS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(R_CHESS_IS_MAIN_PROJECT OFF)

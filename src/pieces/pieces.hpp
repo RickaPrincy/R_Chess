@@ -61,6 +61,8 @@ namespace rchess
 		static void setup(sdlk::Image *background, SDL_Renderer *renderer, const std::string &path);
 		static void clean_up();
 		static bool is_valid_position(int x, int y);
+		std::string get_uci_annotation() const;
+		std::string get_fen_annotation() const;
 	};
 
 	class Rook : public Piece
@@ -104,6 +106,7 @@ namespace rchess
 		short m_increment_value{ 0 };
 
 	public:
+		GETTER(short, increment_value);
 		virtual void calc_possible_moves(Board *board) override;
 		Pawn(PieceColor color, int x, int y);
 	};

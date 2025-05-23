@@ -9,11 +9,13 @@ set(R_CHESS_SOURCES
     pieces/king.cpp
     pieces/pawn.cpp
     components/square.cpp
+    components/move_histories_ui.cpp
     case/case.cpp
     case/case.cpp
     board/board.cpp
     board/moves.cpp
     board/instanciation.cpp
+    board/events.cpp
     board/events.cpp
     moves/move.cpp
     fonts/font.cpp
