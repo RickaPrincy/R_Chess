@@ -1,0 +1,3 @@
+[submodule "external/sdlk"]
+	path = external/sdlk
+	url = https://github.com/RickaPrincy/sdlk.git
