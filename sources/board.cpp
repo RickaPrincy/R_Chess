@@ -1,0 +1,98 @@
+#include "board.hpp"
+
+using namespace sdlk;
+
+board::board(app *rchess) : observer(rchess->get_event_listener())
+{
+	this->m_piece_texture = texture::from_file("./resources/images/pieces.png");
+	this->m_background = std::make_shared<image_shape>("./resources/images/background.jpg", window_size, window_size);
+	this->instanciate_cases_and_pieces();
+
+	rchess->add_renderable(m_background.get());
+	for (auto &piece : this->m_pieces)
+	{
+		rchess->add_renderable(piece.get());
+	}
+}
+
+auto board::set_selected_piece(std::shared_ptr<piece> piece) -> void
+{
+	this->m_selected_piece = piece;
+}
+
+auto board::toggle_turn() -> void
+{
+	auto last_turn = this->get_turn();
+	this->m_turn = last_turn == piece_color::black ? piece_color::white : piece_color::black;
+}
+
+auto board::get_turn() const -> piece_color
+{
+	return this->m_turn;
+}
+
+auto board::get_selected_piece() const -> std::shared_ptr<piece>
+{
+	return this->m_selected_piece;
+}
+
+auto board::get_pieces() const -> std::array<std::shared_ptr<piece>, pieces_count>
+{
+	return this->m_pieces;
+}
+
+auto board::get_squares() const -> std::array<std::array<std::shared_ptr<square>, column_count>, row_count>
+{
+	return this->m_squares;
+}
+
+auto board::instanciate_cases_and_pieces() -> void
+{
+	for (int x = 0; x < row_count; x++)
+	{
+		for (int y = 0; y < column_count; y++)
+		{
+			m_squares[x][y] = std::make_shared<square>(x, y);
+		}
+	}
+
+	m_pieces[0] = std::make_shared<pawn>(piece_color::white, 0, 6, this->m_piece_texture);
+	m_pieces[1] = std::make_shared<pawn>(piece_color::white, 1, 6, this->m_piece_texture);
+	m_pieces[2] = std::make_shared<pawn>(piece_color::white, 2, 6, this->m_piece_texture);
+	m_pieces[3] = std::make_shared<pawn>(piece_color::white, 3, 6, this->m_piece_texture);
+	m_pieces[4] = std::make_shared<pawn>(piece_color::white, 4, 6, this->m_piece_texture);
+	m_pieces[5] = std::make_shared<pawn>(piece_color::white, 5, 6, this->m_piece_texture);
+	m_pieces[6] = std::make_shared<pawn>(piece_color::white, 6, 6, this->m_piece_texture);
+	m_pieces[7] = std::make_shared<pawn>(piece_color::white, 7, 6, this->m_piece_texture);
+	m_pieces[8] = std::make_shared<rook>(piece_color::white, 0, 7, this->m_piece_texture);
+	m_pieces[9] = std::make_shared<knight>(piece_color::white, 1, 7, this->m_piece_texture);
+	m_pieces[10] = std::make_shared<bishop>(piece_color::white, 2, 7, this->m_piece_texture);
+	m_pieces[11] = std::make_shared<queen>(piece_color::white, 3, 7, this->m_piece_texture);
+	m_pieces[12] = std::make_shared<king>(piece_color::white, 4, 7, this->m_piece_texture);
+	m_pieces[13] = std::make_shared<bishop>(piece_color::white, 5, 7, this->m_piece_texture);
+	m_pieces[14] = std::make_shared<knight>(piece_color::white, 6, 7, this->m_piece_texture);
+	m_pieces[15] = std::make_shared<rook>(piece_color::white, 7, 7, this->m_piece_texture);
+
+	// blacks
+	m_pieces[16] = std::make_shared<pawn>(piece_color::black, 0, 1, this->m_piece_texture);
+	m_pieces[17] = std::make_shared<pawn>(piece_color::black, 1, 1, this->m_piece_texture);
+	m_pieces[18] = std::make_shared<pawn>(piece_color::black, 2, 1, this->m_piece_texture);
+	m_pieces[19] = std::make_shared<pawn>(piece_color::black, 3, 1, this->m_piece_texture);
+	m_pieces[20] = std::make_shared<pawn>(piece_color::black, 4, 1, this->m_piece_texture);
+	m_pieces[21] = std::make_shared<pawn>(piece_color::black, 5, 1, this->m_piece_texture);
+	m_pieces[22] = std::make_shared<pawn>(piece_color::black, 6, 1, this->m_piece_texture);
+	m_pieces[23] = std::make_shared<pawn>(piece_color::black, 7, 1, this->m_piece_texture);
+	m_pieces[24] = std::make_shared<rook>(piece_color::black, 0, 0, this->m_piece_texture);
+	m_pieces[25] = std::make_shared<knight>(piece_color::black, 1, 0, this->m_piece_texture);
+	m_pieces[26] = std::make_shared<bishop>(piece_color::black, 2, 0, this->m_piece_texture);
+	m_pieces[27] = std::make_shared<queen>(piece_color::black, 3, 0, this->m_piece_texture);
+	m_pieces[28] = std::make_shared<king>(piece_color::black, 4, 0, this->m_piece_texture);
+	m_pieces[29] = std::make_shared<bishop>(piece_color::black, 5, 0, this->m_piece_texture);
+	m_pieces[30] = std::make_shared<knight>(piece_color::black, 6, 0, this->m_piece_texture);
+	m_pieces[31] = std::make_shared<rook>(piece_color::black, 7, 0, this->m_piece_texture);
+
+	for (auto &piece : m_pieces)
+	{
+		m_squares[piece->get_x()][piece->get_y()].get()->set_piece(piece.get());
+	}
+}

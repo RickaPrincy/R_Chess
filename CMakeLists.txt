@@ -48,40 +48,7 @@ endif()
 add_subdirectory(sources)
 add_subdirectory(external/sdlk)
 
-file(GLOB IMAGES "${CMAKE_CURRENT_SOURCE_DIR}/assets/*")
-file(COPY ${IMAGES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/assets/")
-
-# clang-format configuration
-find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
-if(CLANG_FORMAT_EXECUTABLE)
-  file(
-    GLOB_RECURSE
-    ALL_SOURCE_FILES
-    "${R_CHESS_SOURCE_DIR}/sources/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/sources/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/sources/case/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/sources/case/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/sources/board/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/sources/board/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/sources/pieces/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/sources/components/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/sources/components/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/sources/pieces/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/sources/moves/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/sources/moves/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/sources/ui/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/sources/fonts/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/sources/fonts/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/sources/ui/*.hpp")
-  add_custom_target(
-    clang-format
-    COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
-    COMMENT "Running clang-format")
-else()
-  message(
-    WARNING "clang-format not found. Clang-format target will not be available."
-  )
-endif()
+file(COPY ${R_CHESS_SOURCE_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR}/bin)
 
 # CPack configuration
 set(CPACK_PACKAGE_VENDOR "RickaPrincy <rckprincy@gmail.com>")

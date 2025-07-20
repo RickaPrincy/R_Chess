@@ -1,113 +1,114 @@
 #pragma once
 
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_render.h>
+#include <glad/glad.h>
 
-#include <memory>
-#include <sdlk/components/image.hpp>
-#include <sdlk/core/component.hpp>
-#include <sdlk/core/preprocessor/getter_setter.hpp>
-#include <sdlk/core/properties/position.hpp>
-#include <sdlk/core/window.hpp>
-#include <string>
+#include <cstdint>
+#include <sdlk/core/shape.hpp>
+#include <sdlk/core/types.hpp>
+#include <vector>
 
 #include "../constant.hpp"
 
-namespace rchess
+class board;
+class square;
+using namespace constant;
+
+enum class piece_type : std::uint8_t
 {
-	class Board;
-	class Case;
-	using namespace constant;
+	rook,  // based on pieces graphics order
+	knight,
+	bishop,
+	queen,
+	king,
+	pawn
+};
 
-	enum class PieceType
-	{
-		ROOK = 0,  // based on pieces graphics order
-		KNIGHT,
-		BISHOP,
-		QUEEN,
-		KING,
-		PAWN
-	};
+enum class piece_color
+{
+	white = 0,	// based on pieces graphics order
+	black
+};
 
-	enum class PieceColor
-	{
-		WHITE = 0,	// based on pieces graphics order
-		BLACK
-	};
+class piece : public sdlk::textured_shape
+{
+protected:
+	int m_x{ 0 };
+	int m_y{ 0 };
 
-	class Piece : public sdlk::Component
-	{
-	protected:
-		bool m_is_selected{ false }, m_is_on_board{ true };
-		PieceType m_type{ PieceType::PAWN };
-		PieceColor m_color{ PieceColor::BLACK };
+	bool m_is_selected{ false };
+	bool m_is_on_board{ true };
 
-		virtual void render(SDL_Renderer *renderer) override;
-		void explore_direction(int dx,
-			int dy,
-			std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases);
-		void explore_moves(const std::vector<std::array<int, 2>> &move_patterns,
-			std::array<std::array<std::shared_ptr<Case>, ROW_COUNT>, COLUMN_COUNT> &cases);
+	piece_type m_type{ piece_type::pawn };
+	piece_color m_color{ piece_color::black };
 
-	public:
-		GETTER(PieceType, type);
-		GETTER(PieceColor, color);
-		GETTER(bool, is_on_board);
-		SETTER(bool, is_selected);
-		SETTER(bool, is_on_board);
+	auto explore_direction(int dx, int dy, board *board) -> void;
+	auto explore_moves(const std::vector<std::array<int, 2>> &move_patterns, board *board) -> void;
 
-		Piece(PieceType type, PieceColor color, int x, int y);
-		virtual void calc_possible_moves(Board *board) = 0;
-		static void setup(sdlk::Image *background, SDL_Renderer *renderer, const std::string &path);
-		static void clean_up();
-		static bool is_valid_position(int x, int y);
-		std::string get_uci_annotation() const;
-		std::string get_fen_annotation() const;
-	};
+	piece(piece_type type,
+		piece_color color,
+		int x,
+		int y,
+		std::shared_ptr<sdlk::texture> texture,
+		std::vector<sdlk::point> uv);
 
-	class Rook : public Piece
-	{
-	public:
-		virtual void calc_possible_moves(Board *board) override;
-		Rook(PieceColor color, int x, int y);
-	};
+	virtual auto calc_possible_moves(board *board) -> void = 0;
+	static auto is_valid_position(const int &x, const int &y) -> bool;
+	static auto calc_uv(piece_type type, piece_color color) -> std::vector<sdlk::point>;
 
-	class Knight : public Piece
-	{
-	public:
-		virtual void calc_possible_moves(Board *board) override;
-		Knight(PieceColor color, int x, int y);
-	};
+public:
+	[[nodiscard]] auto get_x() -> int;
+	[[nodiscard]] auto get_y() -> int;
 
-	class Bishop : public Piece
-	{
-	public:
-		virtual void calc_possible_moves(Board *board) override;
-		Bishop(PieceColor color, int x, int y);
-	};
+	[[nodiscard]] auto get_type() -> piece_type;
+	[[nodiscard]] auto get_color() -> piece_color;
 
-	class Queen : public Piece
-	{
-	public:
-		virtual void calc_possible_moves(Board *board) override;
-		Queen(PieceColor color, int x, int y);
-	};
+	[[nodiscard]] auto get_is_selected() -> bool;
+	[[nodiscard]] auto get_is_on_board() -> bool;
 
-	class King : public Piece
-	{
-	public:
-		virtual void calc_possible_moves(Board *board) override;
-		King(PieceColor color, int x, int y);
-	};
+	static auto setup() -> void;
+};
 
-	class Pawn : public Piece
-	{
-	private:
-		short m_increment_value{ 0 };
+class rook : public piece
+{
+public:
+	virtual auto calc_possible_moves(board *board) -> void override;
+	rook(piece_color color, int x, int y, std::shared_ptr<sdlk::texture> texture);
+};
 
-	public:
-		GETTER(short, increment_value);
-		virtual void calc_possible_moves(Board *board) override;
-		Pawn(PieceColor color, int x, int y);
-	};
-}  // namespace rchess
+class knight : public piece
+{
+public:
+	virtual auto calc_possible_moves(board *board) -> void override;
+	knight(piece_color color, int x, int y, std::shared_ptr<sdlk::texture> texture);
+};
+
+class bishop : public piece
+{
+public:
+	virtual auto calc_possible_moves(board *board) -> void override;
+	bishop(piece_color color, int x, int y, std::shared_ptr<sdlk::texture> texture);
+};
+
+class queen : public piece
+{
+public:
+	virtual auto calc_possible_moves(board *board) -> void override;
+	queen(piece_color color, int x, int y, std::shared_ptr<sdlk::texture> texture);
+};
+
+class king : public piece
+{
+public:
+	virtual auto calc_possible_moves(board *board) -> void override;
+	king(piece_color color, int x, int y, std::shared_ptr<sdlk::texture> texture);
+};
+
+class pawn : public piece
+{
+private:
+	short m_increment_value{ 0 };
+
+public:
+	virtual auto calc_possible_moves(board *board) -> void override;
+	pawn(piece_color color, int x, int y, std::shared_ptr<sdlk::texture> texture);
+};

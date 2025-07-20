@@ -1,18 +1,15 @@
-#include "../board/board.hpp"
+#include "../board.hpp"
 #include "pieces.hpp"
 
-namespace rchess
+bishop::bishop(piece_color color, int x, int y, std::shared_ptr<sdlk::texture> texture)
+	: piece(piece_type::bishop, color, x, y, texture, std::move(piece::calc_uv(piece_type::bishop, color)))
 {
-	Bishop::Bishop(PieceColor color, int x, int y) : Piece(PieceType::BISHOP, color, x, y)
-	{
-	}
+}
 
-	void Bishop::calc_possible_moves(Board *board)
-	{
-		auto cases = board->get_cases();
-		this->explore_direction(1, 1, cases);
-		this->explore_direction(1, -1, cases);
-		this->explore_direction(-1, 1, cases);
-		this->explore_direction(-1, -1, cases);
-	}
-}  // namespace rchess
+auto bishop::calc_possible_moves(board *board) -> void 
+{
+	this->explore_direction(1, 1, board);
+	this->explore_direction(1, -1, board);
+	this->explore_direction(-1, 1, board);
+	this->explore_direction(-1, -1, board);
+}

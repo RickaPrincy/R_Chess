@@ -1,22 +1,15 @@
 #pragma once
 
-#include <SDL2/SDL_events.h>
-
-namespace rchess
+namespace constant
 {
-	namespace constant
-	{
-		inline constexpr const int UI_WINDOW_WIDTH = 968;
-		inline constexpr const int UI_WINDOW_HEIGHT = 568;
-		inline constexpr const int UI_BOARD_SIZE = 568;
-		inline constexpr const int UI_BORDER_SIZE = 20;
-		inline constexpr const int UI_CASE_SIZE = 66;
-		inline constexpr const int UI_PIECE_SIZE = 50;
-		inline constexpr const int ROW_COUNT = 8;
-		inline constexpr const int COLUMN_COUNT = 8;
-		inline constexpr const int PIECES_COUNT = 32;
-		inline constexpr const int UI_PADDING_SIZE = UI_CASE_SIZE - UI_PIECE_SIZE;
-		inline constexpr const int MAX_COORD_ON_BOARD = ROW_COUNT * UI_CASE_SIZE + UI_BORDER_SIZE;
-		inline constexpr const int MIN_COORD_ON_BOARD = UI_BORDER_SIZE;
-	}  // namespace constant
-}  // namespace rchess
+	inline constexpr const int window_size = 568;
+	inline constexpr const int border_size = 20;
+	inline constexpr const int case_size = 66;
+	inline constexpr const int piece_size = 50;
+	inline constexpr const int row_count = 8;
+	inline constexpr const int column_count = 8;
+	inline constexpr const int pieces_count = 32;
+	inline constexpr const int padding_size = case_size - piece_size;
+	inline constexpr const int max_coord_on_board = row_count * case_size + border_size;
+	inline constexpr const int min_coord_on_board = border_size;
+}  // namespace constant
