@@ -1,23 +1,88 @@
 #include "board.hpp"
 
+#include <SDL2/SDL_events.h>
+
+#include <algorithm>
+#include <sdlk/core/types.hpp>
+
 using namespace sdlk;
+
+static point get_square_position_from_mouse_position(const SDL_MouseMotionEvent &event);
 
 board::board(app *rchess) : observer(rchess->get_event_listener())
 {
 	this->m_piece_texture = texture::from_file("./resources/images/pieces.png");
 	this->m_background = std::make_shared<image_shape>("./resources/images/background.jpg", window_size, window_size);
-	this->instanciate_cases_and_pieces();
+	this->instanciate_squares_and_pieces();
+	this->calc_square_attackers();
 
 	rchess->add_renderable(m_background.get());
 	for (auto &piece : this->m_pieces)
 	{
 		rchess->add_renderable(piece.get());
 	}
+
+	for (int x = 0; x < row_count; x++)
+	{
+		for (int y = 0; y < column_count; y++)
+		{
+			rchess->add_renderable(this->get_square(x, y).get());
+		}
+	}
+
+	this->add_event_listener(event_type::MOUSE_BUTTON_DOWN,
+		[&](const SDL_Event &event)
+		{
+			auto square_position = get_square_position_from_mouse_position(event.motion);
+
+			if (square_position[0] == -1)
+			{
+				return;
+			}
+
+			this->handle_square_click((int)square_position[0], (int)square_position[1]);
+		});
+}
+
+auto board::update_selected_piece_possible_moves() -> void
+{
+	// update ui of the selected piece
+	for (int x = 0; x < row_count; x++)
+	{
+		for (int y = 0; y < column_count; y++)
+		{
+			const auto &current_square = this->m_squares[x][y];
+			if (this->m_selected_piece == nullptr)
+			{
+				current_square->set_is_valid(false);
+				continue;
+			}
+
+			const auto piece_on_square = current_square->get_piece();
+			if (piece_on_square != nullptr && piece_on_square->get_color() == m_selected_piece->get_color())
+			{
+				current_square->set_is_valid(false);
+				continue;
+			}
+			current_square->set_is_valid(current_square->is_attacker(this->m_selected_piece.get()));
+		}
+	}
 }
 
 auto board::set_selected_piece(std::shared_ptr<piece> piece) -> void
 {
+	if (this->m_selected_piece != nullptr)
+	{
+		this->m_selected_piece->set_is_selected(false);
+	}
+
 	this->m_selected_piece = piece;
+	if (piece != nullptr)
+	{
+		piece->set_is_selected(true);
+	}
+
+	this->update_selected_piece_possible_moves();
 }
 
 auto board::toggle_turn() -> void
@@ -46,7 +111,7 @@ auto board::get_squares() const -> std::array<std::array<std::shared_ptr<square>
 	return this->m_squares;
 }
 
-auto board::instanciate_cases_and_pieces() -> void
+auto board::instanciate_squares_and_pieces() -> void
 {
 	for (int x = 0; x < row_count; x++)
 	{
@@ -93,6 +158,44 @@ auto board::instanciate_cases_and_pieces() -> void
 
 	for (auto &piece : m_pieces)
 	{
-		m_squares[piece->get_x()][piece->get_y()].get()->set_piece(piece.get());
+		this->get_square(piece->get_x(), piece->get_y())->set_piece(piece.get());
 	}
+}
+
+auto board::get_square(int x, int y) const -> std::shared_ptr<square>
+{
+	return this->m_squares[x][y];
+}
+
+auto board::calc_square_attackers() -> void
+{
+	for (int x = 0; x < row_count; x++)
+	{
+		for (int y = 0; y < column_count; y++)
+		{
+			this->m_squares[x][y]->reset();
+			this->m_squares[x][y]->set_is_valid(false);
+		}
+	}
+
+	std::for_each(this->m_pieces.begin(),
+		this->m_pieces.end(),
+		[&](std::shared_ptr<piece> piece) { piece->calc_possible_moves(this); });
+}
+
+static auto get_square_position_from_mouse_position(const SDL_MouseMotionEvent &event) -> point
+{
+	auto is_on_board = event.x < max_coord_on_board && event.y < max_coord_on_board && event.x > min_coord_on_board &&
+					   event.y > min_coord_on_board;
+
+	if (!is_on_board)
+	{
+		return { -1.0f, -1.0f };
+	}
+
+	// to know the x and y square[x][y] clicked
+	int x_square = (event.x - border_size) / square_size;
+	int y_square = (event.y - border_size) / square_size;
+
+	return { (float)x_square, (float)y_square };
 }

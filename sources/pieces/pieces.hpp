@@ -51,7 +51,6 @@ protected:
 		std::shared_ptr<sdlk::texture> texture,
 		std::vector<sdlk::point> uv);
 
-	virtual auto calc_possible_moves(board *board) -> void = 0;
 	static auto is_valid_position(const int &x, const int &y) -> bool;
 	static auto calc_uv(piece_type type, piece_color color) -> std::vector<sdlk::point>;
 
@@ -64,6 +63,11 @@ public:
 
 	[[nodiscard]] auto get_is_selected() -> bool;
 	[[nodiscard]] auto get_is_on_board() -> bool;
+
+	auto set_is_on_board(bool is_on_board) -> void;
+	auto set_is_selected(bool is_selected) -> void;
+	auto set_position(int x, int y) -> void;
+	virtual auto calc_possible_moves(board *board) -> void = 0;
 
 	static auto setup() -> void;
 };

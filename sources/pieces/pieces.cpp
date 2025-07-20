@@ -11,12 +11,9 @@ piece::piece(piece_type type, piece_color color, int x, int y, std::shared_ptr<t
 		  std::move(uv),
 		  std::move(texture)),
 	  m_type(std::move(type)),
-	  m_color(std::move(color)),
-	  m_x(std::move(x)),
-	  m_y(std::move(y))
+	  m_color(std::move(color))
 {
-	this->translate({ this->get_x() * case_size + border_size + padding_size / 2,
-		this->get_y() * case_size + border_size + padding_size / 2 });
+	this->set_position(std::move(x), std::move(y));
 }
 
 // unified function for exploring all possible moves (for both bishop and rook and queen)
@@ -28,10 +25,10 @@ auto piece::explore_direction(int dx, int dy, board *board) -> void
 	while (is_valid_position(current_x, current_y))
 	{
 		auto squares = board->get_squares();
-		auto &current_case = squares[current_x][current_y];
+		auto &current_square = squares[current_x][current_y];
 
-		current_case->add_piece_attacker(this);
-		if (current_case->has_piece())
+		current_square->add_piece_attacker(this);
+		if (current_square->has_piece())
 		{
 			break;
 		}
@@ -51,8 +48,8 @@ auto piece::explore_moves(const std::vector<std::array<int, 2>> &move_patterns, 
 
 		if (is_valid_position(new_x, new_y))
 		{
-			auto &target_case = squares[new_x][new_y];
-			target_case->add_piece_attacker(this);
+			auto &target_square = squares[new_x][new_y];
+			target_square->add_piece_attacker(this);
 		}
 	}
 }
@@ -80,6 +77,24 @@ auto piece::get_color() -> piece_color
 auto piece::get_is_selected() -> bool
 {
 	return this->m_is_selected;
+}
+
+auto piece::set_is_on_board(bool is_on_board) -> void
+{
+	this->m_is_on_board = std::move(is_on_board);
+}
+
+auto piece::set_is_selected(bool is_selected) -> void
+{
+	this->m_is_selected = std::move(is_selected);
+}
+
+auto piece::set_position(int x, int y) -> void
+{
+	this->m_x = x;
+	this->m_y = y;
+	this->translate(
+		{ x * square_size + border_size + padding_size / 2, y * square_size + border_size + padding_size / 2 });
 }
 
 auto piece::get_is_on_board() -> bool

@@ -9,18 +9,23 @@
 using namespace constant;
 using namespace sdlk;
 
+static auto calc_position(int x, int y) -> std::vector<point>;
+
 square::square(int x, int y)
-	: colored_shape(std::move(polygon(quad::make(case_size, case_size))),
+	: colored_shape(std::move(polygon(quad::make(square_size, square_size))),
 		  { 255, 255, 0, 255 },
 		  std::move(quad::indices())),
 	  m_x(std::move(x)),
 	  m_y(std::move(y))
 {
+	this->translate({
+		square_size * this->m_x + border_size,
+		square_size * this->m_y + border_size,
+	});
 }
 
 auto square::reset() -> void
 {
-	this->m_piece = nullptr;
 	this->m_is_valid = false;
 	this->m_black_attackers.clear();
 	this->m_white_attackers.clear();
@@ -61,6 +66,37 @@ auto square::set_piece(piece *piece) -> void
 	this->m_piece = piece;
 }
 
+auto square::get_piece() -> piece *
+{
+	return this->m_piece;
+}
+
+auto square::get_is_valid() -> bool
+{
+	return this->m_is_valid;
+}
+
+auto square::get_x() -> int
+{
+	return this->m_x;
+}
+
+auto square::get_y() -> int
+{
+	return this->m_y;
+}
+
+auto square::set_is_valid(bool is_valid) -> void
+{
+	this->m_is_valid = std::move(is_valid);
+}
+
 auto square::render(GLuint *program) -> void
 {
+	if (!this->get_is_valid())
+	{
+		return;
+	}
+
+	colored_shape::render(program);
 }

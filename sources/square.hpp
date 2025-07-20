@@ -23,8 +23,13 @@ public:
 	auto reset() -> void;
 	auto has_piece() -> bool;
 	auto set_piece(piece *piece) -> void;
+	auto set_is_valid(bool is_valid) -> void;
 	auto is_attacker(piece *piece) -> bool;
 	auto add_piece_attacker(piece *piece) -> void;
 
+	[[nodiscard]] auto get_piece() -> piece *;
+	[[nodiscard]] auto get_is_valid() -> bool;
+	[[nodiscard]] auto get_x() -> int;
+	[[nodiscard]] auto get_y() -> int;
 	virtual auto render(GLuint *program) -> void override;
 };

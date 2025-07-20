@@ -2,6 +2,7 @@ set(R_CHESS_SOURCES
   main.cpp
   square.cpp
   board.cpp
+  events.cpp
   pieces/pieces.cpp
   pieces/pawn.cpp
   pieces/king.cpp

@@ -22,8 +22,12 @@ private:
 	std::array<std::array<std::shared_ptr<square>, column_count>, row_count> m_squares{};
 
 	auto toggle_turn() -> void;
-	auto instanciate_cases_and_pieces() -> void;
+	auto instanciate_squares_and_pieces() -> void;
 	auto set_selected_piece(std::shared_ptr<piece> piece) -> void;
+	auto handle_square_click(int x, int y) -> void;
+	auto move_selected_piece_position(std::shared_ptr<square> square) -> void;
+	auto calc_square_attackers() -> void;
+	auto update_selected_piece_possible_moves() -> void;
 
 public:
 	board(sdlk::app *app);
@@ -32,4 +36,5 @@ public:
 	[[nodiscard]] auto get_selected_piece() const -> std::shared_ptr<piece>;
 	[[nodiscard]] auto get_pieces() const -> std::array<std::shared_ptr<piece>, pieces_count>;
 	[[nodiscard]] auto get_squares() const -> std::array<std::array<std::shared_ptr<square>, column_count>, row_count>;
+	[[nodiscard]] auto get_square(int x, int y) const -> std::shared_ptr<square>;
 };
