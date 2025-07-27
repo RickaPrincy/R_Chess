@@ -11,17 +11,19 @@ using namespace sdlk;
 
 static auto calc_position(int x, int y) -> std::vector<point>;
 
+static SDL_Color color_valid_without_piece = { 255, 255, 0, 255 };
+static SDL_Color color_valid_with_piece = { 255, 0, 0, 255 };
+static SDL_Color color_valid_with_checked = { 128, 0, 128, 255 };
+
 square::square(int x, int y)
 	: colored_shape(std::move(polygon(quad::make(square_size, square_size))),
 		  { 255, 255, 0, 255 },
-		  std::move(quad::indices())),
+		  std::move(quad::indices()),
+		  false),
 	  m_x(std::move(x)),
 	  m_y(std::move(y))
 {
-	this->translate({
-		square_size * this->m_x + border_size,
-		square_size * this->m_y + border_size,
-	});
+	this->update_ui();
 }
 
 auto square::reset() -> void
@@ -89,6 +91,33 @@ auto square::get_y() -> int
 auto square::set_is_valid(bool is_valid) -> void
 {
 	this->m_is_valid = std::move(is_valid);
+	this->update_ui();
+}
+
+auto square::update_ui() -> void
+{
+	auto has_piece = this->has_piece();
+	glm::vec2 normal_translation = { square_size * this->m_x + border_size, square_size * this->m_y + border_size };
+
+	if (has_piece)
+	{
+		this->scale(1.0);
+
+		this->translate(normal_translation);
+
+		this->set_color(
+			this->m_piece->get_type() == piece_type::king ? color_valid_with_checked : color_valid_with_piece);
+	}
+	else
+	{
+		float scale_factor = 0.4f;
+		this->scale(scale_factor);
+
+		float offset = (1.0f - scale_factor) * 0.5f * square_size;
+		this->translate(normal_translation + glm::vec2{ offset, offset });
+
+		this->set_color(color_valid_without_piece);
+	}
 }
 
 auto square::render(GLuint *program) -> void

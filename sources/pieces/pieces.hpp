@@ -68,6 +68,7 @@ public:
 	auto set_is_selected(bool is_selected) -> void;
 	auto set_position(int x, int y) -> void;
 	virtual auto calc_possible_moves(board *board) -> void = 0;
+	virtual auto render(GLuint *program) -> void override;
 
 	static auto setup() -> void;
 };

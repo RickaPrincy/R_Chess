@@ -41,9 +41,7 @@ auto board::handle_square_click(int x, int y) -> void
 		}
 		else
 		{
-			// Clear current selection
-			// this->set_selected_piece(nullptr);
-			// //TODO: reset squares valid
+			this->set_selected_piece(nullptr);
 		}
 		return;
 	}

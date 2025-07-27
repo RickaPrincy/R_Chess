@@ -102,6 +102,16 @@ auto piece::get_is_on_board() -> bool
 	return this->m_is_on_board;
 }
 
+auto piece::render(GLuint *program) -> void
+{
+	if (!this->m_is_on_board)
+	{
+		return;
+	}
+
+	textured_shape::render(program);
+}
+
 auto piece::is_valid_position(const int &x, const int &y) -> bool
 {
 	return x >= 0 && x < row_count && y >= 0 && y < column_count;

@@ -17,11 +17,6 @@ board::board(app *rchess) : observer(rchess->get_event_listener())
 	this->calc_square_attackers();
 
 	rchess->add_renderable(m_background.get());
-	for (auto &piece : this->m_pieces)
-	{
-		rchess->add_renderable(piece.get());
-	}
-
 	for (int x = 0; x < row_count; x++)
 	{
 		for (int y = 0; y < column_count; y++)
@@ -30,7 +25,12 @@ board::board(app *rchess) : observer(rchess->get_event_listener())
 		}
 	}
 
-	this->add_event_listener(event_type::MOUSE_BUTTON_DOWN,
+	for (auto &piece : this->m_pieces)
+	{
+		rchess->add_renderable(piece.get());
+	}
+
+	this->add_event_listener(event_type::mouse_button_down,
 		[&](const SDL_Event &event)
 		{
 			auto square_position = get_square_position_from_mouse_position(event.motion);
@@ -51,7 +51,7 @@ auto board::update_selected_piece_possible_moves() -> void
 	{
 		for (int y = 0; y < column_count; y++)
 		{
-			const auto &current_square = this->m_squares[x][y];
+			const auto &current_square = this->get_square(x, y);
 			if (this->m_selected_piece == nullptr)
 			{
 				current_square->set_is_valid(false);

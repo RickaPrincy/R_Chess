@@ -22,6 +22,7 @@ public:
 
 	auto reset() -> void;
 	auto has_piece() -> bool;
+	auto update_ui() -> void;
 	auto set_piece(piece *piece) -> void;
 	auto set_is_valid(bool is_valid) -> void;
 	auto is_attacker(piece *piece) -> bool;
