@@ -1,28 +1,23 @@
-set(R_CHESS_SOURCES
-    main.cpp
-    rchess.cpp
-    pieces/pieces.cpp
-    pieces/rook.cpp
-    pieces/knight.cpp
-    pieces/bishop.cpp
-    pieces/queen.cpp
-    pieces/king.cpp
-    pieces/pawn.cpp
-    case/case.cpp
-    board/board.cpp
-    board/instanciation.cpp
-    board/events.cpp
-    ui/rect.cpp)
+set(R_CHESS_SOURCES 
+  main.cpp
+  square.cpp
+  board.cpp
+  events.cpp
+  pieces/pieces.cpp
+  pieces/pawn.cpp
+  pieces/king.cpp
+  pieces/bishop.cpp
+  pieces/knight.cpp
+  pieces/queen.cpp
+  pieces/rook.cpp
+)
 
 add_executable(${R_CHESS_BIN_NAME} ${R_CHESS_SOURCES})
 
 # target_link
-target_link_libraries(
-  ${R_CHESS_BIN_NAME}
-  PUBLIC sdlk
-  PRIVATE SDL2
-  PRIVATE SDL2_image
-  PRIVATE SDL2_ttf)
+target_link_directories(${R_CHESS_BIN_NAME} PUBLIC "${CMAKE_BINARY_DIR}/lib")
+
+target_link_libraries(${R_CHESS_BIN_NAME} PRIVATE sdlk)
 
 # set properties
 set_target_properties(

@@ -2,13 +2,26 @@ cmake_minimum_required(VERSION 3.18)
 
 project(rchess VERSION 0.0.1)
 
-find_package(sdlk REQUIRED)
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# deps find_package(rcli REQUIRED)
+# Download git submodule
+message(STATUS "Updating all submodules recursively...")
+execute_process(
+  COMMAND git submodule update --init --recursive
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  RESULT_VARIABLE res
+  OUTPUT_VARIABLE out
+  ERROR_VARIABLE err
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  ERROR_STRIP_TRAILING_WHITESPACE
+)
+if(NOT res EQUAL 0)
+  message(WARNING "Recursive submodule update failed: ${err}")
+else()
+  message(STATUS "All submodules updated recursively.")
+endif()
 
 set(R_CHESS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(R_CHESS_IS_MAIN_PROJECT OFF)
@@ -32,36 +45,10 @@ if(WIN32)
   add_compile_options(WIN32)
 endif()
 
-add_subdirectory(src)
+add_subdirectory(sources)
+add_subdirectory(external/sdlk)
 
-file(GLOB IMAGES "${CMAKE_CURRENT_SOURCE_DIR}/graphics/*")
-file(COPY ${IMAGES} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/graphics/")
-
-# clang-format configuration
-find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
-if(CLANG_FORMAT_EXECUTABLE)
-  file(
-    GLOB_RECURSE
-    ALL_SOURCE_FILES
-    "${R_CHESS_SOURCE_DIR}/src/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/src/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/src/case/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/src/case/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/src/board/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/src/board/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/src/pieces/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/src/pieces/*.hpp"
-    "${R_CHESS_SOURCE_DIR}/src/ui/*.cpp"
-    "${R_CHESS_SOURCE_DIR}/src/ui/*.hpp")
-  add_custom_target(
-    clang-format
-    COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
-    COMMENT "Running clang-format")
-else()
-  message(
-    WARNING "clang-format not found. Clang-format target will not be available."
-  )
-endif()
+file(COPY ${R_CHESS_SOURCE_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR}/bin)
 
 # CPack configuration
 set(CPACK_PACKAGE_VENDOR "RickaPrincy <rckprincy@gmail.com>")
