@@ -2,6 +2,11 @@
 
 # **R_Chess**
 
+> [!NOTE]
+> **R_Chess is no longer being developed.** It was the project that started it all: building it led to [sdlk](https://github.com/RickaPrincy/sdlk), my SDL2 wrapper, which then grew into [**Noi Engine**](https://github.com/noi-engine/noi_engine), a C++20 2D game engine with an ECS core and a Qt editor. That's where my work goes now.
+>
+> **Lineage:** R_Chess → [sdlk](https://github.com/RickaPrincy/sdlk) → [Noi Engine](https://github.com/noi-engine/noi_engine)
+
 ## What is R_Chess ?
 
 R_Chess is a simple chessboard that I have created for pure enjoyment and to test my own SDL2 wrapper, [sdlk](http://github.com/RickaPrincy/sdlk). I have designed it with my own unique algorithms.
@@ -12,6 +17,6 @@ You will find the old version of R_Chess (which I didn’t have sdlk for yet) [O
 
 ## What else ?
 
-For now, you can only play against someone or against yourself on R_Chess. However, in the future, I plan to integrate [Stockfish](https://github.com/official-stockfish/Stockfish.git) into this program, and R_Chess will be able to be used as an analysis chessboard.
+For now, you can only play against someone or against yourself on R_Chess. I had planned to integrate [Stockfish](https://github.com/official-stockfish/Stockfish.git) into this program, so R_Chess could be used as an analysis chessboard, but that plan is shelved now that development has stopped.
 
 ![R_Chess](/images/preview.png "R_Chess")
